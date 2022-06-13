@@ -2,14 +2,16 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import { GetStaticProps } from "next";
-import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { useConnection } from "@solana/wallet-adapter-react";
 import { rpcMethods } from "lib/spl";
 import { useEffect, useState } from "react";
-
+import MintRow from "components/MintRow";
 const BADGES = ["SOLO", "CREW", "CLAN", "SQUAD", "LEGION", "EMPIRE"];
 interface Props {
   SPL_TOKENS: string[];
 }
+const owner = "BoX451MZzydoVdZE4NFfmMT3J5Ztqo7YgUNbwwMfjPFu";
+
 export const getServerSideProps: GetStaticProps<Props> = async () => {
   const SPL_TOKENS = BADGES.map(
     (badge) => process.env[`NEXT_PUBLIC_WL_MINT_${badge.toUpperCase()}`]
@@ -21,7 +23,6 @@ export const getServerSideProps: GetStaticProps<Props> = async () => {
     },
   };
 };
-const owner = "BoX451MZzydoVdZE4NFfmMT3J5Ztqo7YgUNbwwMfjPFu";
 
 const Home: NextPage<Props> = ({ SPL_TOKENS }) => {
   const { connection } = useConnection();
@@ -41,6 +42,11 @@ const Home: NextPage<Props> = ({ SPL_TOKENS }) => {
     );
     setMints(_mints);
   }
+
+  async function mintTokens() {
+    new rpcMethods(connection).mintTokensInstruction(owner, "SOL", 100);
+  }
+
   useEffect(() => {
     getTokenMints();
   }, []);
@@ -54,11 +60,7 @@ const Home: NextPage<Props> = ({ SPL_TOKENS }) => {
 
       <main className={styles.main}>
         {mints.map(({ mint, amount }) => (
-          <div key={mint}>
-            {mint} {amount}
-            <button>Mint more</button>
-            <button>Transfer</button>
-          </div>
+          <MintRow key={mint} mint={mint} amount={amount} />
         ))}
       </main>
     </div>

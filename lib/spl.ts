@@ -1,4 +1,10 @@
-import { Connection, PublicKey, TransactionInstruction } from "@solana/web3.js";
+import {
+  Connection,
+  Keypair,
+  PublicKey,
+  Transaction,
+  TransactionInstruction,
+} from "@solana/web3.js";
 import {
   createMint,
   getOrCreateAssociatedTokenAccount,
@@ -38,7 +44,7 @@ export class rpcMethods extends rpc {
       new PublicKey(owner)
     );
   }
-  async mintTokens(
+  async mintTokensInstruction(
     owner: string,
     token: string,
     amount: number
@@ -52,5 +58,19 @@ export class rpcMethods extends rpc {
       amount
     );
     return tx;
+  }
+
+  static createTx(...instructions: TransactionInstruction[]): Transaction {
+    let transaction = new Transaction();
+    transaction.add(...instructions);
+    return transaction;
+  }
+
+  async sendTx(transaction: Transaction, signer: Keypair): Promise<string> {
+    const signature = await this.connection.sendTransaction(
+      transaction,
+      [signer]
+    );
+    return signature;
   }
 }
