@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import { GetStaticProps } from "next";
-import { useConnection } from "@solana/wallet-adapter-react";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { rpcMethods } from "lib/spl";
 import { useEffect, useState } from "react";
 
@@ -21,10 +21,10 @@ export const getServerSideProps: GetStaticProps<Props> = async () => {
     },
   };
 };
+const owner = "BoX451MZzydoVdZE4NFfmMT3J5Ztqo7YgUNbwwMfjPFu";
 
 const Home: NextPage<Props> = ({ SPL_TOKENS }) => {
   const { connection } = useConnection();
-  const owner = "BoX451MZzydoVdZE4NFfmMT3J5Ztqo7YgUNbwwMfjPFu";
   const [mints, setMints] = useState<{ mint: string; amount: number }[]>([]);
   async function getTokenMints() {
     const _mints = await Promise.all(

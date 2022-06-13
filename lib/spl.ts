@@ -1,4 +1,12 @@
-import { Connection, PublicKey } from "@solana/web3.js";
+import { Connection, PublicKey, TransactionInstruction } from "@solana/web3.js";
+import {
+  createMint,
+  getOrCreateAssociatedTokenAccount,
+  getAssociatedTokenAddress,
+  mintTo,
+  createMintToInstruction,
+} from "@solana/spl-token";
+import { AnchorWallet, Wallet } from "@solana/wallet-adapter-react";
 
 abstract class rpc {
   connection: Connection;
@@ -22,5 +30,27 @@ export class rpcMethods extends rpc {
       tokens.value?.[0]?.account?.data?.parsed?.info?.tokenAmount?.amount
     );
     return amount;
+  }
+
+  private async getAssociatedTokenAccount(token: string, owner: string) {
+    return await getAssociatedTokenAddress(
+      new PublicKey(token),
+      new PublicKey(owner)
+    );
+  }
+  async mintTokens(
+    owner: string,
+    token: string,
+    amount: number
+  ): Promise<TransactionInstruction> {
+    const tokenAccount = await this.getAssociatedTokenAccount(token, owner);
+
+    const tx = createMintToInstruction(
+      new PublicKey(token),
+      tokenAccount,
+      new PublicKey(owner),
+      amount
+    );
+    return tx;
   }
 }
