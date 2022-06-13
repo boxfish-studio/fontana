@@ -1,9 +1,10 @@
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { FC } from "react";
+import styles from "styles/Wallet.module.css";
 
 const Wallet: FC = () => {
   return (
-    <div className="absolute right-0 scale-75 flex flex-row gap-3 z-10">
+    <div className={styles.wallet}>
       <WalletMultiButton />
     </div>
   );
