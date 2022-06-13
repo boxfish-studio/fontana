@@ -6,13 +6,9 @@ import {
   TransactionInstruction,
 } from "@solana/web3.js";
 import {
-  createMint,
-  getOrCreateAssociatedTokenAccount,
   getAssociatedTokenAddress,
-  mintTo,
   createMintToInstruction,
 } from "@solana/spl-token";
-import { AnchorWallet, Wallet } from "@solana/wallet-adapter-react";
 
 abstract class rpc {
   connection: Connection;
@@ -57,7 +53,7 @@ export class rpcMethods extends rpc {
       new PublicKey(owner),
       amount
     );
-    console.log("tx",tx);
+    console.log("tx", tx);
     return tx;
   }
 
@@ -68,10 +64,9 @@ export class rpcMethods extends rpc {
   }
 
   async sendTx(transaction: Transaction, signer: Keypair): Promise<string> {
-    const signature = await this.connection.sendTransaction(
-      transaction,
-      [signer]
-    );
+    const signature = await this.connection.sendTransaction(transaction, [
+      signer,
+    ]);
     return signature;
   }
 }
