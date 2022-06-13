@@ -57,6 +57,7 @@ export class rpcMethods extends rpc {
       new PublicKey(owner),
       amount
     );
+    console.log("tx",tx);
     return tx;
   }
 
