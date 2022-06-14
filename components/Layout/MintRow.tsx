@@ -18,16 +18,11 @@ const MintRow: React.FC<{
   const [transferAmount, setTransferAmount] = useState(0);
 
   const getTokenBalance = useCallback(async () => {
-    const amount = await new RpcMethods(connection).getTokenBalance(
-      owner,
-      token
-    );
+    const rpc = new RpcMethods(connection);
+    const amount = await rpc.getTokenBalance(owner, token);
     setMintedAmount(amount);
     if (!publicKey) return;
-    const walletAmount = await new RpcMethods(connection).getTokenBalance(
-      publicKey.toBase58(),
-      token
-    );
+    const walletAmount = await rpc.getTokenBalance(publicKey.toBase58(), token);
     setWalletAmount(walletAmount);
   }, [connection, publicKey, token]);
 
