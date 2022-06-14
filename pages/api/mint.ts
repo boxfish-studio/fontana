@@ -14,12 +14,9 @@ export default function handler(
   const { owner, token, amount } = JSON.parse(req.body);
   (async () => {
     const connection = new Connection(process.env.NEXT_PUBLIC_SOLANA_RPC_HOST!);
+    const rpc = new rpcMethods(connection);
 
-    const ix = new rpcMethods(connection).mintTokensInstruction(
-      owner,
-      token,
-      amount
-    );
+    const ix = rpc.mintTokensInstruction(owner, token, amount);
 
     const tx = rpcMethods.createTx(await ix);
 
@@ -32,7 +29,7 @@ export default function handler(
 
     const keypair = Keypair.fromSecretKey(new Uint8Array(signerParsed));
 
-    const signature = await new rpcMethods(connection).sendTx(tx, keypair);
+    const signature = await rpc.sendTx(tx, keypair);
 
     const latestBlockHash = await connection.getLatestBlockhash();
 
