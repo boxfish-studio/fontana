@@ -10,15 +10,16 @@ export default function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  console.log("req", req.body);
+  console.log("$req", req.body);
   const { owner, token, amount } = JSON.parse(req.body);
   (async () => {
     const connection = new Connection(process.env.NEXT_PUBLIC_SOLANA_RPC_HOST!);
     const rpc = new RpcMethods(connection);
-
+    console.log("rpc",rpc.connection.rpcEndpoint);
     const ix = rpc.mintTokensInstruction(owner, token, amount);
 
     const tx = RpcMethods.createTx(await ix);
+    console.log("tx",tx.signatures[0]);
 
     const signer = process.env.NEXT_PUBLIC_SIGNER! as string;
 
@@ -28,6 +29,7 @@ export default function handler(
       .map((x) => parseInt(x));
 
     const keypair = Keypair.fromSecretKey(new Uint8Array(signerParsed));
+    console.log("keypair", keypair.publicKey.toBase58());
 
     const signature = await rpc.sendTx(tx, keypair);
 

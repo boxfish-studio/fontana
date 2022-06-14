@@ -56,17 +56,21 @@ const MintRow: React.FC<{
       setAction(null);
       return;
     }
-    const res = await fetch("api/transfer/", {
-      method: "POST",
-      body: JSON.stringify({
-        owner,
-        token,
-        amount: transferAmount,
-        recipient: publicKey.toBase58(),
-      }),
-    });
-    console.log("res", await res.json());
-    setAction(null);
+    try {
+      const res = await fetch("api/transfer/", {
+        method: "POST",
+        body: JSON.stringify({
+          owner,
+          token,
+          amount: transferAmount,
+          recipient: publicKey.toBase58(),
+        }),
+      });
+      console.log("res", await res.json());
+      setAction(null);
+    } catch (err) {
+      console.error(err);
+    }
 
     getTokenBalance();
   }

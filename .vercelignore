@@ -1,0 +1,6 @@
+.env
+.vercel
+build
+node_modules
+.prettierrc
+.gitignore

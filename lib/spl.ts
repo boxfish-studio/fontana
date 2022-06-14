@@ -54,7 +54,6 @@ export class RpcMethods extends Rpc {
       new PublicKey(owner),
       amount
     );
-    console.log("tx", tx);
     return tx;
   }
 
@@ -97,7 +96,9 @@ export class RpcMethods extends Rpc {
       lastValidBlockHeight: number;
     }>
   > {
-    return await this.connection.getLatestBlockhash();
+    const blockhash = await this.connection.getLatestBlockhash();
+    console.log("blockhash", blockhash);
+    return blockhash;
   }
 
   async confirmTransaction(signature: string) {
