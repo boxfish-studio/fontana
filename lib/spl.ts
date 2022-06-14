@@ -8,7 +8,7 @@ import {
 import {
   getAssociatedTokenAddress,
   createMintToInstruction,
-  createTransferInstruction
+  createTransferInstruction,
 } from "@solana/spl-token";
 
 abstract class rpc {
@@ -58,7 +58,6 @@ export class rpcMethods extends rpc {
     return tx;
   }
 
-
   async transferInstruction(
     owner: string,
     token: string,
@@ -66,14 +65,16 @@ export class rpcMethods extends rpc {
     recipient: string
   ): Promise<TransactionInstruction> {
     const sourceAccount = await this.getAssociatedTokenAccount(token, owner);
-    const destinationAccount = await this.getAssociatedTokenAccount(token, recipient);
+    const destinationAccount = await this.getAssociatedTokenAccount(
+      token,
+      recipient
+    );
     const tx = createTransferInstruction(
       sourceAccount,
       destinationAccount,
       new PublicKey(owner),
-      amount,
-
-    )
+      amount
+    );
     return tx;
   }
 
@@ -88,5 +89,23 @@ export class rpcMethods extends rpc {
       signer,
     ]);
     return signature;
+  }
+
+  private async getLatestBlockhash(): Promise<
+    Readonly<{
+      blockhash: string;
+      lastValidBlockHeight: number;
+    }>
+  > {
+    return await this.connection.getLatestBlockhash();
+  }
+
+  async confirmTransaction(signature: string) {
+    const latestBlockHash = await this.getLatestBlockhash();
+    await this.connection.confirmTransaction({
+      blockhash: latestBlockHash.blockhash,
+      lastValidBlockHeight: latestBlockHash.lastValidBlockHeight,
+      signature,
+    });
   }
 }

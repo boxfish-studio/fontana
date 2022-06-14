@@ -13,16 +13,10 @@ export default function handler(
   console.log("req", req.body);
   const { owner, token, amount, recipient } = JSON.parse(req.body);
   (async () => {
-    
     const connection = new Connection(process.env.NEXT_PUBLIC_SOLANA_RPC_HOST!);
 
     const rpc = new rpcMethods(connection);
-    const ix = rpc.transferInstruction(
-      owner,
-      token,
-      amount,
-      recipient
-    );
+    const ix = rpc.transferInstruction(owner, token, amount, recipient);
 
     const tx = rpcMethods.createTx(await ix);
 
@@ -37,13 +31,7 @@ export default function handler(
 
     const signature = await rpc.sendTx(tx, keypair);
 
-    const latestBlockHash = await connection.getLatestBlockhash();
-
-    await connection.confirmTransaction({
-      blockhash: latestBlockHash.blockhash,
-      lastValidBlockHeight: latestBlockHash.lastValidBlockHeight,
-      signature,
-    });
+    await rpc.confirmTransaction(signature);
 
     res.status(200).json({ tx: signature });
   })();

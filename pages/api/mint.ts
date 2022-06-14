@@ -31,13 +31,7 @@ export default function handler(
 
     const signature = await rpc.sendTx(tx, keypair);
 
-    const latestBlockHash = await connection.getLatestBlockhash();
-
-    await connection.confirmTransaction({
-      blockhash: latestBlockHash.blockhash,
-      lastValidBlockHeight: latestBlockHash.lastValidBlockHeight,
-      signature,
-    });
+    await rpc.confirmTransaction(signature);
 
     res.status(200).json({ tx: signature });
   })();
