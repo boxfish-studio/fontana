@@ -11,14 +11,14 @@ import {
   createTransferInstruction,
 } from "@solana/spl-token";
 
-abstract class rpc {
+abstract class Rpc {
   connection: Connection;
   constructor(connection: Connection) {
     this.connection = connection;
   }
 }
 
-export class rpcMethods extends rpc {
+export class RpcMethods extends Rpc {
   constructor(connection: Connection) {
     super(connection);
   }

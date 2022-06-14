@@ -1,6 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-import { rpcMethods } from "lib/spl";
+import { RpcMethods } from "lib/spl";
 import { Connection, Keypair } from "@solana/web3.js";
 type Data = {
   tx: string;
@@ -14,11 +14,11 @@ export default function handler(
   const { owner, token, amount } = JSON.parse(req.body);
   (async () => {
     const connection = new Connection(process.env.NEXT_PUBLIC_SOLANA_RPC_HOST!);
-    const rpc = new rpcMethods(connection);
+    const rpc = new RpcMethods(connection);
 
     const ix = rpc.mintTokensInstruction(owner, token, amount);
 
-    const tx = rpcMethods.createTx(await ix);
+    const tx = RpcMethods.createTx(await ix);
 
     const signer = process.env.NEXT_PUBLIC_SIGNER! as string;
 
