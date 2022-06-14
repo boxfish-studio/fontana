@@ -14,11 +14,11 @@ export default function handler(
   const { owner, token, amount, recipient } = JSON.parse(req.body);
   (async () => {
     const connection = new Connection(process.env.NEXT_PUBLIC_SOLANA_RPC_HOST!);
-
     const rpc = new RpcMethods(connection);
     const ix = rpc.transferInstruction(owner, token, amount, recipient);
 
     const tx = RpcMethods.createTx(await ix);
+    console.log("tx", tx);
 
     const signer = process.env.NEXT_PUBLIC_SIGNER! as string;
 
@@ -28,6 +28,7 @@ export default function handler(
       .map((x) => parseInt(x));
 
     const keypair = Keypair.fromSecretKey(new Uint8Array(signerParsed));
+    console.log("keypair", keypair.publicKey.toBase58());
 
     const signature = await rpc.sendTx(tx, keypair);
 

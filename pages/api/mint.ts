@@ -15,11 +15,10 @@ export default function handler(
   (async () => {
     const connection = new Connection(process.env.NEXT_PUBLIC_SOLANA_RPC_HOST!);
     const rpc = new RpcMethods(connection);
-    console.log("rpc",rpc.connection.rpcEndpoint);
     const ix = rpc.mintTokensInstruction(owner, token, amount);
 
     const tx = RpcMethods.createTx(await ix);
-    console.log("tx",tx.signatures[0]);
+    console.log("tx", tx);
 
     const signer = process.env.NEXT_PUBLIC_SIGNER! as string;
 
