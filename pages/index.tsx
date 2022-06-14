@@ -32,8 +32,8 @@ const Home: NextPage<Props> = ({ SPL_TOKENS }) => {
       </Head>
 
       <main className={styles.main}>
-        {SPL_TOKENS.map((token) => (
-          <MintRow key={token} token={token} />
+        {SPL_TOKENS.map((token,i) => (
+          <MintRow key={token} token={token} badge={BADGES[i]}/>
         ))}
       </main>
     </div>

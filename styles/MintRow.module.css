@@ -1,0 +1,33 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  margin: 0;
+  border: 2px solid #000;
+  height: 8rem;
+  width: 50rem;
+position: relative;
+  border-radius: 1rem;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+
+  flex-wrap: wrap;
+}
+
+.isMinting {
+    position:absolute;
+    top:0;
+    left:50%;
+    
+}
+
+.buttons {
+    margin-left:1rem;
+}
