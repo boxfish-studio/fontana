@@ -8,6 +8,7 @@ import {
 import {
   getAssociatedTokenAddress,
   createMintToInstruction,
+  createTransferInstruction
 } from "@solana/spl-token";
 
 abstract class rpc {
@@ -54,6 +55,25 @@ export class rpcMethods extends rpc {
       amount
     );
     console.log("tx", tx);
+    return tx;
+  }
+
+
+  async transferInstruction(
+    owner: string,
+    token: string,
+    amount: number,
+    recipient: string
+  ): Promise<TransactionInstruction> {
+    const sourceAccount = await this.getAssociatedTokenAccount(token, owner);
+    const destinationAccount = await this.getAssociatedTokenAccount(token, recipient);
+    const tx = createTransferInstruction(
+      sourceAccount,
+      destinationAccount,
+      new PublicKey(owner),
+      amount,
+
+    )
     return tx;
   }
 
