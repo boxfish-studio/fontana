@@ -75,7 +75,10 @@ const MintRow: React.FC<{
     <div className={styles.container}>
       <div className={styles.info}>
         <span> Badge: {badge}</span>
-        <span> Mint address: {token}</span>
+        <div>
+          <span> Mint address: {token}</span>
+          <hr />
+        </div>
         <span> Minted amount: {mintedAmount}</span>
         <span> My amount: {walletAmount}</span>
       </div>
@@ -87,7 +90,7 @@ const MintRow: React.FC<{
             onChange={(e) => setMintAmount(parseInt(e.target.value))}
           />
 
-          <button onClick={mintTokens}>Mint more</button>
+          <button onClick={mintTokens}>Mint</button>
         </span>
         <span>
           <input

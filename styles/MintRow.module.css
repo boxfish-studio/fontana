@@ -1,13 +1,16 @@
 .container {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 65% 35%;
+  grid-template-rows: 1fr;
+  grid-template-areas: "left right";
+  grid-gap: 1rem;
+  font-weight: bold;
+
   padding: 1rem;
   margin: 0;
-  border: 2px solid #000;
+  border: 2px solid rgb(151, 151, 151);
   height: 8rem;
-  width: 50rem;
+  width: 60rem;
   position: relative;
   border-radius: 1rem;
 }
@@ -17,9 +20,17 @@
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-
+  cursor: default;
   flex-wrap: wrap;
   margin: 0;
+}
+.info div {
+  display: inline-block;
+}
+.info div hr {
+  border-top: 1px solid rgb(126, 126, 126);
+  margin-top: 0.5rem;
+  margin-left: 0rem;
 }
 
 .isMinting {
@@ -32,11 +43,33 @@
   margin-left: 0.1rem;
   display: flex;
   flex-direction: column;
-  width: 20rem;
 }
 
 .buttons span {
   display: flex;
   flex-direction: row;
   margin-top: 1rem;
+  gap: 1rem;
+}
+
+.buttons span input {
+  border-radius: 0.5rem;
+  padding: 0.3rem;
+  border: 1px solid rgb(46, 49, 230);
+}
+
+.buttons span button {
+  width: 5rem;
+  text-align: center;
+  border-radius: 0.5rem;
+  padding: 0.3rem;
+  border: 1px solid rgb(46, 49, 230);
+  background-color: rgb(46, 49, 230);
+  color: #fff;
+  font-weight: bold;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.buttons span button:hover {
+  background-color: rgb(83, 85, 199);
 }
