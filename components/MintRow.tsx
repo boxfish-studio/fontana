@@ -1,6 +1,6 @@
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { rpcMethods } from "lib/spl";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import styles from "styles/MintRow.module.css";
 
 const owner = "BoX451MZzydoVdZE4NFfmMT3J5Ztqo7YgUNbwwMfjPFu";
@@ -17,7 +17,7 @@ const MintRow: React.FC<{
   const [mintAmount, setMintAmount] = useState(0);
   const [transferAmount, setTransferAmount] = useState(0);
 
-  async function getTokenBalance() {
+  const getTokenBalance = useCallback(async () => {
     const amount = await new rpcMethods(connection).getTokenBalance(
       owner,
       token
@@ -29,11 +29,11 @@ const MintRow: React.FC<{
       token
     );
     setWalletAmount(walletAmount);
-  }
+  }, [connection, publicKey, token]);
 
   useEffect(() => {
     getTokenBalance();
-  }, [connected]);
+  }, [connected, getTokenBalance]);
 
   async function mintTokens() {
     setAction("Minting...");
