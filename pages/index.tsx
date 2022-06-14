@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import { GetStaticProps } from "next";
-import MintRow from "components/MintRow";
+import { MintRow } from "components/Layout";
 
 const BADGES = ["SOLO", "CREW", "CLAN", "SQUAD", "LEGION", "EMPIRE"];
 
