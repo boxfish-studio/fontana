@@ -36,17 +36,20 @@ const MintRow: React.FC<{
       setAction(null);
       return;
     }
-    const res = await fetch("api/mint/", {
-      method: "POST",
-      body: JSON.stringify({
-        owner,
-        token,
-        amount: mintAmount,
-      }),
-    });
-    console.log("res", await res.json());
+    try {
+      const res = await fetch("api/mint/", {
+        method: "POST",
+        body: JSON.stringify({
+          owner,
+          token,
+          amount: mintAmount,
+        }),
+      });
+      console.log("res", await res.json());
+    } catch (err) {
+      console.error(err);
+    }
     setAction(null);
-
     getTokenBalance();
   }
 
@@ -67,11 +70,10 @@ const MintRow: React.FC<{
         }),
       });
       console.log("res", await res.json());
-      setAction(null);
     } catch (err) {
       console.error(err);
     }
-
+    setAction(null);
     getTokenBalance();
   }
 
