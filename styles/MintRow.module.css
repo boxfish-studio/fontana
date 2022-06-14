@@ -8,7 +8,7 @@
   border: 2px solid #000;
   height: 8rem;
   width: 50rem;
-position: relative;
+  position: relative;
   border-radius: 1rem;
 }
 
@@ -19,15 +19,24 @@ position: relative;
   align-items: flex-start;
 
   flex-wrap: wrap;
+  margin: 0;
 }
 
 .isMinting {
-    position:absolute;
-    top:0;
-    left:50%;
-    
+  position: absolute;
+  top: 0;
+  left: 50%;
 }
 
 .buttons {
-    margin-left:1rem;
+  margin-left: 0.1rem;
+  display: flex;
+  flex-direction: column;
+  width: 20rem;
+}
+
+.buttons span {
+  display: flex;
+  flex-direction: row;
+  margin-top: 1rem;
 }

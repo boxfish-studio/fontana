@@ -86,17 +86,22 @@ const MintRow: React.FC<{
       </div>
       <span className={styles.isMinting}>{action && <div>{action}</div>}</span>
       <div className={styles.buttons}>
-        <input
-          value={mintAmount}
-          onChange={(e) => setMintAmount(parseInt(e.target.value))}
-        />
-        <button onClick={mintTokens}>Mint more</button>
-        <input
-          value={transferAmount}
-          onChange={(e) => setTransferAmount(parseInt(e.target.value))}
-        />
+        <span>
+          <input
+            value={mintAmount}
+            onChange={(e) => setMintAmount(parseInt(e.target.value))}
+          />
 
-        <button onClick={transferTokens}>Transfer</button>
+          <button onClick={mintTokens}>Mint more</button>
+        </span>
+        <span>
+          <input
+            value={transferAmount}
+            onChange={(e) => setTransferAmount(parseInt(e.target.value))}
+          />
+
+          <button onClick={transferTokens}>Transfer</button>
+        </span>
       </div>
     </div>
   );
