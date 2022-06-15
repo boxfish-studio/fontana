@@ -7,6 +7,7 @@ import {
 } from "@solana/web3.js";
 import {
   getAssociatedTokenAddress,
+  getOrCreateAssociatedTokenAccount,
   createMintToInstruction,
   createTransferInstruction,
 } from "@solana/spl-token";
@@ -29,6 +30,7 @@ export class RpcMethods extends Rpc {
         mint: new PublicKey(token),
       }
     );
+    if (tokens.value.length === 0) return 0;
     const amount = parseInt(
       tokens.value?.[0]?.account?.data?.parsed?.info?.tokenAmount?.amount
     );
@@ -39,6 +41,14 @@ export class RpcMethods extends Rpc {
     return await getAssociatedTokenAddress(
       new PublicKey(token),
       new PublicKey(owner)
+    );
+  }
+  private async getOrCreateAssociatedTokenAccount(token: string, signer:Keypair, recipient:string) {
+    return await getOrCreateAssociatedTokenAccount(
+      this.connection,
+      signer,
+      new PublicKey(token),
+      new PublicKey(recipient)
     );
   }
   async mintTokensInstruction(
@@ -61,16 +71,18 @@ export class RpcMethods extends Rpc {
     owner: string,
     token: string,
     amount: number,
-    recipient: string
+    recipient: string,
+    signer: Keypair
   ): Promise<TransactionInstruction> {
     const sourceAccount = await this.getAssociatedTokenAccount(token, owner);
-    const destinationAccount = await this.getAssociatedTokenAccount(
+    const destinationAccount = await this.getOrCreateAssociatedTokenAccount(
       token,
+      signer,
       recipient
     );
     const tx = createTransferInstruction(
       sourceAccount,
-      destinationAccount,
+      destinationAccount.address,
       new PublicKey(owner),
       amount
     );
