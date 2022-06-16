@@ -92,7 +92,7 @@ const MintRow: React.FC<{
       <div className={styles.buttons}>
         <span>
           <input
-            value={mintAmount}
+            defaultValue={1}
             onChange={(e) => setMintAmount(parseInt(e.target.value))}
           />
 
@@ -100,7 +100,7 @@ const MintRow: React.FC<{
         </span>
         <span>
           <input
-            value={transferAmount}
+            defaultValue={1}
             onChange={(e) => setTransferAmount(parseInt(e.target.value))}
           />
 
