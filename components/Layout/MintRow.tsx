@@ -14,8 +14,8 @@ const MintRow: React.FC<{
   const [mintedAmount, setMintedAmount] = useState<null | number>(null);
   const [walletAmount, setWalletAmount] = useState<null | number>(null);
   const [action, setAction] = useState<null | string>(null);
-  const [mintAmount, setMintAmount] = useState(0);
-  const [transferAmount, setTransferAmount] = useState(0);
+  const [mintAmount, setMintAmount] = useState(1);
+  const [transferAmount, setTransferAmount] = useState(1);
 
   const getTokenBalance = useCallback(async () => {
     const rpc = new RpcMethods(connection);
