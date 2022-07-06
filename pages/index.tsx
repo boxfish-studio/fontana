@@ -1,8 +1,9 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import styles from "../styles/Home.module.css";
 import { GetStaticProps } from "next";
-import { MintRow } from "components/Layout";
+import { Header } from "components/Layout";
+import Table from "components/Table/Table";
+import { Box } from "@primer/react";
 
 const BADGES = ["SOLO", "CREW", "CLAN", "SQUAD", "LEGION", "EMPIRE"];
 
@@ -24,22 +25,32 @@ export const getServerSideProps: GetStaticProps<Props> = async () => {
 
 const Home: NextPage<Props> = ({ SPL_TOKENS }) => {
   return (
-    <div className={styles.container}>
+    <>
       <Head>
         <title>Synergyland Faucet</title>
         <meta name="description" content="Synergyland Faucet" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div>
+      {/* <div>
         <h1>Synergyland Faucet</h1>
         <hr />
-      </div>
-      <main className={styles.main}>
+      </div> */}
+      {/* <main className={styles.main}>
         {SPL_TOKENS.map((token, i) => (
           <MintRow key={token} token={token} badge={BADGES[i]} />
         ))}
-      </main>
-    </div>
+      </main> */}
+      <Header />
+      <Box
+        display={"flex"}
+        flexDirection={"column"}
+        justifyContent={"center"}
+        alignItems={"center"}
+        marginTop="6rem"
+      >
+        <Table />
+      </Box>
+    </>
   );
 };
 
