@@ -5,6 +5,11 @@ interface Config {
   ticker?: string;
 }
 
+/**
+ * This config is used to show the tokens to be minted and sent. Add as many as you wish. The ticker is optional.
+ * The keypair is the public key of the account that will mint the tokens. It should match the keypair on the env.
+ * If the keypair in the config file is WALLET_1, in the .env file it should be NEXT_PUBLIC_WALLET_1.
+ */
 const config: Config[] = [
   {
     keypair: "WALLET_1",
