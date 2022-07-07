@@ -23,7 +23,8 @@ export default function handler(
     try{
 
     
-    const signer = process.env[`NEXT_PUBLIC_${_keypair}`] as string;
+    const signer = process.env[`NEXT_PUBLIC_${_keypair}`];
+    if(!signer) throw new Error ("No keypair found on env");
 
     const signerParsed = signer
       .slice(1, -1)
