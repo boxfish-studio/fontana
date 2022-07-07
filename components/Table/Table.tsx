@@ -3,17 +3,30 @@ import { CheckIcon, SyncIcon } from "@primer/octicons-react";
 
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { RpcMethods } from "lib/spl";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useMemo } from "react";
 import styles from "styles/MintRow.module.css";
 import Row from "./Row";
 import HeaderTable from "./HeaderTable";
-
+import fontanaConfig from "../../fontana.config";
 
 const Table: React.FC = () => {
+
+
+  const tokens = useMemo(() => {
+    return fontanaConfig.map(token => {
+      return {
+        keypair: token.keypair,
+        token: token.token,
+        owner:token.owner,
+        ticker:token.ticker
+      }})
+    },[])
+
   return (
     <Box
       display="flex"
       margin={0}
+      marginTop={3}
       style={{
         flexDirection: "column",
         justifyContent: "center",
@@ -22,8 +35,10 @@ const Table: React.FC = () => {
       }}
     >
       <HeaderTable />
-      <Row tokenName="0j21d120j12j12j12j12ddj120" tokenOwner="1" />
-      <Row tokenName="m0das89jdas9ndasndasdasdas09" tokenOwner="1" />
+      {tokens.map(token => {
+        return <Row key={token.token} tokenTicker={token.ticker} tokenKeypair={token.keypair} tokenName={token.token} tokenOwner={token.owner} />;
+      }
+      )}
     </Box>
   );
 };

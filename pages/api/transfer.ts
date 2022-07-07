@@ -11,9 +11,9 @@ export default function handler(
   res: NextApiResponse<Data>
 ) {
   console.log("req", req.body);
-  const { owner, token, amount, recipient } = JSON.parse(req.body);
+  const { owner, token, amount, recipient, keypair: _keypair } = JSON.parse(req.body);
   (async () => {
-    const signer = process.env.NEXT_PUBLIC_SIGNER! as string;
+    const signer = process.env[`NEXT_PUBLIC_${_keypair}`] as string;
 
     const signerParsed = signer
       .slice(1, -1)

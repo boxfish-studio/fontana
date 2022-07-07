@@ -11,7 +11,7 @@ export default function handler(
   res: NextApiResponse<Data>
 ) {
   console.log("$req", req.body);
-  const { owner, token, amount } = JSON.parse(req.body);
+  const { owner, token, amount, keypair:_keypair } = JSON.parse(req.body);
   (async () => {
     const connection = new Connection(process.env.NEXT_PUBLIC_SOLANA_RPC_HOST!);
     const rpc = new RpcMethods(connection);
@@ -19,8 +19,8 @@ export default function handler(
 
     const tx = RpcMethods.createTx(await ix);
     console.log("tx", tx);
-
-    const signer = process.env.NEXT_PUBLIC_SIGNER! as string;
+    console.log("_keypair", _keypair);
+    const signer = process.env[`NEXT_PUBLIC_${_keypair}`] as string;
 
     const signerParsed = signer
       .slice(1, -1)

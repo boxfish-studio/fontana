@@ -1,45 +1,19 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import { GetStaticProps } from "next";
 import { Header } from "components/Layout";
-import Table from "components/Table/Table";
-import { Box } from "@primer/react";
+import { Table } from "components/Table";
+import { Box, StyledOcticon, Text } from "@primer/react";
+import { HeartFillIcon } from "@primer/octicons-react";
 
-const BADGES = ["SOLO", "CREW", "CLAN", "SQUAD", "LEGION", "EMPIRE"];
-
-interface Props {
-  SPL_TOKENS: string[];
-}
-
-export const getServerSideProps: GetStaticProps<Props> = async () => {
-  const SPL_TOKENS = BADGES.map(
-    (badge) => process.env[`NEXT_PUBLIC_WL_MINT_${badge.toUpperCase()}`]
-  ) as string[];
-
-  return {
-    props: {
-      SPL_TOKENS,
-    },
-  };
-};
-
-const Home: NextPage<Props> = ({ SPL_TOKENS }) => {
+const Home: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Synergyland Faucet</title>
-        <meta name="description" content="Synergyland Faucet" />
-        <link rel="icon" href="/favicon.ico" />
+        <title>Fontana</title>
+        <meta name="description" content="Fontana Faucet" />
+        <link rel="icon" href="/Vector.ico" />
       </Head>
-      {/* <div>
-        <h1>Synergyland Faucet</h1>
-        <hr />
-      </div> */}
-      {/* <main className={styles.main}>
-        {SPL_TOKENS.map((token, i) => (
-          <MintRow key={token} token={token} badge={BADGES[i]} />
-        ))}
-      </main> */}
+
       <Header />
       <Box
         display={"flex"}
@@ -49,6 +23,24 @@ const Home: NextPage<Props> = ({ SPL_TOKENS }) => {
         marginTop="6rem"
       >
         <Table />
+      </Box>
+      <Box
+        display={"flex"}
+        flexDirection={"column"}
+        justifyContent={"center"}
+        alignItems={"center"}
+        position={"absolute"}
+        bottom={3}
+        width="100vw"
+      >
+        <Text color="gray">
+          with <StyledOcticon icon={HeartFillIcon} size={16} color="#666666" />{" "}
+          From{" "}
+          <a href="https://boxfish.studio/">
+            <u>Boxfish Studio</u>
+          </a>
+          , SL.
+        </Text>
       </Box>
     </>
   );

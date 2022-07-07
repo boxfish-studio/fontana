@@ -11,7 +11,7 @@ const HeaderTable: React.FC = () => {
     >
       <Box
         display="flex"
-        width="80rem"
+        width="90rem"
         height="4rem"
         backgroundColor="white"
         padding="13px 16px 12px"
@@ -26,9 +26,17 @@ const HeaderTable: React.FC = () => {
           }}
         >
           <StyledOcticon icon={CheckIcon} size={16} color="gray" />
-          <Text as="p" marginLeft="0.5rem" color="gray">2 SPL Tokens available</Text>
+          <Text as="p" marginLeft="0.5rem" color="gray">
+            2 SPL Tokens available
+          </Text>
         </Header.Item>
-        <Header.Item>Available</Header.Item>
+        <Header.Item
+          style={{
+            marginLeft: "4rem",
+          }}
+        >
+          Available
+        </Header.Item>
         <Header.Item>In wallet</Header.Item>
         <Header.Item
           full
@@ -37,7 +45,7 @@ const HeaderTable: React.FC = () => {
           }}
         >
           <Button
-            style={{
+            sx={{
               position: "absolute",
               right: "0",
               borderRadius: "4px",
@@ -49,7 +57,7 @@ const HeaderTable: React.FC = () => {
             }}
           >
             <StyledOcticon icon={SyncIcon} size={14} color="black" />
-            <Text marginLeft="4px" fontWeight={400}>
+            <Text marginLeft="4px" fontWeight={600}>
               Refresh
             </Text>
           </Button>
