@@ -32,12 +32,16 @@ const HeaderTable: React.FC = () => {
         </Header.Item>
         <Header.Item
           style={{
-            marginLeft: "4rem",
+            paddingLeft: "8rem",
           }}
         >
           Available
         </Header.Item>
-        <Header.Item>In wallet</Header.Item>
+        <Header.Item
+         style={{
+          paddingLeft: "6rem",
+        }}
+        >In wallet</Header.Item>
         <Header.Item
           full
           style={{

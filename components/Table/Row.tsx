@@ -8,7 +8,7 @@ import {
 } from "@primer/react";
 import { IssueOpenedIcon, HourglassIcon } from "@primer/octicons-react";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { RpcMethods } from "lib/spl";
 
 enum Actions {
@@ -22,33 +22,42 @@ const Row: React.FC<{
   tokenTicker?: string;
 }> = ({ tokenName, tokenOwner, tokenKeypair, tokenTicker }) => {
   const { connection } = useConnection();
-  const { connected, publicKey } = useWallet();
+  const { publicKey } = useWallet();
   const [mintedAmount, setMintedAmount] = useState<null | number>(null);
   const [walletAmount, setWalletAmount] = useState<null | number>(null);
   const [action, setAction] = useState<null | Actions>(null);
   const [mintAmount, setMintAmount] = useState(1);
   const [transferAmount, setTransferAmount] = useState(1);
   const [destinationAddress, setDestinationAddress] = useState("");
+  const [mintError, setMintError] = useState<null | string>(null);
+  const [sendError, setSendError] = useState<null | string>(null);
 
   function setWalletAddress() {
     if (!publicKey) return;
     setDestinationAddress(publicKey?.toBase58());
   }
   const getTokenBalance = useCallback(async () => {
-    const rpc = new RpcMethods(connection);
-    const amount = await rpc.getTokenBalance(tokenOwner, tokenName);
-    setMintedAmount(amount);
-    if (!publicKey) return;
-    const walletAmount = await rpc.getTokenBalance(
-      publicKey.toBase58(),
-      tokenName
-    );
-    setWalletAmount(walletAmount);
-  }, [connection, publicKey, tokenName]);
+    try{
+
+      const rpc = new RpcMethods(connection);
+      const amount = await rpc.getTokenBalance(tokenOwner, tokenName);
+      setMintedAmount(amount);
+      if (!publicKey) return;
+      const walletAmount = await rpc.getTokenBalance(
+        publicKey.toBase58(),
+        tokenName
+        );
+        setWalletAmount(walletAmount);
+      }
+    catch(e){
+      console.error(e);
+    }
+  }, [connection, publicKey, tokenName, tokenOwner]);
 
   getTokenBalance();
 
   async function mintTokens() {
+    setMintError(null);
     setAction(Actions.Mint);
     if (mintAmount === 0) {
       setAction(null);
@@ -64,7 +73,10 @@ const Row: React.FC<{
           amount: mintAmount,
         }),
       });
-      console.log("res", await res.json());
+      const data = await res.json();
+      if ("err" in data) {
+        setMintError(data.err);
+      }
     } catch (err) {
       console.error(err);
     }
@@ -72,6 +84,7 @@ const Row: React.FC<{
     getTokenBalance();
   }
   async function transferTokens() {
+    setSendError(null);
     setAction(Actions.Sending);
     if (transferAmount === 0) {
       setAction(null);
@@ -88,7 +101,10 @@ const Row: React.FC<{
           recipient: destinationAddress,
         }),
       });
-      console.log("res", await res.json());
+      const data = await res.json();
+      if ("err" in data) {
+        setSendError(data.err);
+      }
     } catch (err) {
       console.error(err);
     }
@@ -155,31 +171,51 @@ const Row: React.FC<{
         </Header.Item>
         <Header.Item
           style={{
-            marginLeft: "5.5rem",
             fontSize: "1rem",
+            width: "13rem",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "flex-end",
+            marginLeft: "2rem",
           }}
         >
-          {mintedAmount ?? "-"}
+          <Text textAlign={"center"}>{mintedAmount ?? "-"}</Text>
         </Header.Item>
         <Header.Item
           style={{
-            marginLeft: "3rem",
             fontSize: "1rem",
+            width: "13rem",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "flex-end",
           }}
         >
           {walletAmount ?? "-"}
         </Header.Item>
         <Header.Item
-          style={{
-            marginLeft: "2rem",
-          }}
+        sx={{
+          position: "relative",
+        }}
         >
           <TextInput
             width="8rem"
             placeholder="Amount to mint"
             defaultValue={1}
             onChange={(e) => setMintAmount(parseInt(e.target.value))}
+            sx={{
+              border: "1px solid #ccc",
+            }}
           />
+          <Text
+            display="flex"
+            sx={{
+              position: "absolute",
+              bottom: "-1rem",
+            }}
+            color="red"
+          >
+            {mintError}
+          </Text>
           <Button
             style={{
               borderRadius: "4px",
@@ -198,8 +234,11 @@ const Row: React.FC<{
         </Header.Item>
         <Header.Item
           full
-          style={{
+      
+          sx={{
+            position: "relative",
             gap: "0.5rem",
+
           }}
         >
           <TextInput
@@ -207,7 +246,20 @@ const Row: React.FC<{
             placeholder="Amount to send"
             defaultValue={1}
             onChange={(e) => setTransferAmount(parseInt(e.target.value))}
+            sx={{
+              border: "1px solid #ccc",
+            }}
           />
+           <Text
+            display="flex"
+            sx={{
+              position: "absolute",
+              bottom: "-1rem",
+            }}
+            color="red"
+          >
+            {sendError}
+          </Text>
           <Box
             display={"flex"}
             flexDirection={"column"}
@@ -218,6 +270,9 @@ const Row: React.FC<{
               placeholder="Address to send"
               value={destinationAddress}
               onChange={(e) => setDestinationAddress(e.target.value)}
+              sx={{
+                border: "1px solid #ccc",
+              }}
             />
             <Button
               style={{
@@ -243,7 +298,7 @@ const Row: React.FC<{
               alignItems: "center",
               justifyContent: "center",
 
-              width: "8rem",
+              width: "8.5rem",
             }}
             leadingIcon={action === Actions.Sending ? HourglassIcon : null}
             onClick={transferTokens}
