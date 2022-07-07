@@ -43,7 +43,7 @@ const Table: React.FC = () => {
     >
       {" "}
       <SiteMintingContext.Provider value={{ r, refresh }}>
-        <HeaderTable />
+        <HeaderTable tokensAmount={tokens.length} />
         {tokens.map((token, i) => {
           return (
             <Row

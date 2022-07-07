@@ -2,7 +2,7 @@ import { Header, Text, Button, Box, StyledOcticon } from "@primer/react";
 import { CheckIcon, SyncIcon } from "@primer/octicons-react";
 import { useRefresh } from "./Table";
 
-const HeaderTable: React.FC = () => {
+const HeaderTable: React.FC<{tokensAmount:number}> = ({tokensAmount=0}) => {
   const { r, refresh } = useRefresh();
 
   function triggerRefresh() {
@@ -33,7 +33,7 @@ const HeaderTable: React.FC = () => {
         >
           <StyledOcticon icon={CheckIcon} size={16} color="gray" />
           <Text as="p" marginLeft="0.5rem" color="gray">
-            2 SPL Tokens available
+            {tokensAmount} SPL Tokens available
           </Text>
         </Header.Item>
         <Header.Item
