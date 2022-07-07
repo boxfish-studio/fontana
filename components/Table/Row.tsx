@@ -276,21 +276,23 @@ const Row: React.FC<{
                 border: "1px solid #ccc",
               }}
             />
-            {publicKey && <Button
-              style={{
-                position: "absolute",
-                right: "0",
-                bottom: "-1.6rem",
-                textDecorationLine: "underline",
-                border: 0,
-                backgroundColor: "transparent",
-                color: "gray",
-                fontWeight: 400,
-              }}
-              onClick={setWalletAddress}
-            >
-              Use wallet address
-            </Button>}
+            {publicKey && (
+              <Button
+                style={{
+                  position: "absolute",
+                  right: "0",
+                  bottom: "-1.6rem",
+                  textDecorationLine: "underline",
+                  border: 0,
+                  backgroundColor: "transparent",
+                  color: "gray",
+                  fontWeight: 400,
+                }}
+                onClick={setWalletAddress}
+              >
+                Use wallet address
+              </Button>
+            )}
           </Box>
           <Button
             style={{

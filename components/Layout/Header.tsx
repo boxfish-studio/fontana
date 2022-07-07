@@ -1,10 +1,5 @@
 import { Box, Text } from "@primer/react";
-import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { RpcMethods } from "lib/spl";
-import { useCallback, useEffect, useState } from "react";
-import styles from "styles/MintRow.module.css";
-import FontanaSVG from "./FontanaSVG";
-const owner = "BoX451MZzydoVdZE4NFfmMT3J5Ztqo7YgUNbwwMfjPFu";
+import { FontanaSVG } from "components/Layout";
 
 const Header: React.FC = () => {
   return (

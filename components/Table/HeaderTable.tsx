@@ -1,12 +1,12 @@
 import { Header, Text, Button, Box, StyledOcticon } from "@primer/react";
 import { CheckIcon, SyncIcon } from "@primer/octicons-react";
-import { useRefresh } from './Table'
+import { useRefresh } from "./Table";
 
 const HeaderTable: React.FC = () => {
-  const { r,refresh } = useRefresh()
+  const { r, refresh } = useRefresh();
 
-  function triggerRefresh(){
-    refresh(!r)
+  function triggerRefresh() {
+    refresh(!r);
   }
   return (
     <Header
@@ -44,10 +44,12 @@ const HeaderTable: React.FC = () => {
           Available
         </Header.Item>
         <Header.Item
-         style={{
-          paddingLeft: "6rem",
-        }}
-        >In wallet</Header.Item>
+          style={{
+            paddingLeft: "6rem",
+          }}
+        >
+          In wallet
+        </Header.Item>
         <Header.Item
           full
           style={{
