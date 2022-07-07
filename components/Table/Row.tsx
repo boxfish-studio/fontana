@@ -8,8 +8,9 @@ import {
 } from "@primer/react";
 import { IssueOpenedIcon, HourglassIcon } from "@primer/octicons-react";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { RpcMethods } from "lib/spl";
+import { useRefresh } from "./Table";
 
 enum Actions {
   Mint,
@@ -31,14 +32,14 @@ const Row: React.FC<{
   const [destinationAddress, setDestinationAddress] = useState("");
   const [mintError, setMintError] = useState<null | string>(null);
   const [sendError, setSendError] = useState<null | string>(null);
+  const { r } = useRefresh();
 
   function setWalletAddress() {
     if (!publicKey) return;
     setDestinationAddress(publicKey?.toBase58());
   }
   const getTokenBalance = useCallback(async () => {
-    try{
-
+    try {
       const rpc = new RpcMethods(connection);
       const amount = await rpc.getTokenBalance(tokenOwner, tokenName);
       setMintedAmount(amount);
@@ -46,15 +47,16 @@ const Row: React.FC<{
       const walletAmount = await rpc.getTokenBalance(
         publicKey.toBase58(),
         tokenName
-        );
-        setWalletAmount(walletAmount);
-      }
-    catch(e){
+      );
+      setWalletAmount(walletAmount);
+    } catch (e) {
       console.error(e);
     }
   }, [connection, publicKey, tokenName, tokenOwner]);
 
-  getTokenBalance();
+  useEffect(() => {
+    getTokenBalance();
+  }, [getTokenBalance, r]);
 
   async function mintTokens() {
     setMintError(null);
@@ -193,9 +195,9 @@ const Row: React.FC<{
           {walletAmount ?? "-"}
         </Header.Item>
         <Header.Item
-        sx={{
-          position: "relative",
-        }}
+          sx={{
+            position: "relative",
+          }}
         >
           <TextInput
             width="8rem"
@@ -234,11 +236,9 @@ const Row: React.FC<{
         </Header.Item>
         <Header.Item
           full
-      
           sx={{
             position: "relative",
             gap: "0.5rem",
-
           }}
         >
           <TextInput
@@ -250,7 +250,7 @@ const Row: React.FC<{
               border: "1px solid #ccc",
             }}
           />
-           <Text
+          <Text
             display="flex"
             sx={{
               position: "absolute",

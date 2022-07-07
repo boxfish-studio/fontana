@@ -1,7 +1,13 @@
 import { Header, Text, Button, Box, StyledOcticon } from "@primer/react";
 import { CheckIcon, SyncIcon } from "@primer/octicons-react";
+import { useRefresh } from './Table'
 
 const HeaderTable: React.FC = () => {
+  const { r,refresh } = useRefresh()
+
+  function refreshFn(){
+    refresh(!r)
+  }
   return (
     <Header
       style={{
@@ -59,6 +65,7 @@ const HeaderTable: React.FC = () => {
               justifyContent: "center",
               gap: "20px",
             }}
+            onClick={refreshFn}
           >
             <StyledOcticon icon={SyncIcon} size={14} color="black" />
             <Text marginLeft="4px" fontWeight={600}>
