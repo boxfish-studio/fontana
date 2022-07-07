@@ -10,6 +10,7 @@ body {
     background-color: #D7D7D7
     ;
     cursor:default;
+    min-height: 100vh;
 }
 
 a {

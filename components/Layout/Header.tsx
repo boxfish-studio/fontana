@@ -9,7 +9,7 @@ const owner = "BoX451MZzydoVdZE4NFfmMT3J5Ztqo7YgUNbwwMfjPFu";
 const Header: React.FC = () => {
   return (
     <Box
-      position="absolute"
+      position="relative"
       backgroundColor={"#24292E"}
       width="100vw"
       top={0}

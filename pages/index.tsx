@@ -13,34 +13,45 @@ const Home: NextPage = () => {
         <meta name="description" content="Fontana Faucet" />
         <link rel="icon" href="/Vector.ico" />
       </Head>
-
-      <Header />
       <Box
-        display={"flex"}
-        flexDirection={"column"}
-        justifyContent={"center"}
-        alignItems={"center"}
-        marginTop="6rem"
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: "4rem",
+        }}
       >
-        <Table />
-      </Box>
-      <Box
-        display={"flex"}
-        flexDirection={"column"}
-        justifyContent={"center"}
-        alignItems={"center"}
-        position={"absolute"}
-        bottom={3}
-        width="100vw"
-      >
-        <Text color="gray">
-          with <StyledOcticon icon={HeartFillIcon} size={16} color="#666666" />{" "}
-          From{" "}
-          <a href="https://boxfish.studio/">
-            <u>Boxfish Studio</u>
-          </a>
-          , SL.
-        </Text>
+        <Header />
+        <Box
+          display={"flex"}
+          flexDirection={"column"}
+          justifyContent={"center"}
+          alignItems={"center"}
+        >
+          <Table />
+        </Box>
+        <footer
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "0",
+            width: "100vw",
+            marginBottom: "2rem",
+          }}
+        >
+          <Text color="gray">
+            with{" "}
+            <StyledOcticon icon={HeartFillIcon} size={16} color="#666666" />{" "}
+            From{" "}
+            <a href="https://boxfish.studio/">
+              <u>Boxfish Studio</u>
+            </a>
+            , SL.
+          </Text>
+        </footer>
       </Box>
     </>
   );
