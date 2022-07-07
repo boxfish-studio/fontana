@@ -1,24 +1,12 @@
-import { Header, Text, Button, Box, StyledOcticon } from "@primer/react";
-import { CheckIcon, SyncIcon } from "@primer/octicons-react";
-
-import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { RpcMethods } from "lib/spl";
-import {
-  useCallback,
-  useEffect,
-  useState,
-  useMemo,
-  createContext,
-  useContext,
-} from "react";
-import styles from "styles/MintRow.module.css";
+import { Box } from "@primer/react";
+import { useState, useMemo, createContext, useContext } from "react";
 import Row from "./Row";
 import HeaderTable from "./HeaderTable";
 import fontanaConfig from "../../fontana.config";
 
 type Refresh = {
   r: boolean;
-  refresh: (r:boolean) => void;
+  refresh: (r: boolean) => void;
 };
 
 const SiteMintingContext = createContext<Refresh>({
@@ -29,7 +17,7 @@ const SiteMintingContext = createContext<Refresh>({
 export const useRefresh = () => useContext(SiteMintingContext);
 
 const Table: React.FC = () => {
-  const [r, refresh] = useState(false)
+  const [r, refresh] = useState(false);
   const tokens = useMemo(() => {
     return fontanaConfig.map((token) => {
       return {
@@ -56,10 +44,10 @@ const Table: React.FC = () => {
       {" "}
       <SiteMintingContext.Provider value={{ r, refresh }}>
         <HeaderTable />
-        {tokens.map((token) => {
+        {tokens.map((token, i) => {
           return (
             <Row
-              key={token.token}
+              key={i}
               tokenTicker={token.ticker}
               tokenKeypair={token.keypair}
               tokenName={token.token}

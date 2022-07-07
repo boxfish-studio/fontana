@@ -9,6 +9,7 @@ body {
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
     background-color: #D7D7D7
     ;
+    cursor:default;
 }
 
 a {
@@ -46,7 +47,7 @@ a {
 }
 
 .wallet-adapter-button:not([disabled]):hover {
-    background-color: #1a1f2e;
+    background-color: #5d35bb;
 }
 
 .wallet-adapter-button[disabled] {

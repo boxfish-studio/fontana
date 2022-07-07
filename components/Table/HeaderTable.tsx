@@ -5,7 +5,7 @@ import { useRefresh } from './Table'
 const HeaderTable: React.FC = () => {
   const { r,refresh } = useRefresh()
 
-  function refreshFn(){
+  function triggerRefresh(){
     refresh(!r)
   }
   return (
@@ -65,7 +65,7 @@ const HeaderTable: React.FC = () => {
               justifyContent: "center",
               gap: "20px",
             }}
-            onClick={refreshFn}
+            onClick={triggerRefresh}
           >
             <StyledOcticon icon={SyncIcon} size={14} color="black" />
             <Text marginLeft="4px" fontWeight={600}>
