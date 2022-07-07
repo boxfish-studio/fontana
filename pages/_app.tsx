@@ -19,9 +19,11 @@ import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
 import { clusterApiUrl } from "@solana/web3.js";
 import { Wallet } from "components/Layout";
 
+const rpc = process.env.NEXT_PUBLIC_SOLANA_RPC_HOST;
+
 function MyApp({ Component, pageProps }: AppProps) {
   const network = WalletAdapterNetwork.Devnet;
-  const endpoint = useMemo(() => clusterApiUrl(network), [network]);
+  const endpoint = useMemo(() => rpc || clusterApiUrl(network), [network]);
 
   const wallets = useMemo(
     () => [
