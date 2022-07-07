@@ -20,6 +20,7 @@ const Home: NextPage = () => {
           alignItems: "center",
           justifyContent: "center",
           gap: "4rem",
+          height: "auto",
         }}
       >
         <Header />
@@ -28,6 +29,9 @@ const Home: NextPage = () => {
           flexDirection={"column"}
           justifyContent={"center"}
           alignItems={"center"}
+          overflowY={"auto"}
+          padding={"0.5rem"}
+          maxHeight={"80vh"}
         >
           <Table />
         </Box>
@@ -39,7 +43,11 @@ const Home: NextPage = () => {
             justifyContent: "center",
             gap: "0",
             width: "100vw",
+            marginTop: "2rem",
             marginBottom: "2rem",
+            position:"fixed",
+            bottom:"0",
+            left:0
           }}
         >
           <Text color="gray">
