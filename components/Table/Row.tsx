@@ -276,7 +276,7 @@ const Row: React.FC<{
                 border: "1px solid #ccc",
               }}
             />
-            <Button
+            {publicKey && <Button
               style={{
                 position: "absolute",
                 right: "0",
@@ -290,7 +290,7 @@ const Row: React.FC<{
               onClick={setWalletAddress}
             >
               Use wallet address
-            </Button>
+            </Button>}
           </Box>
           <Button
             style={{
