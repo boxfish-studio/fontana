@@ -43,6 +43,7 @@ const HeaderTable: React.FC<{ tokensAmount: number }> = ({
         <Header.Item
           style={{
             paddingLeft: "8rem",
+            fontSize:"1.05rem"
           }}
         >
           Available
@@ -50,6 +51,8 @@ const HeaderTable: React.FC<{ tokensAmount: number }> = ({
         <Header.Item
           style={{
             paddingLeft: "6rem",
+            fontSize:"1.05rem"
+
           }}
         >
           In wallet
