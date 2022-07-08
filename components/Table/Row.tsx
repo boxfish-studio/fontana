@@ -125,6 +125,7 @@ const Row: React.FC<{
     <Header
       style={{
         padding: 0,
+        color: "black",
       }}
     >
       <Box
@@ -222,8 +223,6 @@ const Row: React.FC<{
           </Text>
           <Button
             style={{
-              borderRadius: "4px",
-              borderColor: "#a0a0a0",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -296,8 +295,6 @@ const Row: React.FC<{
           </Box>
           <Button
             style={{
-              borderRadius: "4px",
-              borderColor: "#a0a0a0",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",

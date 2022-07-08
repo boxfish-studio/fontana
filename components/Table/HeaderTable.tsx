@@ -2,7 +2,9 @@ import { Header, Text, Button, Box, StyledOcticon } from "@primer/react";
 import { CheckIcon, SyncIcon } from "@primer/octicons-react";
 import { useRefresh } from "./Table";
 
-const HeaderTable: React.FC<{tokensAmount:number}> = ({tokensAmount=0}) => {
+const HeaderTable: React.FC<{ tokensAmount: number }> = ({
+  tokensAmount = 0,
+}) => {
   const { r, refresh } = useRefresh();
 
   function triggerRefresh() {
@@ -13,6 +15,8 @@ const HeaderTable: React.FC<{tokensAmount:number}> = ({tokensAmount=0}) => {
       style={{
         padding: 0,
         borderBottom: "1px solid #eaeaea",
+        backgroundColor: "transparent",
+        color:"black"
       }}
     >
       <Box
@@ -60,8 +64,6 @@ const HeaderTable: React.FC<{tokensAmount:number}> = ({tokensAmount=0}) => {
             sx={{
               position: "absolute",
               right: "0",
-              borderRadius: "4px",
-              borderColor: "#a0a0a0",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
