@@ -5,7 +5,7 @@ const Header: React.FC = () => {
   return (
     <Box
       position="relative"
-      backgroundColor={"#24292E"}
+      bg="navbarBackground"
       width="100vw"
       top={0}
       left={0}
@@ -13,7 +13,7 @@ const Header: React.FC = () => {
       display="flex"
       paddingLeft="6rem"
       alignItems="center"
-      style={{
+      sx={{
         gap: "1rem",
       }}
     >
