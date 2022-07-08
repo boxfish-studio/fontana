@@ -15,19 +15,19 @@ const HeaderTable: React.FC<{ tokensAmount: number }> = ({
       style={{
         padding: 0,
         borderBottom: "1px solid #eaeaea",
-        backgroundColor: "transparent",
-        color:"black"
+        backgroundColor: "background",
+        borderTopLeftRadius: 5,
+        borderTopRightRadius: 5,
       }}
     >
       <Box
+        color="text"
         display="flex"
         width="90rem"
         height="4rem"
-        backgroundColor="white"
+        backgroundColor="transparent"
         padding="13px 16px 12px"
         alignItems="center"
-        borderTopLeftRadius={5}
-        borderTopRightRadius={5}
         style={{ gap: "16px" }}
       >
         <Header.Item
@@ -35,8 +35,8 @@ const HeaderTable: React.FC<{ tokensAmount: number }> = ({
             width: "18rem",
           }}
         >
-          <StyledOcticon icon={CheckIcon} size={16} color="gray" />
-          <Text as="p" marginLeft="0.5rem" color="gray">
+          <StyledOcticon icon={CheckIcon} size={16} color="primary" />
+          <Text as="p" marginLeft="0.5rem" color="primary">
             {tokensAmount} SPL Tokens available
           </Text>
         </Header.Item>

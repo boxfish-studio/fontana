@@ -18,21 +18,20 @@ import {
 import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
 import { clusterApiUrl } from "@solana/web3.js";
 import { Wallet } from "components/Layout";
-import {ThemeProvider,BaseStyles, theme} from '@primer/react'
+import { ThemeProvider, BaseStyles, theme } from "@primer/react";
 import deepmerge from "deepmerge";
 const rpc = process.env.NEXT_PUBLIC_SOLANA_RPC_HOST;
 
-
 const customTheme = deepmerge(theme, {
   fonts: {
-    mono: 'MonoLisa, monospace'
+    mono: "MonoLisa, monospace",
   },
   colors: {
-    text: {
-      default: '#000'
-    }
-  }
-})
+    text: "#000",
+    background: "#fff",
+    primary: "gray",
+  },
+});
 
 function MyApp({ Component, pageProps }: AppProps) {
   const network = WalletAdapterNetwork.Devnet;

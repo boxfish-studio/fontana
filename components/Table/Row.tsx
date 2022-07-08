@@ -114,7 +114,7 @@ const Row: React.FC<{
     getTokenBalance();
   }
   const issueColor = () => {
-    if (mintedAmount === null) return "gray";
+    if (mintedAmount === null) return "primary";
     if (mintedAmount > 0) {
       return "green";
     } else {
@@ -125,14 +125,14 @@ const Row: React.FC<{
     <Header
       style={{
         padding: 0,
-        color: "black",
       }}
     >
       <Box
+        color="text"
         display="flex"
         width="90rem"
         height="5rem"
-        backgroundColor="white"
+        backgroundColor="background"
         padding="13px 16px 12px"
         alignItems="center"
         style={{ gap: "16px" }}
@@ -159,7 +159,7 @@ const Row: React.FC<{
               Token name{" "}
               {tokenTicker && (
                 <Text
-                  color={"gray"}
+                  color={"primary"}
                   fontSize={14}
                   fontWeight={500}
                   marginLeft="1rem"
@@ -284,7 +284,7 @@ const Row: React.FC<{
                   textDecorationLine: "underline",
                   border: 0,
                   backgroundColor: "transparent",
-                  color: "gray",
+                  color: "primary",
                   fontWeight: 400,
                 }}
                 onClick={setWalletAddress}

@@ -50,7 +50,7 @@ const Home: NextPage = () => {
             left:0
           }}
         >
-          <Text color="gray">
+          <Text color="primary">
             with{" "}
             <StyledOcticon icon={HeartFillIcon} size={16} color="#666666" />{" "}
             From{" "}
