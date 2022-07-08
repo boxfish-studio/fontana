@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "node git-tags.js && next build",
+    "build": "next build",
+    "tag": "node git-tags.js",
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write \"./**/*.{tsx,ts,js}\""
