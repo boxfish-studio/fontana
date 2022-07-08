@@ -155,13 +155,13 @@ const Row: React.FC<{
             padding={0}
             marginLeft="1rem"
           >
-            <Text fontSize={16} fontWeight={500} margin={0} padding="0">
+            <Text fontSize={17} fontWeight={600} margin={0} padding="0">
               Token name{" "}
               {tokenTicker && (
                 <Text
                   color={"primary"}
                   fontSize={14}
-                  fontWeight={500}
+                  fontWeight="600"
                   marginLeft="1rem"
                 >
                   [{tokenTicker}]
@@ -169,7 +169,7 @@ const Row: React.FC<{
               )}
             </Text>
 
-            <Text fontSize={13} fontWeight={200}>
+            <Text fontSize={13} fontWeight="light">
               {tokenName}
             </Text>
           </Box>
