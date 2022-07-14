@@ -13,12 +13,7 @@ import {
   CheckIcon,
 } from "@primer/octicons-react";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import {
-  useCallback,
-  useEffect,
-  useState,
-  useRef,
-} from "react";
+import { useCallback, useEffect, useState, useRef } from "react";
 import { RpcMethods } from "lib/spl";
 import { useRefresh } from "./Table";
 import { useHandleDestroyAnimated } from "hooks";
@@ -44,6 +39,7 @@ const Row: React.FC<{
   const [sendError, setSendError] = useState<null | string>(null);
   const { r } = useRefresh();
   const flashRef = useRef<null | HTMLDivElement>(null);
+
   const { sendSuccess, setSendSuccess } = useHandleDestroyAnimated(flashRef);
   function setWalletAddress() {
     if (!publicKey) return;

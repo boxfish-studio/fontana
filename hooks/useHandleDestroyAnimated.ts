@@ -1,15 +1,21 @@
 import { MutableRefObject, useEffect, useState } from "react";
 
+const styles = Object.freeze({
+  opacity: "0",
+  transform: "translateY(-50%)",
+  transition: "all 0.5s",
+});
+
 export default function useHandleDestroyAnimated<T extends HTMLElement>(
-  _ref: MutableRefObject<T | null>
+  ref: MutableRefObject<T | null>
 ) {
   const [sendSuccess, setSendSuccess] = useState(false);
 
   useEffect(() => {
     if (sendSuccess) {
-      handleDeletion(_ref);
+      handleDeletion(ref);
     }
-  }, [_ref, sendSuccess]);
+  }, [ref, sendSuccess]);
 
   function handleDeletion<T extends HTMLElement>(
     element: MutableRefObject<T | null>
@@ -17,9 +23,9 @@ export default function useHandleDestroyAnimated<T extends HTMLElement>(
     const style = element?.current?.style;
     if (!style) return;
     setTimeout(() => {
-      style.transition = "all 0.5s";
-      style.transform = "translateY(-50%)";
-      style.opacity = "0";
+      style.transition = styles.transition;
+      style.transform = styles.transform;
+      style.opacity = style.opacity;
       setTimeout(() => {
         setSendSuccess(false);
       }, 600);
