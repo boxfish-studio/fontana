@@ -25,7 +25,7 @@ export default function useHandleDestroyAnimated<T extends HTMLElement>(
     setTimeout(() => {
       style.transition = styles.transition;
       style.transform = styles.transform;
-      style.opacity = style.opacity;
+      style.opacity = styles.opacity;
       setTimeout(() => {
         setSendSuccess(false);
       }, 600);
