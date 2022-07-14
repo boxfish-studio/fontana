@@ -40,7 +40,7 @@ const Row: React.FC<{
   const { r } = useRefresh();
   const flashRef = useRef<null | HTMLDivElement>(null);
 
-  const { sendSuccess, setSendSuccess } = useHandleDestroyAnimated(flashRef);
+  const [sendSuccess, setSendSuccess] = useHandleDestroyAnimated(flashRef);
   function setWalletAddress() {
     if (!publicKey) return;
     setDestinationAddress(publicKey?.toBase58());

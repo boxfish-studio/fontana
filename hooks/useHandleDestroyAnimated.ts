@@ -8,7 +8,7 @@ const styles = Object.freeze({
 
 export default function useHandleDestroyAnimated<T extends HTMLElement>(
   ref: MutableRefObject<T | null>
-) {
+): [boolean, (_: boolean) => void] {
   const [sendSuccess, setSendSuccess] = useState(false);
 
   useEffect(() => {
@@ -31,8 +31,5 @@ export default function useHandleDestroyAnimated<T extends HTMLElement>(
       }, 600);
     }, 4000);
   }
-  return {
-    sendSuccess,
-    setSendSuccess,
-  };
+  return [sendSuccess, setSendSuccess];
 }
