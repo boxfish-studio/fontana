@@ -22,6 +22,8 @@ export const useRefresh = () => useContext(SiteMintingContext);
 type Success = {
   message: string;
   setMessage: (message: string) => void;
+  mint: string | undefined;
+  setMint: (mint: string) => void;
 };
 
 const SuccessContext = createContext<Success>({
@@ -29,6 +31,8 @@ const SuccessContext = createContext<Success>({
   setMessage: (message: string) => {
     message = message;
   },
+  mint: undefined,
+  setMint: (mint: string) => (mint = mint),
 });
 
 export const useSuccess = () => useContext(SuccessContext);
@@ -39,6 +43,7 @@ const Table: React.FC = () => {
   const [walletTokens, setWalletTokens] = useState<any[]>([]);
   const [r, refresh] = useState(false);
   const [message, setMessage] = useState("");
+  const [mint, setMint] = useState<string | undefined>(undefined);
   const tokens = useMemo(() => {
     return fontanaConfig.map((token) => {
       return {
@@ -80,7 +85,7 @@ const Table: React.FC = () => {
       }}
     >
       {" "}
-      <SuccessContext.Provider value={{ message, setMessage }}>
+      <SuccessContext.Provider value={{ message, setMessage, mint, setMint }}>
         <SiteMintingContext.Provider value={{ r, refresh }}>
           <HeaderTable tokensAmount={tokens.length + walletTokens.length} />
           {tokens.map((token, i) => {

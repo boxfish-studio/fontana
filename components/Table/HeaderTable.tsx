@@ -19,7 +19,7 @@ const HeaderTable: React.FC<{ tokensAmount: number }> = ({
   const { r, refresh } = useRefresh();
   const { connection } = useConnection();
   const { publicKey, sendTransaction } = useWallet();
-  const { message, setMessage } = useSuccess();
+  const { message, setMessage, setMint, mint } = useSuccess();
 
   function triggerRefresh() {
     refresh(!r);
@@ -71,7 +71,8 @@ const HeaderTable: React.FC<{ tokensAmount: number }> = ({
       await rpc.confirmTransaction(signature);
       console.log(signature);
       triggerRefresh();
-      setMessage("Success!");
+      setMessage(`Success! New mint ${mint.publicKey.toBase58().slice(0,12)}... created.`);
+      setMint(mint.publicKey.toBase58());
     } catch (e) {
       console.error(e);
     }

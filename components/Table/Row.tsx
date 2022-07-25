@@ -6,20 +6,15 @@ import {
   StyledOcticon,
   TextInput,
 } from "@primer/react";
-import {
-  IssueOpenedIcon,
-  HourglassIcon,
-  CheckIcon,
-} from "@primer/octicons-react";
+import { IssueOpenedIcon, HourglassIcon } from "@primer/octicons-react";
 import {
   useAnchorWallet,
   useConnection,
   useWallet,
 } from "@solana/wallet-adapter-react";
-import { useCallback, useEffect, useState, useRef } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { RpcMethods } from "lib/spl";
 import { useRefresh, useSuccess } from "./Table";
-import { useHandleDestroyAnimated } from "hooks";
 import {
   createAssociatedTokenAccountInstruction,
   createTransferInstruction,
@@ -44,7 +39,6 @@ const Row: React.FC<{
 }) => {
   const { connection } = useConnection();
   const { publicKey, sendTransaction } = useWallet();
-  const w = useAnchorWallet();
   const [mintedAmount, setMintedAmount] = useState<null | number>(null);
   const [walletAmount, setWalletAmount] = useState<null | number>(null);
   const [action, setAction] = useState<null | Actions>(null);
@@ -54,7 +48,7 @@ const Row: React.FC<{
   const [mintError, setMintError] = useState<null | string>(null);
   const [sendError, setSendError] = useState<null | string>(null);
   const { r } = useRefresh();
-  const { message, setMessage } = useSuccess();
+  const { setMessage } = useSuccess();
 
   function setWalletAddress() {
     if (!publicKey) return;
@@ -95,6 +89,8 @@ const Row: React.FC<{
         const tx = RpcMethods.createTx(await ix);
         const signature = await sendTransaction(tx, connection);
         await rpc.confirmTransaction(signature);
+        setMessage("Success!");
+
       } catch (e) {
         console.error(e);
       }
@@ -171,6 +167,8 @@ const Row: React.FC<{
         const tx = RpcMethods.createTx(ix);
         const signature = await sendTransaction(tx, connection);
         await rpc.confirmTransaction(signature);
+        setMessage("Success!");
+
       } catch (e) {
         console.error(e);
       }
