@@ -1,0 +1,124 @@
+import {
+  Connection,
+  Keypair,
+  PublicKey,
+  Transaction,
+  TransactionInstruction,
+} from "@solana/web3.js";
+import {
+  getAssociatedTokenAddress,
+  getOrCreateAssociatedTokenAccount,
+  createMintToInstruction,
+  createTransferInstruction,
+} from "@solana/spl-token";
+
+abstract class Rpc {
+  connection: Connection;
+  constructor(connection: Connection) {
+    this.connection = connection;
+  }
+}
+
+export class RpcMethods extends Rpc {
+  constructor(connection: Connection) {
+    super(connection);
+  }
+  async getTokenBalance(owner: string, token: string): Promise<number> {
+    const tokens = await this.connection.getParsedTokenAccountsByOwner(
+      new PublicKey(owner),
+      {
+        mint: new PublicKey(token),
+      }
+    );
+    if (tokens.value.length === 0) return 0;
+    const amount = parseInt(
+      tokens.value?.[0]?.account?.data?.parsed?.info?.tokenAmount?.amount
+    );
+    return amount;
+  }
+
+  private async getAssociatedTokenAccount(token: string, owner: string) {
+    return await getAssociatedTokenAddress(
+      new PublicKey(token),
+      new PublicKey(owner)
+    );
+  }
+  private async getOrCreateAssociatedTokenAccount(token: string, signer:Keypair, recipient:string) {
+    return await getOrCreateAssociatedTokenAccount(
+      this.connection,
+      signer,
+      new PublicKey(token),
+      new PublicKey(recipient)
+    );
+  }
+  async mintTokensInstruction(
+    owner: string,
+    token: string,
+    amount: number
+  ): Promise<TransactionInstruction> {
+    const tokenAccount = await this.getAssociatedTokenAccount(token, owner);
+
+    const tx = createMintToInstruction(
+      new PublicKey(token),
+      tokenAccount,
+      new PublicKey(owner),
+      amount
+    );
+    return tx;
+  }
+
+  async transferInstruction(
+    owner: string,
+    token: string,
+    amount: number,
+    recipient: string,
+    signer: Keypair
+  ): Promise<TransactionInstruction> {
+    const sourceAccount = await this.getAssociatedTokenAccount(token, owner);
+    const destinationAccount = await this.getOrCreateAssociatedTokenAccount(
+      token,
+      signer,
+      recipient
+    );
+    const tx = createTransferInstruction(
+      sourceAccount,
+      destinationAccount.address,
+      new PublicKey(owner),
+      amount
+    );
+    return tx;
+  }
+
+  static createTx(...instructions: TransactionInstruction[]): Transaction {
+    let transaction = new Transaction();
+    transaction.add(...instructions);
+    return transaction;
+  }
+
+  async sendTx(transaction: Transaction, signer: Keypair): Promise<string> {
+    const signature = await this.connection.sendTransaction(transaction, [
+      signer,
+    ]);
+    return signature;
+  }
+
+  private async getLatestBlockhash(): Promise<
+    Readonly<{
+      blockhash: string;
+      lastValidBlockHeight: number;
+    }>
+  > {
+    const blockhash = await this.connection.getLatestBlockhash();
+    console.log("blockhash", blockhash);
+    return blockhash;
+  }
+
+  async confirmTransaction(signature: string) {
+    const latestBlockHash = await this.getLatestBlockhash();
+    await this.connection.confirmTransaction({
+      blockhash: latestBlockHash.blockhash,
+      lastValidBlockHeight: latestBlockHash.lastValidBlockHeight,
+      signature,
+    });
+  }
+}
