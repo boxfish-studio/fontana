@@ -1,8 +1,10 @@
 import { Box } from "@primer/react";
-import { useState, useMemo, createContext, useContext } from "react";
+import { useState, useMemo, createContext, useContext, useEffect } from "react";
 import Row from "./Row";
 import HeaderTable from "./HeaderTable";
 import fontanaConfig from "../../fontana.config";
+import { RpcMethods } from "lib/spl";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 
 type Refresh = {
   r: boolean;
@@ -17,6 +19,9 @@ const SiteMintingContext = createContext<Refresh>({
 export const useRefresh = () => useContext(SiteMintingContext);
 
 const Table: React.FC = () => {
+  const { connection } = useConnection();
+  const { publicKey } = useWallet();
+  const [tokens2, setTokens2] = useState<any[]>([]);
   const [r, refresh] = useState(false);
   const tokens = useMemo(() => {
     return fontanaConfig.map((token) => {
@@ -28,6 +33,25 @@ const Table: React.FC = () => {
       };
     });
   }, []);
+  useEffect(() => {
+    (async () => {
+      if (!publicKey) return;
+      const rpc = new RpcMethods(connection);
+      const x = (
+        await rpc.queryTokenByAuthority(
+          publicKey?.toBase58()
+        )
+      ).map((token) => {
+        return {
+          keypair: token.tokenMint,
+          token: token.tokenMint,
+          owner: token.tokenMint,
+          ticker: token.tokenMint,
+        };
+      });
+      setTokens2(x);
+    })();
+  }, [publicKey]);
 
   return (
     <Box
@@ -45,6 +69,20 @@ const Table: React.FC = () => {
       <SiteMintingContext.Provider value={{ r, refresh }}>
         <HeaderTable tokensAmount={tokens.length} />
         {tokens.map((token, i) => {
+          return (
+            <Row
+              key={i}
+              tokenTicker={token.ticker}
+              tokenKeypair={token.keypair}
+              tokenName={token.token}
+              tokenOwner={token.owner}
+            />
+          );
+        })}
+      </SiteMintingContext.Provider>
+      <SiteMintingContext.Provider value={{ r, refresh }}>
+        <HeaderTable tokensAmount={tokens2.length} />
+        {tokens2.map((token, i) => {
           return (
             <Row
               key={i}

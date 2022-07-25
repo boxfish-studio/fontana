@@ -1,6 +1,7 @@
 import {
   Connection,
   Keypair,
+  ParsedAccountData,
   PublicKey,
   Transaction,
   TransactionInstruction,
@@ -10,6 +11,8 @@ import {
   getOrCreateAssociatedTokenAccount,
   createMintToInstruction,
   createTransferInstruction,
+  TOKEN_PROGRAM_ID,
+  AccountLayout,
 } from "@solana/spl-token";
 
 abstract class Rpc {
@@ -43,7 +46,11 @@ export class RpcMethods extends Rpc {
       new PublicKey(owner)
     );
   }
-  private async getOrCreateAssociatedTokenAccount(token: string, signer:Keypair, recipient:string) {
+  private async getOrCreateAssociatedTokenAccount(
+    token: string,
+    signer: Keypair,
+    recipient: string
+  ) {
     return await getOrCreateAssociatedTokenAccount(
       this.connection,
       signer,
@@ -120,5 +127,26 @@ export class RpcMethods extends Rpc {
       lastValidBlockHeight: latestBlockHash.lastValidBlockHeight,
       signature,
     });
+  }
+
+  async queryTokenByAuthority(pubkey: string) {
+    const tokenAccounts = await this.connection.getTokenAccountsByOwner(
+      new PublicKey(pubkey),
+      {
+        programId: TOKEN_PROGRAM_ID,
+      }
+    );
+    const accounts = await tokenAccounts.value.reduce(async (acc, e) => {
+      const accountInfo = AccountLayout.decode(e.account.data);
+      const accountParsed = await this.connection.getParsedAccountInfo(new PublicKey(accountInfo.mint));
+      const accountData = accountParsed.value?.data;
+      if((accountData as ParsedAccountData).parsed.info.mintAuthority !== pubkey) {
+        return  Promise.resolve([...await acc]);
+      }
+      return Promise.resolve([...await acc, {tokenMint: accountInfo.mint.toBase58(), tokenSupply: Number(accountInfo.amount)}]);
+
+    }, Promise.resolve([ {tokenMint: "", tokenSupply: 0} ]));
+    console.log(1,accounts)
+    return accounts;
   }
 }
