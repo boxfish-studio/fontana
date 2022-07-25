@@ -4,7 +4,6 @@ import { Header } from "components/Layout";
 import { Table } from "components/Table";
 import { Box, StyledOcticon, Text } from "@primer/react";
 import { HeartFillIcon } from "@primer/octicons-react";
-
 const Home: NextPage = () => {
   return (
     <>
