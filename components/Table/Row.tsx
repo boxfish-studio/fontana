@@ -8,7 +8,6 @@ import {
 } from "@primer/react";
 import { IssueOpenedIcon, HourglassIcon } from "@primer/octicons-react";
 import {
-  useAnchorWallet,
   useConnection,
   useWallet,
 } from "@solana/wallet-adapter-react";

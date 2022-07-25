@@ -11,7 +11,6 @@ import {
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { Keypair, SystemProgram, Transaction } from "@solana/web3.js";
 import { RpcMethods } from "lib/spl";
-import { Toast } from "components/Layout";
 
 const HeaderTable: React.FC<{ tokensAmount: number }> = ({
   tokensAmount = 0,
@@ -19,7 +18,7 @@ const HeaderTable: React.FC<{ tokensAmount: number }> = ({
   const { r, refresh } = useRefresh();
   const { connection } = useConnection();
   const { publicKey, sendTransaction } = useWallet();
-  const { message, setMessage, setMint, mint } = useSuccess();
+  const { setMessage, setMint } = useSuccess();
 
   function triggerRefresh() {
     refresh(!r);
@@ -38,7 +37,6 @@ const HeaderTable: React.FC<{ tokensAmount: number }> = ({
 
       let tx = new Transaction()
         .add(
-          // create mint account
           SystemProgram.createAccount({
             fromPubkey: publicKey,
             newAccountPubkey: mint.publicKey,
@@ -46,20 +44,19 @@ const HeaderTable: React.FC<{ tokensAmount: number }> = ({
             lamports: await getMinimumBalanceForRentExemptMint(connection),
             programId: TOKEN_PROGRAM_ID,
           })
-          // init mint account
         )
         .add(
           createInitializeMintInstruction(
-            mint.publicKey, // mint pubkey
-            0, // decimals
-            publicKey, // mint authority
-            publicKey // freeze authority (you can use `null` to disable it. when you disable it, you can't turn it on again)
+            mint.publicKey,
+            0,
+            publicKey,
+            publicKey
           )
         )
         .add(
           createAssociatedTokenAccountInstruction(
             publicKey,
-            ata, // ata
+            ata,
             publicKey,
             mint.publicKey
           )
@@ -69,9 +66,12 @@ const HeaderTable: React.FC<{ tokensAmount: number }> = ({
       tx.sign(mint);
       const signature = await sendTransaction(tx, connection);
       await rpc.confirmTransaction(signature);
-      console.log(signature);
       triggerRefresh();
-      setMessage(`Success! New mint ${mint.publicKey.toBase58().slice(0,12)}... created.`);
+      setMessage(
+        `Success! New mint ${mint.publicKey
+          .toBase58()
+          .slice(0, 12)}... created.`
+      );
       setMint(mint.publicKey.toBase58());
     } catch (e) {
       console.error(e);
@@ -166,7 +166,6 @@ const HeaderTable: React.FC<{ tokensAmount: number }> = ({
           </Button>
         </Header.Item>
       </Box>
-      
     </Header>
   );
 };
