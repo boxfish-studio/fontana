@@ -5,6 +5,7 @@ import HeaderTable from "./HeaderTable";
 import fontanaConfig from "../../fontana.config";
 import { RpcMethods } from "lib/spl";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { Toast } from "components/Layout";
 
 type Refresh = {
   r: boolean;
@@ -18,11 +19,26 @@ const SiteMintingContext = createContext<Refresh>({
 
 export const useRefresh = () => useContext(SiteMintingContext);
 
+type Success = {
+  message: string;
+  setMessage: (message: string) => void;
+};
+
+const SuccessContext = createContext<Success>({
+  message: "",
+  setMessage: (message: string) => {
+    message = message;
+  },
+});
+
+export const useSuccess = () => useContext(SuccessContext);
+
 const Table: React.FC = () => {
   const { connection } = useConnection();
   const { publicKey } = useWallet();
-  const [tokens2, setTokens2] = useState<any[]>([]);
+  const [walletTokens, setWalletTokens] = useState<any[]>([]);
   const [r, refresh] = useState(false);
+  const [message, setMessage] = useState("");
   const tokens = useMemo(() => {
     return fontanaConfig.map((token) => {
       return {
@@ -35,12 +51,10 @@ const Table: React.FC = () => {
   }, []);
   useEffect(() => {
     (async () => {
-      if (!publicKey) return;
+      if (!publicKey) return setWalletTokens([]);
       const rpc = new RpcMethods(connection);
-      const x = (
-        await rpc.queryTokenByAuthority(
-          publicKey?.toBase58()
-        )
+      const _tokens = (
+        await rpc.queryTokenByAuthority(publicKey?.toBase58())
       ).map((token) => {
         return {
           keypair: undefined,
@@ -49,9 +63,9 @@ const Table: React.FC = () => {
           ticker: undefined,
         };
       });
-      setTokens2(x);
+      setWalletTokens(_tokens);
     })();
-  }, [publicKey]);
+  }, [publicKey, r]);
 
   return (
     <Box
@@ -66,23 +80,22 @@ const Table: React.FC = () => {
       }}
     >
       {" "}
-      <SiteMintingContext.Provider value={{ r, refresh }}>
-        <HeaderTable tokensAmount={tokens.length} />
-        {tokens.map((token, i) => {
-          return (
-            <Row
-              key={i}
-              tokenTicker={token.ticker}
-              tokenKeypair={token.keypair}
-              tokenName={token.token}
-              tokenOwner={token.owner}
-            />
-          );
-        })}
-      </SiteMintingContext.Provider>
-      <SiteMintingContext.Provider value={{ r, refresh }}>
-        <HeaderTable tokensAmount={tokens2.length} />
-        {tokens2.map((token, i) => {
+      <SuccessContext.Provider value={{ message, setMessage }}>
+        <SiteMintingContext.Provider value={{ r, refresh }}>
+          <HeaderTable tokensAmount={tokens.length + walletTokens.length} />
+          {tokens.map((token, i) => {
+            return (
+              <Row
+                key={i}
+                tokenTicker={token.ticker}
+                tokenKeypair={token.keypair}
+                tokenName={token.token}
+                tokenOwner={token.owner}
+              />
+            );
+          })}
+        </SiteMintingContext.Provider>
+        {walletTokens.map((token, i) => {
           return (
             <Row
               key={i}
@@ -94,7 +107,8 @@ const Table: React.FC = () => {
             />
           );
         })}
-      </SiteMintingContext.Provider>
+        <Toast />
+      </SuccessContext.Provider>
     </Box>
   );
 };

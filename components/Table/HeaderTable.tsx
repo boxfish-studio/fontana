@@ -1,6 +1,6 @@
-import { Header, Text, Button, Box, StyledOcticon } from "@primer/react";
+import { Header, Text, Button, Box, StyledOcticon, Flash } from "@primer/react";
 import { CheckIcon, SyncIcon } from "@primer/octicons-react";
-import { useRefresh } from "./Table";
+import { useRefresh, useSuccess } from "./Table";
 import {
   createAssociatedTokenAccountInstruction,
   createInitializeMintInstruction,
@@ -11,6 +11,7 @@ import {
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { Keypair, SystemProgram, Transaction } from "@solana/web3.js";
 import { RpcMethods } from "lib/spl";
+import { Toast } from "components/Layout";
 
 const HeaderTable: React.FC<{ tokensAmount: number }> = ({
   tokensAmount = 0,
@@ -18,6 +19,8 @@ const HeaderTable: React.FC<{ tokensAmount: number }> = ({
   const { r, refresh } = useRefresh();
   const { connection } = useConnection();
   const { publicKey, sendTransaction } = useWallet();
+  const { message, setMessage } = useSuccess();
+
   function triggerRefresh() {
     refresh(!r);
   }
@@ -67,6 +70,8 @@ const HeaderTable: React.FC<{ tokensAmount: number }> = ({
       const signature = await sendTransaction(tx, connection);
       await rpc.confirmTransaction(signature);
       console.log(signature);
+      triggerRefresh();
+      setMessage("Success!");
     } catch (e) {
       console.error(e);
     }
@@ -160,6 +165,7 @@ const HeaderTable: React.FC<{ tokensAmount: number }> = ({
           </Button>
         </Header.Item>
       </Box>
+      
     </Header>
   );
 };

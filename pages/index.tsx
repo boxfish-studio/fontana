@@ -4,6 +4,7 @@ import { Header } from "components/Layout";
 import { Table } from "components/Table";
 import { Box, StyledOcticon, Text } from "@primer/react";
 import { HeartFillIcon } from "@primer/octicons-react";
+import { Toast } from "components/Layout";
 
 const Home: NextPage = () => {
   return (
@@ -35,6 +36,7 @@ const Home: NextPage = () => {
         >
           <Table />
         </Box>
+        <Toast />
         <footer
           style={{
             display: "flex",
@@ -45,9 +47,9 @@ const Home: NextPage = () => {
             width: "100vw",
             marginTop: "2rem",
             marginBottom: "2rem",
-            position:"fixed",
-            bottom:"0",
-            left:0
+            position: "fixed",
+            bottom: "0",
+            left: 0,
           }}
         >
           <Text color="primary">

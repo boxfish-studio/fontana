@@ -5,7 +5,6 @@ import {
   Box,
   StyledOcticon,
   TextInput,
-  Flash,
 } from "@primer/react";
 import {
   IssueOpenedIcon,
@@ -19,7 +18,7 @@ import {
 } from "@solana/wallet-adapter-react";
 import { useCallback, useEffect, useState, useRef } from "react";
 import { RpcMethods } from "lib/spl";
-import { useRefresh } from "./Table";
+import { useRefresh, useSuccess } from "./Table";
 import { useHandleDestroyAnimated } from "hooks";
 import {
   createAssociatedTokenAccountInstruction,
@@ -55,9 +54,8 @@ const Row: React.FC<{
   const [mintError, setMintError] = useState<null | string>(null);
   const [sendError, setSendError] = useState<null | string>(null);
   const { r } = useRefresh();
-  const flashRef = useRef<null | HTMLDivElement>(null);
+  const { message, setMessage } = useSuccess();
 
-  const [sendSuccess, setSendSuccess] = useHandleDestroyAnimated(flashRef);
   function setWalletAddress() {
     if (!publicKey) return;
     setDestinationAddress(publicKey?.toBase58());
@@ -115,7 +113,7 @@ const Row: React.FC<{
         if ("err" in data) {
           setMintError(data.err);
         } else {
-          setSendSuccess(true);
+          setMessage("Success!");
         }
       } catch (err) {
         console.error(err);
@@ -192,7 +190,7 @@ const Row: React.FC<{
         if ("err" in data) {
           setSendError(data.err);
         } else {
-          setSendSuccess(true);
+          setMessage("Success!");
         }
       } catch (err) {
         console.error(err);
@@ -399,24 +397,6 @@ const Row: React.FC<{
           </Header.Item>
         </Box>
       </Header>
-      {sendSuccess && (
-        <div
-          ref={flashRef}
-          id="send-success"
-          style={{
-            position: "absolute",
-            bottom: "2rem",
-            right: "2rem",
-            width: "20rem",
-            fontSize: "1.1rem",
-          }}
-        >
-          <Flash variant="success">
-            <StyledOcticon icon={CheckIcon} />
-            Success!
-          </Flash>
-        </div>
-      )}
     </>
   );
 };
