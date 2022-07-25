@@ -12,12 +12,19 @@ import {
   HourglassIcon,
   CheckIcon,
 } from "@primer/octicons-react";
-import { useAnchorWallet, useConnection, useWallet } from "@solana/wallet-adapter-react";
+import {
+  useAnchorWallet,
+  useConnection,
+  useWallet,
+} from "@solana/wallet-adapter-react";
 import { useCallback, useEffect, useState, useRef } from "react";
 import { RpcMethods } from "lib/spl";
 import { useRefresh } from "./Table";
 import { useHandleDestroyAnimated } from "hooks";
-import { createAssociatedTokenAccountInstruction, createTransferInstruction } from "@solana/spl-token";
+import {
+  createAssociatedTokenAccountInstruction,
+  createTransferInstruction,
+} from "@solana/spl-token";
 import { PublicKey } from "@solana/web3.js";
 enum Actions {
   Mint,
@@ -128,33 +135,44 @@ const Row: React.FC<{
       // mint and sign from wallet
       try {
         const rpc = new RpcMethods(connection);
-        const ata = await new RpcMethods(connection).getAssociatedTokenAccount(tokenName, destinationAddress);
-        const ix =  createAssociatedTokenAccountInstruction(publicKey, ata, new PublicKey(destinationAddress), new PublicKey(tokenName));
-        
-        const tx = RpcMethods.createTx(ix);
-        try{
+        const ata = await rpc.getAssociatedTokenAccount(
+          tokenName,
+          destinationAddress
+        );
 
-          const signature = await sendTransaction(tx, connection);
-          await rpc.confirmTransaction(signature);
+        // determine wether ATA already initilaized
+        const accInfo = await connection.getAccountInfo(ata);
+        if (!accInfo) {
+          const ix = createAssociatedTokenAccountInstruction(
+            publicKey,
+            ata,
+            new PublicKey(destinationAddress),
+            new PublicKey(tokenName)
+          );
+
+          const tx = RpcMethods.createTx(ix);
+          try {
+            const signature = await sendTransaction(tx, connection);
+            await rpc.confirmTransaction(signature);
+          } catch (e) {
+            console.error(e);
+          }
         }
-        catch(e){
-          console.error(e);
-        }
 
-        const sourceAccount = await new RpcMethods(connection).getAssociatedTokenAccount(tokenName, tokenOwner);
+        const sourceAccount = await rpc.getAssociatedTokenAccount(
+          tokenName,
+          tokenOwner
+        );
 
-        const ix2 = createTransferInstruction(
+        const ix = createTransferInstruction(
           sourceAccount,
-          new PublicKey(destinationAddress),
+          ata,
           new PublicKey(tokenOwner),
           transferAmount
         );
-        const tx2 = RpcMethods.createTx(ix2);
-    
-    
-    
-            const signature2 = await sendTransaction(tx2, connection);
-        await rpc.confirmTransaction(signature2);
+        const tx = RpcMethods.createTx(ix);
+        const signature = await sendTransaction(tx, connection);
+        await rpc.confirmTransaction(signature);
       } catch (e) {
         console.error(e);
       }
@@ -404,5 +422,3 @@ const Row: React.FC<{
 };
 
 export default Row;
-
-

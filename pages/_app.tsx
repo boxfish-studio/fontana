@@ -16,7 +16,8 @@ import {
   TorusWalletAdapter,
 } from "@solana/wallet-adapter-wallets";
 import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
-import { clusterApiUrl } from "@solana/web3.js";
+import { clusterApiUrl, ConnectionConfig } from "@solana/web3.js";
+
 import { Wallet } from "components/Layout";
 import { ThemeProvider, BaseStyles, theme } from "@primer/react";
 import deepmerge from "deepmerge";
@@ -37,7 +38,7 @@ const customTheme = deepmerge(theme, {
 function MyApp({ Component, pageProps }: AppProps) {
   const network = WalletAdapterNetwork.Devnet;
   const endpoint = useMemo(() => rpc || clusterApiUrl(network), [network]);
-
+  const config = { commitment: "confirmed" } as ConnectionConfig;
   const wallets = useMemo(
     () => [
       new PhantomWalletAdapter(),
@@ -52,7 +53,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   );
 
   return (
-    <ConnectionProvider endpoint={endpoint}>
+    <ConnectionProvider endpoint={endpoint} config={config}>
       <WalletProvider wallets={wallets}>
         <WalletModalProvider>
           <Wallet />
