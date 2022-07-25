@@ -4,6 +4,8 @@ import { Header } from "components/Layout";
 import { Table } from "components/Table";
 import { Box, StyledOcticon, Text } from "@primer/react";
 import { HeartFillIcon } from "@primer/octicons-react";
+import { version } from "../version.json";
+
 const Home: NextPage = () => {
   return (
     <>
@@ -44,9 +46,9 @@ const Home: NextPage = () => {
             width: "100vw",
             marginTop: "2rem",
             marginBottom: "2rem",
-            position:"fixed",
-            bottom:"0",
-            left:0
+            position: "fixed",
+            bottom: "0",
+            left: 0,
           }}
         >
           <Text color="primary">
@@ -58,6 +60,7 @@ const Home: NextPage = () => {
             </a>
             , SL.
           </Text>
+          {version && <Text color="primary">Version: {version}</Text>}
         </footer>
       </Box>
     </>
