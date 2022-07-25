@@ -40,13 +40,13 @@ export class RpcMethods extends Rpc {
     return amount;
   }
 
-  private async getAssociatedTokenAccount(token: string, owner: string) {
+  public async getAssociatedTokenAccount(token: string, owner: string) {
     return await getAssociatedTokenAddress(
       new PublicKey(token),
       new PublicKey(owner)
     );
   }
-  private async getOrCreateAssociatedTokenAccount(
+  public async getOrCreateAssociatedTokenAccount(
     token: string,
     signer: Keypair,
     recipient: string
@@ -146,7 +146,7 @@ export class RpcMethods extends Rpc {
       return Promise.resolve([...await acc, {tokenMint: accountInfo.mint.toBase58(), tokenSupply: Number(accountInfo.amount)}]);
 
     }, Promise.resolve([ {tokenMint: "", tokenSupply: 0} ]));
-    console.log(1,accounts)
-    return accounts;
+    // return all but the first one which is the initial value in the reduced array.
+    return accounts.slice(1);
   }
 }

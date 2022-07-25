@@ -12,11 +12,13 @@ import {
   HourglassIcon,
   CheckIcon,
 } from "@primer/octicons-react";
-import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { useAnchorWallet, useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { useCallback, useEffect, useState, useRef } from "react";
 import { RpcMethods } from "lib/spl";
 import { useRefresh } from "./Table";
 import { useHandleDestroyAnimated } from "hooks";
+import { createAssociatedTokenAccountInstruction, createTransferInstruction } from "@solana/spl-token";
+import { PublicKey } from "@solana/web3.js";
 enum Actions {
   Mint,
   Sending,
@@ -24,11 +26,19 @@ enum Actions {
 const Row: React.FC<{
   tokenName: string;
   tokenOwner: string;
-  tokenKeypair: string;
+  tokenKeypair?: string;
   tokenTicker?: string;
-}> = ({ tokenName, tokenOwner, tokenKeypair, tokenTicker }) => {
+  walletAuthority?: boolean;
+}> = ({
+  tokenName,
+  tokenOwner,
+  tokenKeypair,
+  tokenTicker,
+  walletAuthority,
+}) => {
   const { connection } = useConnection();
-  const { publicKey } = useWallet();
+  const { publicKey, sendTransaction } = useWallet();
+  const w = useAnchorWallet();
   const [mintedAmount, setMintedAmount] = useState<null | number>(null);
   const [walletAmount, setWalletAmount] = useState<null | number>(null);
   const [action, setAction] = useState<null | Actions>(null);
@@ -72,24 +82,37 @@ const Row: React.FC<{
       setAction(null);
       return;
     }
-    try {
-      const res = await fetch("api/mint/", {
-        method: "POST",
-        body: JSON.stringify({
-          owner: tokenOwner,
-          token: tokenName,
-          keypair: tokenKeypair,
-          amount: mintAmount,
-        }),
-      });
-      const data = await res.json();
-      if ("err" in data) {
-        setMintError(data.err);
-      } else {
-        setSendSuccess(true);
+    if (walletAuthority) {
+      // mint and sign from wallet
+      try {
+        const rpc = new RpcMethods(connection);
+        const ix = rpc.mintTokensInstruction(tokenOwner, tokenName, mintAmount);
+        const tx = RpcMethods.createTx(await ix);
+        const signature = await sendTransaction(tx, connection);
+        await rpc.confirmTransaction(signature);
+      } catch (e) {
+        console.error(e);
       }
-    } catch (err) {
-      console.error(err);
+    } else {
+      try {
+        const res = await fetch("api/mint/", {
+          method: "POST",
+          body: JSON.stringify({
+            owner: tokenOwner,
+            token: tokenName,
+            keypair: tokenKeypair,
+            amount: mintAmount,
+          }),
+        });
+        const data = await res.json();
+        if ("err" in data) {
+          setMintError(data.err);
+        } else {
+          setSendSuccess(true);
+        }
+      } catch (err) {
+        console.error(err);
+      }
     }
     setAction(null);
     getTokenBalance();
@@ -101,25 +124,61 @@ const Row: React.FC<{
       setAction(null);
       return;
     }
-    try {
-      const res = await fetch("api/transfer/", {
-        method: "POST",
-        body: JSON.stringify({
-          owner: tokenOwner,
-          token: tokenName,
-          keypair: tokenKeypair,
-          amount: transferAmount,
-          recipient: destinationAddress,
-        }),
-      });
-      const data = await res.json();
-      if ("err" in data) {
-        setSendError(data.err);
-      } else {
-        setSendSuccess(true);
+    if (walletAuthority && publicKey) {
+      // mint and sign from wallet
+      try {
+        const rpc = new RpcMethods(connection);
+        const ata = await new RpcMethods(connection).getAssociatedTokenAccount(tokenName, destinationAddress);
+        const ix =  createAssociatedTokenAccountInstruction(publicKey, ata, new PublicKey(destinationAddress), new PublicKey(tokenName));
+        
+        const tx = RpcMethods.createTx(ix);
+        try{
+
+          const signature = await sendTransaction(tx, connection);
+          await rpc.confirmTransaction(signature);
+        }
+        catch(e){
+          console.error(e);
+        }
+
+        const sourceAccount = await new RpcMethods(connection).getAssociatedTokenAccount(tokenName, tokenOwner);
+
+        const ix2 = createTransferInstruction(
+          sourceAccount,
+          new PublicKey(destinationAddress),
+          new PublicKey(tokenOwner),
+          transferAmount
+        );
+        const tx2 = RpcMethods.createTx(ix2);
+    
+    
+    
+            const signature2 = await sendTransaction(tx2, connection);
+        await rpc.confirmTransaction(signature2);
+      } catch (e) {
+        console.error(e);
       }
-    } catch (err) {
-      console.error(err);
+    } else {
+      try {
+        const res = await fetch("api/transfer/", {
+          method: "POST",
+          body: JSON.stringify({
+            owner: tokenOwner,
+            token: tokenName,
+            keypair: tokenKeypair,
+            amount: transferAmount,
+            recipient: destinationAddress,
+          }),
+        });
+        const data = await res.json();
+        if ("err" in data) {
+          setSendError(data.err);
+        } else {
+          setSendSuccess(true);
+        }
+      } catch (err) {
+        console.error(err);
+      }
     }
     setAction(null);
     getTokenBalance();
@@ -345,3 +404,5 @@ const Row: React.FC<{
 };
 
 export default Row;
+
+

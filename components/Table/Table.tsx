@@ -43,10 +43,10 @@ const Table: React.FC = () => {
         )
       ).map((token) => {
         return {
-          keypair: token.tokenMint,
+          keypair: undefined,
           token: token.tokenMint,
-          owner: token.tokenMint,
-          ticker: token.tokenMint,
+          owner: publicKey.toBase58(),
+          ticker: undefined,
         };
       });
       setTokens2(x);
@@ -90,6 +90,7 @@ const Table: React.FC = () => {
               tokenKeypair={token.keypair}
               tokenName={token.token}
               tokenOwner={token.owner}
+              walletAuthority
             />
           );
         })}
