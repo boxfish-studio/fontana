@@ -5,6 +5,7 @@ import { Table } from "components/Table";
 import { Box, StyledOcticon, Text } from "@primer/react";
 import { HeartFillIcon } from "@primer/octicons-react";
 import { Toast } from "components/Layout";
+import { version } from "../version.json";
 
 const Home: NextPage = () => {
   return (
@@ -62,6 +63,7 @@ const Home: NextPage = () => {
             </a>
             , SL.
           </Text>
+          {version && <Text color="primary">Version: {version}</Text>}
         </footer>
       </Box>
     </>
