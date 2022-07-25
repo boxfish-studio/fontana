@@ -1,12 +1,24 @@
+import { Box } from "@primer/react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { FC } from "react";
-import styles from "styles/Wallet.module.css";
 
 const Wallet: FC = () => {
   return (
-    <div className={styles.wallet}>
+    <Box
+      sx={{
+        position: "absolute",
+        top: 0,
+        right: 0,
+        display: "flex",
+        flexDirection: "row",
+        margin: "1rem",
+        marginTop: "0.5rem",
+        zIndex: 1,
+        transform: "scale(0.7)",
+      }}
+    >
       <WalletMultiButton />
-    </div>
+    </Box>
   );
 };
 

@@ -3,7 +3,8 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { RpcMethods } from "lib/spl";
 import { Connection, Keypair } from "@solana/web3.js";
 type Data = {
-  tx: string;
+  tx?: string;
+  err?: string;
 };
 
 export default function handler(
@@ -11,9 +12,19 @@ export default function handler(
   res: NextApiResponse<Data>
 ) {
   console.log("req", req.body);
-  const { owner, token, amount, recipient } = JSON.parse(req.body);
+  const {
+    owner,
+    token,
+    amount,
+    recipient,
+    keypair: _keypair,
+  } = JSON.parse(req.body);
   (async () => {
-    const signer = process.env.NEXT_PUBLIC_SIGNER! as string;
+    try{
+
+    
+    const signer = process.env[`NEXT_PUBLIC_${_keypair}`];
+    if(!signer) throw new Error ("No keypair found on env");
 
     const signerParsed = signer
       .slice(1, -1)
@@ -41,5 +52,10 @@ export default function handler(
     await rpc.confirmTransaction(signature);
 
     res.status(200).json({ tx: signature });
+    }
+    catch (e) {
+      console.log("e", e);
+      res.status(500).json({ err: (e as Error).message });
+    }
   })();
 }

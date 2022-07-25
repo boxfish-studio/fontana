@@ -3,7 +3,8 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { RpcMethods } from "lib/spl";
 import { Connection, Keypair } from "@solana/web3.js";
 type Data = {
-  tx: string;
+  tx?: string;
+  err?: string;
 };
 
 export default function handler(
@@ -11,29 +12,38 @@ export default function handler(
   res: NextApiResponse<Data>
 ) {
   console.log("$req", req.body);
-  const { owner, token, amount } = JSON.parse(req.body);
+  const { owner, token, amount, keypair: _keypair } = JSON.parse(req.body);
   (async () => {
-    const connection = new Connection(process.env.NEXT_PUBLIC_SOLANA_RPC_HOST!);
-    const rpc = new RpcMethods(connection);
-    const ix = rpc.mintTokensInstruction(owner, token, amount);
+    try {
+      const connection = new Connection(
+        process.env.NEXT_PUBLIC_SOLANA_RPC_HOST!
+      );
+      const rpc = new RpcMethods(connection);
+      const ix = rpc.mintTokensInstruction(owner, token, amount);
 
-    const tx = RpcMethods.createTx(await ix);
-    console.log("tx", tx);
+      const tx = RpcMethods.createTx(await ix);
+      console.log("tx", tx);
+      console.log("_keypair", _keypair);
+      const signer = process.env[`NEXT_PUBLIC_${_keypair}`];
 
-    const signer = process.env.NEXT_PUBLIC_SIGNER! as string;
+      if(!signer) throw new Error ("No keypair found on env");
 
-    const signerParsed = signer
-      .slice(1, -1)
-      .split(",")
-      .map((x) => parseInt(x));
+      const signerParsed = signer
+        .slice(1, -1)
+        .split(",")
+        .map((x) => parseInt(x));
 
-    const keypair = Keypair.fromSecretKey(new Uint8Array(signerParsed));
-    console.log("keypair", keypair.publicKey.toBase58());
+      const keypair = Keypair.fromSecretKey(new Uint8Array(signerParsed));
+      console.log("keypair", keypair.publicKey.toBase58());
 
-    const signature = await rpc.sendTx(tx, keypair);
+      const signature = await rpc.sendTx(tx, keypair);
 
-    await rpc.confirmTransaction(signature);
+      await rpc.confirmTransaction(signature);
 
-    res.status(200).json({ tx: signature });
+      res.status(200).json({ tx: signature });
+    } catch (e) {
+      console.log("e", e);
+      res.status(500).json({ err: (e as Error).message });
+    }
   })();
 }

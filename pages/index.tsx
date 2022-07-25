@@ -1,45 +1,67 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import styles from "../styles/Home.module.css";
-import { GetStaticProps } from "next";
-import { MintRow } from "components/Layout";
+import { Header } from "components/Layout";
+import { Table } from "components/Table";
+import { Box, StyledOcticon, Text } from "@primer/react";
+import { HeartFillIcon } from "@primer/octicons-react";
 
-const BADGES = ["SOLO", "CREW", "CLAN", "SQUAD", "LEGION", "EMPIRE"];
-
-interface Props {
-  SPL_TOKENS: string[];
-}
-
-export const getServerSideProps: GetStaticProps<Props> = async () => {
-  const SPL_TOKENS = BADGES.map(
-    (badge) => process.env[`NEXT_PUBLIC_WL_MINT_${badge.toUpperCase()}`]
-  ) as string[];
-
-  return {
-    props: {
-      SPL_TOKENS,
-    },
-  };
-};
-
-const Home: NextPage<Props> = ({ SPL_TOKENS }) => {
+const Home: NextPage = () => {
   return (
-    <div className={styles.container}>
+    <>
       <Head>
-        <title>Synergyland Faucet</title>
-        <meta name="description" content="Synergyland Faucet" />
-        <link rel="icon" href="/favicon.ico" />
+        <title>Fontana</title>
+        <meta name="description" content="Fontana Faucet" />
+        <link rel="icon" href="/Vector.ico" />
       </Head>
-      <div>
-        <h1>Synergyland Faucet</h1>
-        <hr />
-      </div>
-      <main className={styles.main}>
-        {SPL_TOKENS.map((token, i) => (
-          <MintRow key={token} token={token} badge={BADGES[i]} />
-        ))}
-      </main>
-    </div>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: "4rem",
+          height: "auto",
+        }}
+      >
+        <Header />
+        <Box
+          display={"flex"}
+          flexDirection={"column"}
+          justifyContent={"center"}
+          alignItems={"center"}
+          overflowY={"auto"}
+          padding={"0.5rem"}
+          maxHeight={"80vh"}
+        >
+          <Table />
+        </Box>
+        <footer
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "0",
+            width: "100vw",
+            marginTop: "2rem",
+            marginBottom: "2rem",
+            position:"fixed",
+            bottom:"0",
+            left:0
+          }}
+        >
+          <Text color="primary">
+            with{" "}
+            <StyledOcticon icon={HeartFillIcon} size={16} color="#666666" />{" "}
+            From{" "}
+            <a href="https://boxfish.studio/">
+              <u>Boxfish Studio</u>
+            </a>
+            , SL.
+          </Text>
+        </footer>
+      </Box>
+    </>
   );
 };
 
