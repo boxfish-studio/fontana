@@ -32,7 +32,7 @@ const Home: NextPage = () => {
           alignItems={"center"}
           overflowY={"auto"}
           padding={"0.5rem"}
-          // maxHeight={"80vh"}
+          marginBottom={"5rem"}
         >
           <Table />
         </Box>
@@ -45,7 +45,8 @@ const Home: NextPage = () => {
             justifyContent: "center",
             gap: "0",
             width: "100vw",
-            marginTop: "2rem",
+            paddingTop: "4rem",
+            marginTop: "4rem",
             marginBottom: "2rem",
             position: "fixed",
             bottom: "0",
