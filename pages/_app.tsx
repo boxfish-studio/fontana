@@ -30,6 +30,7 @@ const customTheme = deepmerge(theme, {
     text: "#000",
     background: "#fff",
     primary: "gray",
+    navbarBackground: "#24292E",
   },
 });
 

@@ -75,6 +75,7 @@ const HeaderTable: React.FC<{ tokensAmount: number }> = ({
             onClick={triggerRefresh}
           >
             <StyledOcticon icon={SyncIcon} size={14} color="black" />
+            <StyledOcticon icon={SyncIcon} size={14} color="text" />
             <Text marginLeft="4px" fontWeight={600}>
               Refresh
             </Text>
