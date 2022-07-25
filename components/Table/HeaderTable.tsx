@@ -123,7 +123,6 @@ const HeaderTable: React.FC<{ tokensAmount: number }> = ({
         >
           In wallet
         </Header.Item>
-
         <Header.Item
           full
           style={{
