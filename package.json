@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "tag": "node git-tags.js",
+    "tags": "node git-tags.js",
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write \"./**/*.{tsx,ts,js}\""
