@@ -7,9 +7,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-        run: echo | git tag
-        run: npm install
-        run: npm run tags
+        run: |
+          echo | git tag
+          npm install
+          npm run tags
       - name: Deploy to Vercel Action
         uses: BetaHuhn/deploy-to-vercel-action@v1
         with:
