@@ -33,10 +33,8 @@ const Table: React.FC = () => {
         await rpc.queryTokenByAuthority(publicKey?.toBase58())
       ).map((token) => {
         return {
-          keypair: undefined,
           token: token.tokenMint,
           owner: publicKey.toBase58(),
-          ticker: undefined,
         };
       });
       setWalletTokens(_tokens);
@@ -70,20 +68,18 @@ const Table: React.FC = () => {
               />
             );
           })}
+          {walletTokens.map((token, i) => {
+            return (
+              <Row
+                key={i}
+                tokenName={token.token}
+                tokenOwner={token.owner}
+                walletAuthority
+              />
+            );
+          })}
+          <Toast />
         </SiteMintingContext.Provider>
-        {walletTokens.map((token, i) => {
-          return (
-            <Row
-              key={i}
-              tokenTicker={token.ticker}
-              tokenKeypair={token.keypair}
-              tokenName={token.token}
-              tokenOwner={token.owner}
-              walletAuthority
-            />
-          );
-        })}
-        <Toast />
       </SuccessContext.Provider>
     </Box>
   );

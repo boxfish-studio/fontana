@@ -129,7 +129,11 @@ export class RpcMethods extends Rpc {
     });
   }
 
-  async queryTokenByAuthority(pubkey: string) {
+  async queryTokenByAuthority(pubkey: string): Promise<
+    Array<{
+      tokenMint: string;
+    }>
+  > {
     const tokenAccounts = await this.connection.getTokenAccountsByOwner(
       new PublicKey(pubkey),
       {
@@ -138,14 +142,20 @@ export class RpcMethods extends Rpc {
     );
     const accounts = await tokenAccounts.value.reduce(async (acc, e) => {
       const accountInfo = AccountLayout.decode(e.account.data);
-      const accountParsed = await this.connection.getParsedAccountInfo(new PublicKey(accountInfo.mint));
+      const accountParsed = await this.connection.getParsedAccountInfo(
+        new PublicKey(accountInfo.mint)
+      );
       const accountData = accountParsed.value?.data;
-      if((accountData as ParsedAccountData).parsed.info.mintAuthority !== pubkey) {
-        return  Promise.resolve([...await acc]);
+      if (
+        (accountData as ParsedAccountData).parsed.info.mintAuthority !== pubkey
+      ) {
+        return Promise.resolve([...(await acc)]);
       }
-      return Promise.resolve([...await acc, {tokenMint: accountInfo.mint.toBase58(), tokenSupply: Number(accountInfo.amount)}]);
-
-    }, Promise.resolve([ {tokenMint: "", tokenSupply: 0} ]));
+      return Promise.resolve([
+        ...(await acc),
+        { tokenMint: accountInfo.mint.toBase58() },
+      ]);
+    }, Promise.resolve([{ tokenMint: "" }]));
     // return all but the first one which is the initial value in the reduced array.
     return accounts.slice(1);
   }
