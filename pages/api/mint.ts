@@ -2,6 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { RpcMethods } from "lib/spl";
 import { Connection, Keypair } from "@solana/web3.js";
+import {getKeypair} from "db/lib"
 type Data = {
   tx?: string;
   err?: string;
@@ -12,7 +13,7 @@ export default function handler(
   res: NextApiResponse<Data>
 ) {
   console.log("$req", req.body);
-  const { owner, token, amount, keypair: _keypair } = JSON.parse(req.body);
+  const { owner, token, amount, keypair: _keypair, mongo } = JSON.parse(req.body);
   (async () => {
     try {
       const connection = new Connection(
@@ -24,7 +25,7 @@ export default function handler(
       const tx = RpcMethods.createTx(await ix);
       console.log("tx", tx);
       console.log("_keypair", _keypair);
-      const signer = process.env[`NEXT_PUBLIC_${_keypair}`];
+      const signer = mongo ? await getKeypair(token) :  process.env[`NEXT_PUBLIC_${_keypair}`];
 
       if(!signer) throw new Error ("No keypair found on env");
 

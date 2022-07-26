@@ -14,6 +14,7 @@ export default function useMintAndTransfer({
   tokenOwner,
   tokenName,
   tokenKeypair,
+  mongo
 }: Exclude<RowProps, "tokenTicker">) {
   const { connection } = useConnection();
   const { publicKey, sendTransaction } = useWallet();
@@ -71,6 +72,7 @@ export default function useMintAndTransfer({
             token: tokenName,
             keypair: tokenKeypair,
             amount: mintAmount,
+            mongo:mongo
           }),
         });
         const data = await res.json();
@@ -149,6 +151,8 @@ export default function useMintAndTransfer({
             keypair: tokenKeypair,
             amount: transferAmount,
             recipient: destinationAddress,
+            mongo:mongo
+
           }),
         });
         const data = await res.json();

@@ -1,5 +1,5 @@
 import { connect } from "mongoose";
-import {Token} from "./model";
+import { Token } from "./model";
 export async function dbConnect() {
   const db = await connect(
     process.env.NEXT_PUBLIC_DATABASE_URL || "mongodb://localhost:27017/fontana"
@@ -7,8 +7,9 @@ export async function dbConnect() {
   return db;
 }
 
-export async function getKeypair(token:string) {
+export async function getKeypair(token: string) {
   await dbConnect();
-  const keypair = await Token.findOne({ token });
-  return keypair;
+  const { keypair } = await Token.findOne({ token });
+  console.log("k", keypair);
+  return keypair as string;
 }

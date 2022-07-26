@@ -103,7 +103,7 @@ const Table: React.FC = () => {
           })}
           {mongoTokens.map((token, i) => {
             return (
-              <Row key={i} tokenName={token.token} tokenOwner={token.owner} />
+              <Row key={i} tokenName={token.token} tokenOwner={token.owner} mongo/>
             );
           })}
           <Toast />

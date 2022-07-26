@@ -8,4 +8,5 @@ export interface RowProps {
   tokenKeypair?: string;
   tokenTicker?: string;
   walletAuthority?: boolean;
+  mongo?:boolean
 }
