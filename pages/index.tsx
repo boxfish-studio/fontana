@@ -6,15 +6,14 @@ import { Box, StyledOcticon, Text } from "@primer/react";
 import { HeartFillIcon } from "@primer/octicons-react";
 import { Toast } from "components/Layout";
 import { version } from "version.json";
-
+import { HasMongoUriContext } from "contexts";
 
 export async function getServerSideProps() {
-  const HAS_MONGO_URI = !!process.env.NEXT_PUBLIC_DATABASE_URL
-  return { props: { HAS_MONGO_URI } }
+  const HAS_MONGO_URI = !!process.env.NEXT_PUBLIC_DATABASE_URL;
+  return { props: { HAS_MONGO_URI } };
 }
 
-const Home: NextPage<{HAS_MONGO_URI:boolean}> = ({HAS_MONGO_URI}) => {
-    console.log("HAS_MONGO_URI",HAS_MONGO_URI)
+const Home: NextPage<{ HAS_MONGO_URI: boolean }> = ({ HAS_MONGO_URI }) => {
   return (
     <>
       <Head>
@@ -42,7 +41,9 @@ const Home: NextPage<{HAS_MONGO_URI:boolean}> = ({HAS_MONGO_URI}) => {
           padding={"0.5rem"}
           marginBottom={"5rem"}
         >
-          <Table hasMongoUri={HAS_MONGO_URI} />
+          <HasMongoUriContext.Provider value={{ hasMongoUri: HAS_MONGO_URI }}>
+            <Table />
+          </HasMongoUriContext.Provider>
         </Box>
         <Toast />
         <footer

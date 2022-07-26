@@ -10,19 +10,20 @@ import {
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { Keypair, SystemProgram, Transaction } from "@solana/web3.js";
 import { RpcMethods } from "lib/spl";
-import { useRefresh, useSuccess } from "contexts";
+import { useRefresh, useSuccess, useHasMongoUri } from "contexts";
 import { useState } from "react";
 import { HourglassIcon } from "@primer/octicons-react";
 import { createMint } from "lib/create-token";
-const HeaderTable: React.FC<{ tokensAmount: number,hasMongoUri:boolean }> = ({
+
+const HeaderTable: React.FC<{ tokensAmount: number }> = ({
   tokensAmount = 0,
-  hasMongoUri
 }) => {
   const { r, refresh } = useRefresh();
   const { connection } = useConnection();
   const { publicKey, sendTransaction } = useWallet();
   const { setMessage, setMint } = useSuccess();
   const [minting, setMinting] = useState(false);
+  const { hasMongoUri } = useHasMongoUri();
   function triggerRefresh() {
     refresh(!r);
   }
@@ -37,7 +38,9 @@ const HeaderTable: React.FC<{ tokensAmount: number,hasMongoUri:boolean }> = ({
           body: JSON.stringify(tokenData),
         });
         setMinting(false);
-        setMessage(`Success! New mint ${tokenData.token.slice(0, 12)}... created.`);
+        setMessage(
+          `Success! New mint ${tokenData.token.slice(0, 12)}... created.`
+        );
         setMint(tokenData.token);
 
         triggerRefresh();
@@ -154,22 +157,24 @@ const HeaderTable: React.FC<{ tokensAmount: number,hasMongoUri:boolean }> = ({
             position: "relative",
           }}
         >
-          {(hasMongoUri || publicKey) &&<Button
-            variant="primary"
-            sx={{
-              position: "absolute",
-              right: "8rem",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-            onClick={createToken}
-            leadingIcon={minting ? HourglassIcon : null}
-          >
-            <Text marginLeft="4px" fontWeight={600}>
-              Create token
-            </Text>
-          </Button>}
+          {(hasMongoUri || publicKey) && (
+            <Button
+              variant="primary"
+              sx={{
+                position: "absolute",
+                right: "8rem",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+              onClick={createToken}
+              leadingIcon={minting ? HourglassIcon : null}
+            >
+              <Text marginLeft="4px" fontWeight={600}>
+                Create token
+              </Text>
+            </Button>
+          )}
           <Button
             sx={{
               position: "absolute",

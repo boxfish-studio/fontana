@@ -6,14 +6,14 @@ import fontanaConfig from "../../fontana.config";
 import { RpcMethods } from "lib/spl";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { Toast } from "components/Layout";
-import { SuccessContext, SiteMintingContext } from "contexts";
+import { SuccessContext, SiteMintingContext, useHasMongoUri } from "contexts";
 
 interface Token {
   token: string;
   owner: string;
 }
 
-const Table: React.FC<{hasMongoUri:boolean}> = ({hasMongoUri}) => {
+const Table: React.FC = () => {
   const { connection } = useConnection();
   const { publicKey } = useWallet();
   const [walletTokens, setWalletTokens] = useState<Token[]>([]);
@@ -21,6 +21,7 @@ const Table: React.FC<{hasMongoUri:boolean}> = ({hasMongoUri}) => {
   const [r, refresh] = useState(false);
   const [message, setMessage] = useState("");
   const [mint, setMint] = useState<string | undefined>(undefined);
+  const { hasMongoUri } = useHasMongoUri();
   const tokens = useMemo(() => {
     return fontanaConfig.map((token) => {
       return {
@@ -32,7 +33,7 @@ const Table: React.FC<{hasMongoUri:boolean}> = ({hasMongoUri}) => {
     });
   }, []);
   useEffect(() => {
-    if(!hasMongoUri) return;
+    if (!hasMongoUri) return;
     if (publicKey) return setMongoTokens([]);
     (async () => {
       const res = await fetch("api/mongo-get", {
@@ -80,7 +81,6 @@ const Table: React.FC<{hasMongoUri:boolean}> = ({hasMongoUri}) => {
             tokensAmount={
               tokens.length + walletTokens.length + mongoTokens.length
             }
-            hasMongoUri={hasMongoUri}
           />
           {tokens.map((token, i) => {
             return (
@@ -105,7 +105,12 @@ const Table: React.FC<{hasMongoUri:boolean}> = ({hasMongoUri}) => {
           })}
           {mongoTokens.map((token, i) => {
             return (
-              <Row key={i} tokenName={token.token} tokenOwner={token.owner} mongo/>
+              <Row
+                key={i}
+                tokenName={token.token}
+                tokenOwner={token.owner}
+                mongo
+              />
             );
           })}
           <Toast />
