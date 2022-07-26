@@ -8,10 +8,16 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { Toast } from "components/Layout";
 import { SuccessContext, SiteMintingContext } from "contexts";
 
+interface Token {
+  token: string;
+  owner: string;
+}
+
 const Table: React.FC = () => {
   const { connection } = useConnection();
   const { publicKey } = useWallet();
-  const [walletTokens, setWalletTokens] = useState<any[]>([]);
+  const [walletTokens, setWalletTokens] = useState<Token[]>([]);
+  const [mongoTokens, setMongoTokens] = useState<Token[]>([]);
   const [r, refresh] = useState(false);
   const [message, setMessage] = useState("");
   const [mint, setMint] = useState<string | undefined>(undefined);
@@ -25,6 +31,19 @@ const Table: React.FC = () => {
       };
     });
   }, []);
+  useEffect(() => {
+    if (publicKey) return;
+    (async () => {
+      const res = await fetch("api/mongo-get", {
+        method: "GET",
+      });
+      const { queryResults } = (await res.json()) as {
+        queryResults: Token[];
+      };
+      setMongoTokens(queryResults);
+    })();
+  }, [publicKey, r]);
+
   useEffect(() => {
     (async () => {
       if (!publicKey) return setWalletTokens([]);
@@ -56,7 +75,11 @@ const Table: React.FC = () => {
       {" "}
       <SuccessContext.Provider value={{ message, setMessage, mint, setMint }}>
         <SiteMintingContext.Provider value={{ r, refresh }}>
-          <HeaderTable tokensAmount={tokens.length + walletTokens.length} />
+          <HeaderTable
+            tokensAmount={
+              tokens.length + walletTokens.length + mongoTokens.length
+            }
+          />
           {tokens.map((token, i) => {
             return (
               <Row
@@ -76,6 +99,11 @@ const Table: React.FC = () => {
                 tokenOwner={token.owner}
                 walletAuthority
               />
+            );
+          })}
+          {mongoTokens.map((token, i) => {
+            return (
+              <Row key={i} tokenName={token.token} tokenOwner={token.owner} />
             );
           })}
           <Toast />

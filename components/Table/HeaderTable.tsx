@@ -26,7 +26,23 @@ const HeaderTable: React.FC<{ tokensAmount: number }> = ({
     refresh(!r);
   }
   async function createToken() {
-    if (!publicKey) return;
+    if (!publicKey) {
+      try {
+        setMinting(true);
+        const res = await fetch("api/mongo-new-token", {
+          method: "POST",
+        });
+        const data = await res.json();
+        setMinting(false);
+        setMessage(`Success! New mint ${data.mint.slice(0, 12)}... created.`);
+        triggerRefresh();
+        return;
+      } catch (e) {
+        setMinting(false);
+        console.error(e);
+        return;
+      }
+    }
     try {
       setMinting(true);
       const mint = Keypair.generate();
@@ -133,24 +149,22 @@ const HeaderTable: React.FC<{ tokensAmount: number }> = ({
             position: "relative",
           }}
         >
-          {publicKey && (
-            <Button
-              variant="primary"
-              sx={{
-                position: "absolute",
-                right: "8rem",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-              onClick={createToken}
-              leadingIcon={minting ? HourglassIcon : null}
-            >
-              <Text marginLeft="4px" fontWeight={600}>
-                Create token
-              </Text>
-            </Button>
-          )}
+          <Button
+            variant="primary"
+            sx={{
+              position: "absolute",
+              right: "8rem",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+            onClick={createToken}
+            leadingIcon={minting ? HourglassIcon : null}
+          >
+            <Text marginLeft="4px" fontWeight={600}>
+              Create token
+            </Text>
+          </Button>
           <Button
             sx={{
               position: "absolute",
