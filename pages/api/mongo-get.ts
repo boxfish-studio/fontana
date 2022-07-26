@@ -12,7 +12,7 @@ interface Res {
   err?: string;
 }
 export default async function handler(
-  req: NextApiRequest,
+  _req: NextApiRequest,
   res: NextApiResponse<Res>
 ) {
   try {
@@ -23,10 +23,9 @@ export default async function handler(
         owner: x.owner,
       };
     });
-    console.log("queryResults", queryResults);
-    return res.status(200).json({ queryResults });
+    res.status(200).end(JSON.stringify({ queryResults }));
   } catch (e) {
     console.error(e);
-    return res.status(500).json({ err: (e as Error).message });
+    res.status(500).send({ err: (e as Error).message });
   }
 }

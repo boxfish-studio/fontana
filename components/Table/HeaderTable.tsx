@@ -13,7 +13,7 @@ import { RpcMethods } from "lib/spl";
 import { useRefresh, useSuccess } from "contexts";
 import { useState } from "react";
 import { HourglassIcon } from "@primer/octicons-react";
-
+import { createMint } from "lib/create-token";
 const HeaderTable: React.FC<{ tokensAmount: number }> = ({
   tokensAmount = 0,
 }) => {
@@ -29,12 +29,14 @@ const HeaderTable: React.FC<{ tokensAmount: number }> = ({
     if (!publicKey) {
       try {
         setMinting(true);
-        const res = await fetch("api/mongo-new-token", {
+        const tokenData = await createMint();
+        if (!tokenData) return;
+        await fetch("api/mongo-new-token", {
           method: "POST",
+          body: JSON.stringify(tokenData),
         });
-        const data = await res.json();
         setMinting(false);
-        setMessage(`Success! New mint ${data.token.slice(0, 12)}... created.`);
+        setMessage(`Success! New mint ${tokenData.token.slice(0, 12)}... created.`);
         triggerRefresh();
         return;
       } catch (e) {
