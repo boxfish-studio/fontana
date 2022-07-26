@@ -85,9 +85,9 @@ export default async function handler(
     const token = await createToken();
     await Token.create(token);
     console.log("token created",token);
-    res.status(200).json({ token: token?.token, owner: token?.owner });
+    return res.status(200).json({ token: token?.token, owner: token?.owner });
   } catch (e) {
     console.error(e);
-    res.status(500).json({ err: (e as Error).message });
+    return res.status(500).json({ err: (e as Error).message });
   }
 }

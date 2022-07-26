@@ -53,11 +53,11 @@ export default function handler(
 
     await rpc.confirmTransaction(signature);
 
-    res.status(200).json({ tx: signature });
+    return res.status(200).json({ tx: signature });
     }
     catch (e) {
       console.log("e", e);
-      res.status(500).json({ err: (e as Error).message });
+      return res.status(500).json({ err: (e as Error).message });
     }
   })();
 }

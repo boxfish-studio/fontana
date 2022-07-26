@@ -32,7 +32,7 @@ const Table: React.FC = () => {
     });
   }, []);
   useEffect(() => {
-    if (publicKey) return;
+    if (publicKey) return setMongoTokens([]);
     (async () => {
       const res = await fetch("api/mongo-get", {
         method: "GET",

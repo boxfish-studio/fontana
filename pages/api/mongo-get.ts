@@ -3,8 +3,12 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { dbConnect } from "db/lib";
 import { Token } from "db/model";
 
+interface Query {
+  token: string;
+  owner: string;
+}
 interface Res {
-  queryResults?: any;
+  queryResults?: Query[];
   err?: string;
 }
 export default async function handler(
@@ -13,15 +17,16 @@ export default async function handler(
 ) {
   try {
     await dbConnect();
-    const queryResults = (await Token.find()).map((x) => {
+    const queryResults: Query[] = (await Token.find()).map((x) => {
       return {
         token: x.token,
         owner: x.owner,
       };
     });
-    res.status(200).json({ queryResults: queryResults });
+    console.log("queryResults", queryResults);
+    return res.status(200).json({ queryResults });
   } catch (e) {
     console.error(e);
-    res.status(500).json({ err: (e as Error).message });
+    return res.status(500).json({ err: (e as Error).message });
   }
 }

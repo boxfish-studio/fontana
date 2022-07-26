@@ -1,10 +1,15 @@
 import { connect } from "mongoose";
 import { Token } from "./model";
 export async function dbConnect() {
-  const db = await connect(
-    process.env.NEXT_PUBLIC_DATABASE_URL || "mongodb://localhost:27017/fontana"
-  );
-  return db;
+  try {
+    const db = await connect(
+      process.env.NEXT_PUBLIC_DATABASE_URL ||
+        "mongodb://localhost:27017/fontana"
+    );
+    console.log("connected to db");
+  } catch (e) {
+    console.error(e);
+  }
 }
 
 export async function getKeypair(token: string) {
