@@ -10,8 +10,6 @@ jobs:
       - name: Run npm
         run: |
           echo | git tag
-          npm install
-          npm run tags
       - name: Deploy to Vercel Action
         uses: BetaHuhn/deploy-to-vercel-action@v1
         with:
