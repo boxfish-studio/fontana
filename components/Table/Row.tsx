@@ -7,203 +7,54 @@ import {
   TextInput,
 } from "@primer/react";
 import { IssueOpenedIcon, HourglassIcon } from "@primer/octicons-react";
-import {
-  useConnection,
-  useWallet,
-} from "@solana/wallet-adapter-react";
-import { useCallback, useEffect, useState } from "react";
-import { RpcMethods } from "lib/spl";
-import { useRefresh, useSuccess } from "./Table";
-import {
-  createAssociatedTokenAccountInstruction,
-  createTransferInstruction,
-} from "@solana/spl-token";
-import { PublicKey } from "@solana/web3.js";
-enum Actions {
-  Mint,
-  Sending,
+import { useWallet } from "@solana/wallet-adapter-react";
+import { useEffect } from "react";
+import { useRefresh } from "./Table";
+import { useMintAndTransfer } from "hooks";
+import { Actions, RowProps } from "types";
+
+enum IssueColor {
+  Green = "green",
+  Red = "red",
+  Primary = "primary",
 }
-const Row: React.FC<{
-  tokenName: string;
-  tokenOwner: string;
-  tokenKeypair?: string;
-  tokenTicker?: string;
-  walletAuthority?: boolean;
-}> = ({
-  tokenName,
-  tokenOwner,
-  tokenKeypair,
-  tokenTicker,
-  walletAuthority,
-}) => {
-  const { connection } = useConnection();
-  const { publicKey, sendTransaction } = useWallet();
-  const [mintedAmount, setMintedAmount] = useState<null | number>(null);
-  const [walletAmount, setWalletAmount] = useState<null | number>(null);
-  const [action, setAction] = useState<null | Actions>(null);
-  const [mintAmount, setMintAmount] = useState(1);
-  const [transferAmount, setTransferAmount] = useState(1);
-  const [destinationAddress, setDestinationAddress] = useState("");
-  const [mintError, setMintError] = useState<null | string>(null);
-  const [sendError, setSendError] = useState<null | string>(null);
+
+const Row: React.FC<RowProps> = (props) => {
+  const { publicKey } = useWallet();
+  const {
+    getTokenBalance,
+    mintedAmount,
+    walletAmount,
+    setMintAmount,
+    action,
+    mintTokens,
+    setTransferAmount,
+    transferTokens,
+    setDestinationAddress,
+    destinationAddress,
+    mintError,
+    sendError,
+  } = useMintAndTransfer(props);
+
   const { r } = useRefresh();
-  const { setMessage } = useSuccess();
 
   function setWalletAddress() {
     if (!publicKey) return;
     setDestinationAddress(publicKey?.toBase58());
   }
-  const getTokenBalance = useCallback(async () => {
-    try {
-      const rpc = new RpcMethods(connection);
-      const amount = await rpc.getTokenBalance(tokenOwner, tokenName);
-      setMintedAmount(amount);
-      if (!publicKey) return;
-      const walletAmount = await rpc.getTokenBalance(
-        publicKey.toBase58(),
-        tokenName
-      );
-      setWalletAmount(walletAmount);
-    } catch (e) {
-      console.error(e);
-    }
-  }, [connection, publicKey, tokenName, tokenOwner]);
 
   useEffect(() => {
     getTokenBalance();
   }, [getTokenBalance, r]);
 
-  async function mintTokens() {
-    setMintError(null);
-    setAction(Actions.Mint);
-    if (mintAmount === 0) {
-      setAction(null);
-      return;
-    }
-    if (walletAuthority) {
-      // mint and sign from wallet
-      try {
-        const rpc = new RpcMethods(connection);
-        const ix = rpc.mintTokensInstruction(tokenOwner, tokenName, mintAmount);
-        const tx = RpcMethods.createTx(await ix);
-        const signature = await sendTransaction(tx, connection);
-        await rpc.confirmTransaction(signature);
-        setMessage("Success!");
-
-      } catch (e) {
-        console.error(e);
-      }
-    } else {
-      try {
-        const res = await fetch("api/mint/", {
-          method: "POST",
-          body: JSON.stringify({
-            owner: tokenOwner,
-            token: tokenName,
-            keypair: tokenKeypair,
-            amount: mintAmount,
-          }),
-        });
-        const data = await res.json();
-        if ("err" in data) {
-          setMintError(data.err);
-        } else {
-          setMessage("Success!");
-        }
-      } catch (err) {
-        console.error(err);
-      }
-    }
-    setAction(null);
-    getTokenBalance();
-  }
-  async function transferTokens() {
-    setSendError(null);
-    setAction(Actions.Sending);
-    if (transferAmount === 0) {
-      setAction(null);
-      return;
-    }
-    if (walletAuthority && publicKey) {
-      // mint and sign from wallet
-      try {
-        const rpc = new RpcMethods(connection);
-        const ata = await rpc.getAssociatedTokenAccount(
-          tokenName,
-          destinationAddress
-        );
-
-        // determine wether ATA already initilaized
-        const accInfo = await connection.getAccountInfo(ata);
-        if (!accInfo) {
-          const ix = createAssociatedTokenAccountInstruction(
-            publicKey,
-            ata,
-            new PublicKey(destinationAddress),
-            new PublicKey(tokenName)
-          );
-
-          const tx = RpcMethods.createTx(ix);
-          try {
-            const signature = await sendTransaction(tx, connection);
-            await rpc.confirmTransaction(signature);
-          } catch (e) {
-            console.error(e);
-          }
-        }
-
-        const sourceAccount = await rpc.getAssociatedTokenAccount(
-          tokenName,
-          tokenOwner
-        );
-
-        const ix = createTransferInstruction(
-          sourceAccount,
-          ata,
-          new PublicKey(tokenOwner),
-          transferAmount
-        );
-        const tx = RpcMethods.createTx(ix);
-        const signature = await sendTransaction(tx, connection);
-        await rpc.confirmTransaction(signature);
-        setMessage("Success!");
-
-      } catch (e) {
-        console.error(e);
-      }
-    } else {
-      try {
-        const res = await fetch("api/transfer/", {
-          method: "POST",
-          body: JSON.stringify({
-            owner: tokenOwner,
-            token: tokenName,
-            keypair: tokenKeypair,
-            amount: transferAmount,
-            recipient: destinationAddress,
-          }),
-        });
-        const data = await res.json();
-        if ("err" in data) {
-          setSendError(data.err);
-        } else {
-          setMessage("Success!");
-        }
-      } catch (err) {
-        console.error(err);
-      }
-    }
-    setAction(null);
-    getTokenBalance();
-  }
-  const issueColor = () => {
-    if (mintedAmount === null) return "primary";
+  function issueColor(): IssueColor {
+    if (mintedAmount === null) return IssueColor.Primary;
     if (mintedAmount > 0) {
-      return "green";
+      return IssueColor.Green;
     } else {
-      return "red";
+      return IssueColor.Red;
     }
-  };
+  }
 
   return (
     <>
@@ -242,20 +93,20 @@ const Row: React.FC<{
             >
               <Text fontSize={17} fontWeight={600} margin={0} padding="0">
                 Token name{" "}
-                {tokenTicker && (
+                {props.tokenTicker && (
                   <Text
                     color={"primary"}
                     fontSize={14}
                     fontWeight="600"
                     marginLeft="1rem"
                   >
-                    [{tokenTicker}]
+                    [{props.tokenTicker}]
                   </Text>
                 )}
               </Text>
 
               <Text fontSize={13} fontWeight="light">
-                {tokenName}
+                {props.tokenName}
               </Text>
             </Box>
           </Header.Item>
