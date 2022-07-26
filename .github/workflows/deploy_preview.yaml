@@ -7,9 +7,20 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Get the version
-        id: get_version
-        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+        with:
+          fetch-depth: 0
+
+      - name: Extract version from tag
+        uses: damienaicheh/extract-version-from-tag-action@v1.0.0
+
+      - name: Output the variables
+        run: |
+          echo The major was $MAJOR
+          echo The minor was $MINOR
+          echo The patch was $PATCH
+          echo The pre-release was $PRE_RELEASE
+          echo The number of commits was $NUMBER_OF_COMMITS
+          echo The number of commits since tag was $NUMBER_OF_COMMITS_SINCE_TAG
       - name: Deploy to Vercel Action
         uses: BetaHuhn/deploy-to-vercel-action@v1
         with:
