@@ -9,7 +9,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
+      - name: Get tag version
         uses: satackey/action-js-inline@v0.0.2
         id: getdata
         with:
