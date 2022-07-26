@@ -26,15 +26,18 @@ jobs:
         id: getdata
         with:
           # Edit the following line to install packages required to run your script.
+          required-packages: git-tags
           script: |
-            const core = require('@actions/core')
-
-            // branch
-            console.log("major, $MAJOR")
-            console.log(`major: ${$MAJOR}`)
-            console.log(`minor: ${$MINOR}`)
-            console.log(`patch: ${$PATCH}`)
-         
+            var gittags = require("git-tags");
+            var fs = require("fs");
+            gittags.get(function (err, tags) {
+              if (err) throw err;
+              const obj = {
+                version: tags[0],
+              };
+              fs.writeFileSync("version.json", JSON.stringify(obj), "utf8");
+              console.log(tags);
+            });
 
       - name: Deploy to Vercel Action
         uses: BetaHuhn/deploy-to-vercel-action@v1
