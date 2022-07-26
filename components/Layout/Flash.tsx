@@ -2,8 +2,9 @@ import { StyledOcticon, Flash } from "@primer/react";
 import { CheckIcon } from "@primer/octicons-react";
 import { useHandleDestroyAnimated } from "hooks";
 import { useEffect, useRef } from "react";
-import { useSuccess } from "components/Table/Table";
 import { useConnection } from "@solana/wallet-adapter-react";
+import { useSuccess } from "contexts";
+
 const Toast: React.FC = () => {
   const flashRef = useRef<null | HTMLDivElement>(null);
   const { message, mint, setMessage } = useSuccess();

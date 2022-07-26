@@ -9,9 +9,9 @@ import {
 import { IssueOpenedIcon, HourglassIcon } from "@primer/octicons-react";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useEffect } from "react";
-import { useRefresh } from "./Table";
 import { useMintAndTransfer } from "hooks";
 import { Actions, RowProps } from "types";
+import { useRefresh } from "contexts";
 
 enum IssueColor {
   Green = "green",

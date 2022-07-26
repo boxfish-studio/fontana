@@ -1,41 +1,12 @@
 import { Box } from "@primer/react";
-import { useState, useMemo, createContext, useContext, useEffect } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Row from "./Row";
 import HeaderTable from "./HeaderTable";
 import fontanaConfig from "../../fontana.config";
 import { RpcMethods } from "lib/spl";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { Toast } from "components/Layout";
-
-type Refresh = {
-  r: boolean;
-  refresh: (r: boolean) => void;
-};
-
-const SiteMintingContext = createContext<Refresh>({
-  r: false,
-  refresh: () => {},
-});
-
-export const useRefresh = () => useContext(SiteMintingContext);
-
-type Success = {
-  message: string;
-  setMessage: (message: string) => void;
-  mint: string | undefined;
-  setMint: (mint: string) => void;
-};
-
-const SuccessContext = createContext<Success>({
-  message: "",
-  setMessage: (message: string) => {
-    message = message;
-  },
-  mint: undefined,
-  setMint: (mint: string) => (mint = mint),
-});
-
-export const useSuccess = () => useContext(SuccessContext);
+import { SuccessContext, SiteMintingContext } from "contexts";
 
 const Table: React.FC = () => {
   const { connection } = useConnection();

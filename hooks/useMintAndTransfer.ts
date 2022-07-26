@@ -4,10 +4,10 @@ import {
 } from "@solana/spl-token";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
-import { useSuccess } from "components/Table/Table";
 import { RpcMethods } from "lib/spl";
 import { useCallback, useState } from "react";
 import { Actions, RowProps } from "types";
+import { useSuccess } from "contexts";
 
 export default function useMintAndTransfer({
   walletAuthority,

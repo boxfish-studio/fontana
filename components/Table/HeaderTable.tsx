@@ -1,6 +1,5 @@
-import { Header, Text, Button, Box, StyledOcticon, Flash } from "@primer/react";
+import { Header, Text, Button, Box, StyledOcticon } from "@primer/react";
 import { CheckIcon, SyncIcon } from "@primer/octicons-react";
-import { useRefresh, useSuccess } from "./Table";
 import {
   createAssociatedTokenAccountInstruction,
   createInitializeMintInstruction,
@@ -11,6 +10,9 @@ import {
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { Keypair, SystemProgram, Transaction } from "@solana/web3.js";
 import { RpcMethods } from "lib/spl";
+import { useRefresh, useSuccess } from "contexts";
+import { useState } from "react";
+import { HourglassIcon } from "@primer/octicons-react";
 
 const HeaderTable: React.FC<{ tokensAmount: number }> = ({
   tokensAmount = 0,
@@ -19,13 +21,14 @@ const HeaderTable: React.FC<{ tokensAmount: number }> = ({
   const { connection } = useConnection();
   const { publicKey, sendTransaction } = useWallet();
   const { setMessage, setMint } = useSuccess();
-
+  const [minting, setMinting] = useState(false);
   function triggerRefresh() {
     refresh(!r);
   }
   async function createToken() {
     if (!publicKey) return;
     try {
+      setMinting(true);
       const mint = Keypair.generate();
 
       const rpc = new RpcMethods(connection);
@@ -76,6 +79,7 @@ const HeaderTable: React.FC<{ tokensAmount: number }> = ({
     } catch (e) {
       console.error(e);
     }
+    setMinting(false);
   }
   return (
     <Header
@@ -138,9 +142,9 @@ const HeaderTable: React.FC<{ tokensAmount: number }> = ({
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                gap: "20px",
               }}
               onClick={createToken}
+              leadingIcon={minting ? HourglassIcon : null}
             >
               <Text marginLeft="4px" fontWeight={600}>
                 Create token
