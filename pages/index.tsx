@@ -7,8 +7,14 @@ import { HeartFillIcon } from "@primer/octicons-react";
 import { Toast } from "components/Layout";
 import { version } from "version.json";
 
-const Home: NextPage = () => {
-  
+
+export async function getServerSideProps() {
+  const HAS_MONGO_URI = !!process.env.NEXT_PUBLIC_DATABASE_URL
+  return { props: { HAS_MONGO_URI } }
+}
+
+const Home: NextPage<{HAS_MONGO_URI:boolean}> = ({HAS_MONGO_URI}) => {
+    console.log("HAS_MONGO_URI",HAS_MONGO_URI)
   return (
     <>
       <Head>
@@ -36,7 +42,7 @@ const Home: NextPage = () => {
           padding={"0.5rem"}
           marginBottom={"5rem"}
         >
-          <Table />
+          <Table hasMongoUri={HAS_MONGO_URI} />
         </Box>
         <Toast />
         <footer

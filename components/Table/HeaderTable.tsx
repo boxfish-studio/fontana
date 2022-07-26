@@ -14,8 +14,9 @@ import { useRefresh, useSuccess } from "contexts";
 import { useState } from "react";
 import { HourglassIcon } from "@primer/octicons-react";
 import { createMint } from "lib/create-token";
-const HeaderTable: React.FC<{ tokensAmount: number }> = ({
+const HeaderTable: React.FC<{ tokensAmount: number,hasMongoUri:boolean }> = ({
   tokensAmount = 0,
+  hasMongoUri
 }) => {
   const { r, refresh } = useRefresh();
   const { connection } = useConnection();
@@ -153,7 +154,7 @@ const HeaderTable: React.FC<{ tokensAmount: number }> = ({
             position: "relative",
           }}
         >
-          <Button
+          {(hasMongoUri || publicKey) &&<Button
             variant="primary"
             sx={{
               position: "absolute",
@@ -168,7 +169,7 @@ const HeaderTable: React.FC<{ tokensAmount: number }> = ({
             <Text marginLeft="4px" fontWeight={600}>
               Create token
             </Text>
-          </Button>
+          </Button>}
           <Button
             sx={{
               position: "absolute",

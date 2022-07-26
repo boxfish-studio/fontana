@@ -13,7 +13,7 @@ interface Token {
   owner: string;
 }
 
-const Table: React.FC = () => {
+const Table: React.FC<{hasMongoUri:boolean}> = ({hasMongoUri}) => {
   const { connection } = useConnection();
   const { publicKey } = useWallet();
   const [walletTokens, setWalletTokens] = useState<Token[]>([]);
@@ -32,6 +32,7 @@ const Table: React.FC = () => {
     });
   }, []);
   useEffect(() => {
+    if(!hasMongoUri) return;
     if (publicKey) return setMongoTokens([]);
     (async () => {
       const res = await fetch("api/mongo-get", {
@@ -79,6 +80,7 @@ const Table: React.FC = () => {
             tokensAmount={
               tokens.length + walletTokens.length + mongoTokens.length
             }
+            hasMongoUri={hasMongoUri}
           />
           {tokens.map((token, i) => {
             return (
