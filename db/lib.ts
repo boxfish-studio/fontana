@@ -10,6 +10,5 @@ export async function dbConnect() {
 export async function getKeypair(token: string) {
   await dbConnect();
   const { keypair } = await Token.findOne({ token });
-  console.log("k", keypair);
   return keypair as string;
 }

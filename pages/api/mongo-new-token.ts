@@ -23,12 +23,13 @@ async function createToken() {
     const mint = Keypair.generate();
     const owner = Keypair.generate();
     const publicKey = owner.publicKey;
-    const rpcEndpoint = process.env.NEXT_PUBLIC_SOLANA_RPC_HOST;
+    const rpcEndpoint = process.env.NEXT_PUBLIC_SOLANA_RPCs_HOST;
     const endpoint = rpcEndpoint || clusterApiUrl("devnet");
+    console.log("endpoint", endpoint);
     const connection = new Connection(endpoint);
     const rpc = new RpcMethods(connection);
 
-    let txhash = await connection.requestAirdrop(owner.publicKey, 1e9);
+    let txhash = await connection.requestAirdrop(owner.publicKey, 1e8);
     await rpc.confirmTransaction(txhash);
     const ata = await rpc.getAssociatedTokenAccount(
       mint.publicKey.toBase58(),
@@ -83,6 +84,7 @@ export default async function handler(
     await dbConnect();
     const token = await createToken();
     await Token.create(token);
+    console.log("token created",token);
     res.status(200).json({ token: token?.token, owner: token?.owner });
   } catch (e) {
     console.error(e);
