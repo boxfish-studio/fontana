@@ -6,15 +6,14 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
 import { RpcMethods } from "lib/spl";
 import { useCallback, useState } from "react";
-import { Actions, RowProps } from "types";
+import { Actions, RowProps, Sources } from "types";
 import { useSuccess } from "contexts";
 
 export default function useMintAndTransfer({
-  walletAuthority,
+  source,
   tokenOwner,
   tokenName,
   tokenKeypair,
-  mongo
 }: Exclude<RowProps, "tokenTicker">) {
   const { connection } = useConnection();
   const { publicKey, sendTransaction } = useWallet();
@@ -51,7 +50,7 @@ export default function useMintAndTransfer({
       setAction(null);
       return;
     }
-    if (walletAuthority) {
+    if (source === Sources.Wallet) {
       // mint and sign from wallet
       try {
         const rpc = new RpcMethods(connection);
@@ -72,7 +71,7 @@ export default function useMintAndTransfer({
             token: tokenName,
             keypair: tokenKeypair,
             amount: mintAmount,
-            mongo:mongo
+            mongo: true,
           }),
         });
         const data = await res.json();
@@ -95,7 +94,7 @@ export default function useMintAndTransfer({
       setAction(null);
       return;
     }
-    if (walletAuthority && publicKey) {
+    if (source === Sources.Wallet && publicKey) {
       // mint and sign from wallet
       try {
         const rpc = new RpcMethods(connection);
@@ -151,8 +150,7 @@ export default function useMintAndTransfer({
             keypair: tokenKeypair,
             amount: transferAmount,
             recipient: destinationAddress,
-            mongo:mongo
-
+            mongo: true,
           }),
         });
         const data = await res.json();

@@ -7,6 +7,7 @@ import { RpcMethods } from "lib/spl";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { Toast } from "components/Layout";
 import { SuccessContext, SiteMintingContext, useHasMongoUri } from "contexts";
+import { Sources } from "types";
 
 interface Token {
   token: string;
@@ -85,6 +86,7 @@ const Table: React.FC = () => {
           {tokens.map((token, i) => {
             return (
               <Row
+                source={Sources.Config}
                 key={i}
                 tokenTicker={token.ticker}
                 tokenKeypair={token.keypair}
@@ -96,10 +98,10 @@ const Table: React.FC = () => {
           {walletTokens.map((token, i) => {
             return (
               <Row
+                source={Sources.Wallet}
                 key={i}
                 tokenName={token.token}
                 tokenOwner={token.owner}
-                walletAuthority
               />
             );
           })}
@@ -109,7 +111,7 @@ const Table: React.FC = () => {
                 key={i}
                 tokenName={token.token}
                 tokenOwner={token.owner}
-                mongo
+                source={Sources.Db}
               />
             );
           })}
