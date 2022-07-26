@@ -34,7 +34,7 @@ const HeaderTable: React.FC<{ tokensAmount: number }> = ({
         });
         const data = await res.json();
         setMinting(false);
-        setMessage(`Success! New mint ${data.mint.slice(0, 12)}... created.`);
+        setMessage(`Success! New mint ${data.token.slice(0, 12)}... created.`);
         triggerRefresh();
         return;
       } catch (e) {
