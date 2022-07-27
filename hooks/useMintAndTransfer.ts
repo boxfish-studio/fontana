@@ -71,7 +71,7 @@ export default function useMintAndTransfer({
             token: tokenName,
             keypair: tokenKeypair,
             amount: mintAmount,
-            mongo: true,
+            mongo: source === Sources.Db,
           }),
         });
         const data = await res.json();
@@ -150,7 +150,7 @@ export default function useMintAndTransfer({
             keypair: tokenKeypair,
             amount: transferAmount,
             recipient: destinationAddress,
-            mongo: true,
+            mongo: source === Sources.Db,
           }),
         });
         const data = await res.json();
