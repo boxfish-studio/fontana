@@ -2,7 +2,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { RpcMethods } from "lib/spl";
 import { Connection, Keypair } from "@solana/web3.js";
-import {getKeypair} from "db/lib"
+import { MongoMethods } from "db/lib";
+
 type Data = {
   tx?: string;
   err?: string;
@@ -23,9 +24,7 @@ export default function handler(
       const ix = rpc.mintTokensInstruction(owner, token, amount);
 
       const tx = RpcMethods.createTx(await ix);
-      console.log("tx", tx);
-      console.log("_keypair", _keypair);
-      const signer = mongo ? await getKeypair(token) :  process.env[`NEXT_PUBLIC_${_keypair}`];
+      const signer = mongo ? await new MongoMethods().queryKeypair(token as string) :  process.env[`NEXT_PUBLIC_${_keypair}`];
 
       if(!signer) throw new Error ("No keypair found on env");
 

@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 
-import { dbConnect } from "db/lib";
-import { Token } from "db/model";
+import { MongoMethods } from "db/lib";
+
 import { createMint } from "lib/create-token";
 
 export type UnwrapPromise<T> = T extends Promise<infer Return> ? Return : T;
@@ -20,8 +20,7 @@ export default async function handler(
       ReturnType<typeof createMint>
     >;
     if (!body) throw new Error("No token");
-    await dbConnect();
-    await Token.create(body);
+    await new MongoMethods().createToken(body);
     res.status(200).end();
   } catch (e) {
     console.error(e);
