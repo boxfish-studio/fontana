@@ -13,15 +13,8 @@ import {
   MINT_SIZE,
   TOKEN_PROGRAM_ID,
 } from "@solana/spl-token";
-
-export async function createMint(): Promise<
-  | {
-      token: string;
-      owner: string;
-      keypair: string;
-    }
-  | undefined
-> {
+import { NewToken } from "types";
+export async function createMint(): Promise<NewToken | undefined> {
   try {
     const mint = Keypair.generate();
     const owner = Keypair.generate();

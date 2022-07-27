@@ -1,10 +1,11 @@
 import { connect } from "mongoose";
 import { Token } from "./model";
+import { NewToken } from "types";
 
 interface Mongo {
   queryKeypair: (token: string) => Promise<string>;
   queryTokens: () => Promise<Query[]>;
-  createToken: <T>(token: T) => Promise<void>;
+  createToken: (token: NewToken) => Promise<void>;
 }
 export interface Query {
   token: string;
@@ -43,7 +44,7 @@ export class MongoMethods implements Mongo {
     return queryResults;
   }
 
-  async createToken<T>(token: T) {
+  async createToken(token: NewToken) {
     await this.dbconnect();
     await Token.create(token);
   }

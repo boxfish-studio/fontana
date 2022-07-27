@@ -1,10 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
-
 import { MongoMethods } from "db/lib";
-
-import { createMint } from "lib/create-token";
-
-export type UnwrapPromise<T> = T extends Promise<infer Return> ? Return : T;
+import { NewToken } from "types";
 
 interface Res {
   token?: string;
@@ -16,9 +12,7 @@ export default async function handler(
   res: NextApiResponse<Res>
 ) {
   try {
-    const body = JSON.parse(req.body) as UnwrapPromise<
-      ReturnType<typeof createMint>
-    >;
+    const body = JSON.parse(req.body) as NewToken | undefined;
     if (!body) throw new Error("No token");
     await new MongoMethods().createToken(body);
     res.status(200).end();

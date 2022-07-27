@@ -5,7 +5,7 @@ export enum Actions {
 export enum Sources {
   Config,
   Db,
-  Wallet
+  Wallet,
 }
 export interface RowProps {
   tokenName: string;
@@ -13,4 +13,10 @@ export interface RowProps {
   tokenKeypair?: string;
   tokenTicker?: string;
   source: Sources;
+}
+
+export interface NewToken {
+  token: string;
+  owner: string;
+  keypair: string;
 }
