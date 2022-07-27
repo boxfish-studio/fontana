@@ -13,13 +13,17 @@ const Toast: React.FC = () => {
     flashRef,
     setMessage
   );
+  
   useEffect(() => {
     if (message === "") return;
     setSendSuccess(true);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [message]);
+
   const queryParam = connection.rpcEndpoint?.includes("devnet")
     ? "?cluster=devnet-solana"
     : "";
+
   if (sendSuccess)
     return (
       <div

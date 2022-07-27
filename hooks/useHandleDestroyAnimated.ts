@@ -16,6 +16,7 @@ export default function useHandleDestroyAnimated<T extends HTMLElement>(
     if (sendSuccess) {
       handleDeletion(ref);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ref, sendSuccess]);
 
   function handleDeletion<T extends HTMLElement>(
