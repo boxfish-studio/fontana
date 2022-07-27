@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { MongoMethods } from "db/lib";
+import { Database } from "db/lib";
 import { NewToken } from "types";
 
 interface Res {
@@ -14,7 +14,7 @@ export default async function handler(
   try {
     const body = JSON.parse(req.body) as NewToken | undefined;
     if (!body) throw new Error("No token");
-    await new MongoMethods().createToken(body);
+    await new Database().createToken(body);
     res.status(200).end();
   } catch (e) {
     console.error(e);

@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 
-import { MongoMethods, Query } from "db/lib";
+import { Database, Query } from "db/lib";
 
 interface Res {
   queryResults?: Query[];
@@ -11,7 +11,7 @@ export default async function handler(
   res: NextApiResponse<Res>
 ) {
   try {
-    const queryResults = await new MongoMethods().queryTokens();
+    const queryResults = await new Database().queryTokens();
     res.status(200).end(JSON.stringify({ queryResults }));
   } catch (e) {
     console.error(e);
