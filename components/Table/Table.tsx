@@ -1,67 +1,18 @@
 import { Box } from "@primer/react";
-import { useState, useMemo, useEffect } from "react";
+import { useState } from "react";
 import Row from "./Row";
 import HeaderTable from "./HeaderTable";
-import fontanaConfig from "../../fontana.config";
-import { RpcMethods } from "lib/spl";
-import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { Toast } from "components/Layout";
-import { SuccessContext, SiteMintingContext, useHasMongoUri } from "contexts";
+import { SuccessContext, SiteMintingContext } from "contexts";
 import { Sources } from "types";
+import { useFetchTokens } from "hooks";
 
-interface Token {
-  token: string;
-  owner: string;
-}
 
 const Table: React.FC = () => {
-  const { connection } = useConnection();
-  const { publicKey } = useWallet();
-  const [walletTokens, setWalletTokens] = useState<Token[]>([]);
-  const [mongoTokens, setMongoTokens] = useState<Token[]>([]);
-  const [r, refresh] = useState(false);
   const [message, setMessage] = useState("");
   const [mint, setMint] = useState<string | undefined>(undefined);
-  const { hasMongoUri } = useHasMongoUri();
-  const tokens = useMemo(() => {
-    return fontanaConfig.map((token) => {
-      return {
-        keypair: token.keypair,
-        token: token.token,
-        owner: token.owner,
-        ticker: token.ticker,
-      };
-    });
-  }, []);
-  useEffect(() => {
-    if (!hasMongoUri) return;
-    if (publicKey) return setMongoTokens([]);
-    (async () => {
-      const res = await fetch("api/mongo-get", {
-        method: "GET",
-      });
-      const { queryResults } = (await res.json()) as {
-        queryResults: Token[];
-      };
-      setMongoTokens(queryResults);
-    })();
-  }, [publicKey, r]);
-
-  useEffect(() => {
-    (async () => {
-      if (!publicKey) return setWalletTokens([]);
-      const rpc = new RpcMethods(connection);
-      const _tokens = (
-        await rpc.queryTokenByAuthority(publicKey?.toBase58())
-      ).map((token) => {
-        return {
-          token: token.tokenMint,
-          owner: publicKey.toBase58(),
-        };
-      });
-      setWalletTokens(_tokens);
-    })();
-  }, [publicKey, r]);
+  const { mongoTokens, tokens, tokensAmount, walletTokens, r, refresh } =
+    useFetchTokens();
 
   return (
     <Box
@@ -78,11 +29,7 @@ const Table: React.FC = () => {
       {" "}
       <SuccessContext.Provider value={{ message, setMessage, mint, setMint }}>
         <SiteMintingContext.Provider value={{ r, refresh }}>
-          <HeaderTable
-            tokensAmount={
-              tokens.length + walletTokens.length + mongoTokens.length
-            }
-          />
+          <HeaderTable tokensAmount={tokensAmount} />
           {tokens.map((token, i) => {
             return (
               <Row
