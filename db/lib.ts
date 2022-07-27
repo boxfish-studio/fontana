@@ -1,4 +1,4 @@
-import mongoose, { connect } from "mongoose";
+import { connect } from "mongoose";
 import { Token } from "./model";
 import { NewToken } from "types";
 
@@ -31,7 +31,7 @@ export class Database implements Mongo {
           bufferCommands: false,
         };
 
-        cached.promise = mongoose.connect(MONGO_URI, opts).then((mongoose) => {
+        cached.promise = connect(MONGO_URI, opts).then((mongoose) => {
           return mongoose;
         });
       }
