@@ -1,21 +1,10 @@
 import { Box } from "@primer/react";
-import { useState, useMemo, createContext, useContext } from "react";
+import { useState, useMemo } from "react";
 import Row from "./Row";
 import HeaderTable from "./HeaderTable";
 import fontanaConfig from "../../fontana.config";
-import { useConnection } from "contexts";
-
-type Refresh = {
-  r: boolean;
-  refresh: (r: boolean) => void;
-};
-
-const SiteMintingContext = createContext<Refresh>({
-  r: false,
-  refresh: () => {},
-});
-
-export const useRefresh = () => useContext(SiteMintingContext);
+import { SiteMintingContext, useConnection } from "contexts";
+import { Sources } from "types";
 
 const Table: React.FC = () => {
   const { network } = useConnection();
@@ -53,6 +42,7 @@ const Table: React.FC = () => {
               tokenKeypair={token.keypair}
               tokenName={token.token}
               tokenOwner={token.owner}
+              source={Sources.Config}
             />
           );
         })}

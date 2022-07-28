@@ -7,7 +7,8 @@ const styles = Object.freeze({
 });
 
 export default function useHandleDestroyAnimated<T extends HTMLElement>(
-  ref: MutableRefObject<T | null>
+  ref: MutableRefObject<T | null>,
+  setMessage: (message: string) => void
 ): [boolean, (_: boolean) => void] {
   const [sendSuccess, setSendSuccess] = useState(false);
 
@@ -28,6 +29,7 @@ export default function useHandleDestroyAnimated<T extends HTMLElement>(
       style.opacity = styles.opacity;
       setTimeout(() => {
         setSendSuccess(false);
+        setMessage("");
       }, 600);
     }, 4000);
   }
