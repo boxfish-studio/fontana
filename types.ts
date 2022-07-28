@@ -9,3 +9,4 @@ export interface RowProps {
   tokenTicker?: string;
   walletAuthority?: boolean;
 }
+

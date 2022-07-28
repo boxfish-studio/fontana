@@ -4,7 +4,6 @@ import Row from "./Row";
 import HeaderTable from "./HeaderTable";
 import fontanaConfig from "../../fontana.config";
 import { SiteMintingContext, useConnection } from "contexts";
-import { Sources } from "types";
 
 const Table: React.FC = () => {
   const { network } = useConnection();
@@ -42,7 +41,6 @@ const Table: React.FC = () => {
               tokenKeypair={token.keypair}
               tokenName={token.token}
               tokenOwner={token.owner}
-              source={Sources.Config}
             />
           );
         })}
