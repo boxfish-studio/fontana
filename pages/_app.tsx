@@ -69,7 +69,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     >
       <WalletProvider wallets={wallets}>
         <WalletModalProvider>
-          <CustomThemeProvider theme={customTheme} colorMode="auto">
+          <CustomThemeProvider theme={customTheme} colorMode="day">
             <BaseStyles>
               <Component {...pageProps} />
             </BaseStyles>
