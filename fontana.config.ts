@@ -3,6 +3,7 @@ interface Config {
   token: string;
   owner: string;
   ticker?: string;
+  network: "devnet" | "mainnet-beta";
 }
 
 /**
@@ -16,17 +17,20 @@ const config: Config[] = [
     owner: "BoX451MZzydoVdZE4NFfmMT3J5Ztqo7YgUNbwwMfjPFu",
     token: "Gqv2ULNwn7DpU2FRfDwagwNifX4WKPaduah43d5xJGU9",
     ticker: "test",
+    network: "devnet",
   },
   {
     keypair: "WALLET_2",
     owner: "BoX451MZzydoVdZE4NFfmMT3J5Ztqo7YgUNbwwMfjPFu",
     token: "3ji7s3pT4j6EVx4HKFq2PUe2vw7kzzfWCSLdqsQdvk6T",
+    network: "devnet",
   },
   {
     keypair: "WALLET_1",
     owner: "BoX451MZzydoVdZE4NFfmMT3J5Ztqo7YgUNbwwMfjPFu",
     token: "7efhjQucjgVCgijLewbJZrE16GHba9vdUzmFUdi6vwyc",
     ticker: "lol",
+    network: "devnet",
   },
 ];
 
