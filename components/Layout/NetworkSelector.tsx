@@ -1,10 +1,10 @@
 import { FC, useEffect, useRef } from 'react'
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base'
-import { Connection } from '@solana/web3.js'
+import { clusterApiUrl, Connection } from '@solana/web3.js'
 import { Network, useConnection } from 'contexts'
 
-const RPC_API_DEVNET = process.env.NEXT_PUBLIC_RPC_API_DEVNET as string
-const RPC_API_MAINNET = process.env.NEXT_PUBLIC_RPC_API_MAINNET as string
+const RPC_API_DEVNET = process.env.NEXT_PUBLIC_RPC_API_DEVNET || clusterApiUrl('devnet')
+const RPC_API_MAINNET = process.env.NEXT_PUBLIC_RPC_API_MAINNET || clusterApiUrl('mainnet-beta')
 
 function getUrl(network: Network): string {
     switch (network) {

@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import { RpcMethods } from "lib/spl";
-import { Connection, Keypair } from "@solana/web3.js";
+import { clusterApiUrl, Connection, Keypair } from "@solana/web3.js";
 type Data = {
   tx?: string;
   err?: string;
@@ -23,8 +23,8 @@ export default function handler(
     try {
       const endpoint =
         network === "Mainnet"
-          ? process.env.NEXT_PUBLIC_RPC_API_MAINNET
-          : process.env.NEXT_PUBLIC_RPC_API_DEVNET;
+          ? process.env.NEXT_PUBLIC_RPC_API_MAINNET || clusterApiUrl('mainnet-beta')
+          : process.env.NEXT_PUBLIC_RPC_API_DEVNET || clusterApiUrl('devnet');
       const connection = new Connection(endpoint!);
       const rpc = new RpcMethods(connection);
       const ix = rpc.mintTokensInstruction(owner, token, amount);
