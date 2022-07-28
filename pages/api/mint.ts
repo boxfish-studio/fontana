@@ -1,8 +1,8 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import { RpcMethods } from "lib/spl";
-import { Connection, Keypair } from "@solana/web3.js";
 import { Database } from "db/lib";
+import { clusterApiUrl, Connection, Keypair } from "@solana/web3.js";
 
 type Data = {
   tx?: string;
@@ -14,19 +14,28 @@ export default function handler(
   res: NextApiResponse<Data>
 ) {
   console.log("$req", req.body);
-  const { owner, token, amount, keypair: _keypair, mongo } = JSON.parse(req.body);
+  const {
+    owner,
+    token,
+    amount,
+    keypair: _keypair,
+    network,
+    mongo
+  } = JSON.parse(req.body);
   (async () => {
     try {
-      const connection = new Connection(
-        process.env.NEXT_PUBLIC_SOLANA_RPC_HOST!
-      );
+      const endpoint =
+        network === "Mainnet"
+          ? process.env.NEXT_PUBLIC_RPC_API_MAINNET || clusterApiUrl('mainnet-beta')
+          : process.env.NEXT_PUBLIC_RPC_API_DEVNET || clusterApiUrl('devnet');
+      const connection = new Connection(endpoint!);
       const rpc = new RpcMethods(connection);
       const ix = rpc.mintTokensInstruction(owner, token, amount);
 
       const tx = RpcMethods.createTx(await ix);
       const signer = mongo ? await new Database().queryKeypair(token as string) :  process.env[`NEXT_PUBLIC_${_keypair}`];
 
-      if(!signer) throw new Error ("No keypair found on env");
+      if (!signer) throw new Error("No keypair found on env");
 
       const signerParsed = signer
         .slice(1, -1)

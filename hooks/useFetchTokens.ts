@@ -1,6 +1,6 @@
-import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import {  useWallet } from "@solana/wallet-adapter-react";
 import { RpcMethods } from "lib/spl";
-import { useHasMongoUri } from "contexts";
+import { useHasMongoUri, useConnection } from "contexts";
 import { useEffect, useMemo, useState } from "react";
 import fontanaConfig from "fontana.config";
 
@@ -10,7 +10,7 @@ interface Token {
 }
 
 export default function useFetchTokens() {
-  const { connection } = useConnection();
+  const { connection, network } = useConnection();
   const { publicKey } = useWallet();
   const [walletTokens, setWalletTokens] = useState<Token[]>([]);
   const [mongoTokens, setMongoTokens] = useState<Token[]>([]);
@@ -18,15 +18,13 @@ export default function useFetchTokens() {
   const { hasMongoUri } = useHasMongoUri();
 
   const tokens = useMemo(() => {
-    return fontanaConfig.map((token) => {
-      return {
-        keypair: token.keypair,
-        token: token.token,
-        owner: token.owner,
-        ticker: token.ticker,
-      };
-    });
-  }, []);
+    return fontanaConfig.reduce((acc, token) => {
+      if (token.network === network) {
+        return [...acc, token];
+      }
+      return [...acc];
+    }, [] as Partial<typeof fontanaConfig>);
+  }, [network]);
 
   useEffect(() => {
     if (!hasMongoUri || publicKey) return setMongoTokens([]);
@@ -42,7 +40,7 @@ export default function useFetchTokens() {
   }, [hasMongoUri, publicKey, r]);
 
   useEffect(() => {
-    if (!publicKey) return setWalletTokens([]);
+    if (!publicKey || !connection) return setWalletTokens([]);
     (async () => {
       const rpc = new RpcMethods(connection);
       const queryResults = (

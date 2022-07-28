@@ -40,7 +40,7 @@ export class RpcMethods extends Rpc {
     return amount;
   }
 
-  public async getAssociatedTokenAccount(token: string, owner: string) {
+  static async getAssociatedTokenAccount(token: string, owner: string) {
     return await getAssociatedTokenAddress(
       new PublicKey(token),
       new PublicKey(owner)
