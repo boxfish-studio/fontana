@@ -2,13 +2,12 @@ import { StyledOcticon, Flash } from "@primer/react";
 import { CheckIcon } from "@primer/octicons-react";
 import { useHandleDestroyAnimated } from "hooks";
 import { useEffect, useRef } from "react";
-import { useConnection } from "@solana/wallet-adapter-react";
-import { useSuccess } from "contexts";
+import { useSuccess, useConnection } from "contexts";
 
 const Toast: React.FC = () => {
   const flashRef = useRef<null | HTMLDivElement>(null);
   const { message, mint, setMessage } = useSuccess();
-  const { connection } = useConnection();
+  const { url } = useConnection();
   const [sendSuccess, setSendSuccess] = useHandleDestroyAnimated(
     flashRef,
     setMessage
@@ -17,7 +16,7 @@ const Toast: React.FC = () => {
     if (message === "") return;
     setSendSuccess(true);
   }, [message]);
-  const queryParam = connection.rpcEndpoint?.includes("devnet")
+  const queryParam = url?.includes("devnet")
     ? "?cluster=devnet-solana"
     : "";
   if (sendSuccess)
