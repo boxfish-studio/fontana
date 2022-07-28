@@ -10,7 +10,7 @@ import { IssueOpenedIcon, HourglassIcon } from "@primer/octicons-react";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useMintAndTransfer } from "hooks";
 import { Actions, RowProps } from "types";
-import { useRefresh } from "contexts";
+import { useConnection, useRefresh } from "contexts";
 import { useEffect } from "react";
 
 enum IssueColor {
@@ -21,6 +21,7 @@ enum IssueColor {
 
 const Row: React.FC<RowProps> = (props) => {
   const { publicKey } = useWallet();
+  const { connection } = useConnection();
   const {
     mintedAmount,
     walletAmount,
@@ -35,13 +36,13 @@ const Row: React.FC<RowProps> = (props) => {
     sendError,
     getTokenBalance,
   } = useMintAndTransfer(props);
-  
+
   const { r } = useRefresh();
 
   useEffect(() => {
     getTokenBalance();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [r]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [r, connection]);
 
   function setWalletAddress() {
     if (!publicKey) return;
