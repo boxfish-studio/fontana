@@ -12,11 +12,12 @@ import {
   HourglassIcon,
   CheckIcon,
 } from "@primer/octicons-react";
-import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { useWallet } from "@solana/wallet-adapter-react";
 import { useCallback, useEffect, useState, useRef } from "react";
 import { RpcMethods } from "lib/spl";
 import { useRefresh } from "./Table";
 import { useHandleDestroyAnimated } from "hooks";
+import { useConnection } from "contexts";
 enum Actions {
   Mint,
   Sending,
@@ -46,6 +47,7 @@ const Row: React.FC<{
     setDestinationAddress(publicKey?.toBase58());
   }
   const getTokenBalance = useCallback(async () => {
+    if (!connection) return;
     try {
       const rpc = new RpcMethods(connection);
       const amount = await rpc.getTokenBalance(tokenOwner, tokenName);

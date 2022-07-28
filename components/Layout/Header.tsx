@@ -1,6 +1,6 @@
 import { Box, Text } from "@primer/react";
 import { FontanaSVG } from "components/Layout";
-
+import { NetworkSelector } from "components/Layout";
 const Header: React.FC = () => {
   return (
     <Box
@@ -21,6 +21,7 @@ const Header: React.FC = () => {
       <Text color="white" fontWeight={600}>
         Fontana - The Solana SPL multi-token generic faucet
       </Text>
+      <NetworkSelector />
     </Box>
   );
 };
