@@ -42,7 +42,7 @@ export async function createMint(): Promise<NewToken | undefined> {
         await rpc.confirmTransaction(txhash);
       }
     }
-    const ata = await rpc.getAssociatedTokenAccount(
+    const ata = await RpcMethods.getAssociatedTokenAccount(
       mint.publicKey.toBase58(),
       publicKey.toBase58()
     );

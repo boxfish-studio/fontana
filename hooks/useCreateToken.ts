@@ -54,7 +54,7 @@ export default function useCreateToken() {
 
       const rpc = new RpcMethods(connection);
 
-      const ata = await rpc.getAssociatedTokenAccount(
+      const ata = await RpcMethods.getAssociatedTokenAccount(
         mint.publicKey.toBase58(),
         publicKey.toBase58()
       );

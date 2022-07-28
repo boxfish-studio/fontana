@@ -63,7 +63,7 @@ export class RpcMethods extends Rpc {
     token: string,
     amount: number
   ): Promise<TransactionInstruction> {
-    const tokenAccount = await this.getAssociatedTokenAccount(token, owner);
+    const tokenAccount = await RpcMethods.getAssociatedTokenAccount(token, owner);
 
     const tx = createMintToInstruction(
       new PublicKey(token),
@@ -81,7 +81,7 @@ export class RpcMethods extends Rpc {
     recipient: string,
     signer: Keypair
   ): Promise<TransactionInstruction> {
-    const sourceAccount = await this.getAssociatedTokenAccount(token, owner);
+    const sourceAccount = await RpcMethods.getAssociatedTokenAccount(token, owner);
     const destinationAccount = await this.getOrCreateAssociatedTokenAccount(
       token,
       signer,

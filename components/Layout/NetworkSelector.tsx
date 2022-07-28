@@ -18,7 +18,7 @@ function getUrl(network: Network): string {
 }
 
 const NetworkSelector: FC = () => {
-    const { connection, setConnection, network, setNetwork, setUrl } = useConnection()
+    const { setConnection, network, setNetwork, setUrl } = useConnection()
     const detailsRef = useRef<HTMLDetailsElement>(null)
     function hideUl() {
         detailsRef.current!.removeAttribute('open')
