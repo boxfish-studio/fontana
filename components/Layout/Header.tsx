@@ -6,10 +6,12 @@ const Header: React.FC = () => {
     <Box
       position="relative"
       bg="navbarBackground"
-      width="100vw"
+      width="100%"
       top={0}
       left={0}
       height="4rem"
+      margin={0}
+      padding={0}
       display="flex"
       paddingLeft="6rem"
       alignItems="center"

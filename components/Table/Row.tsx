@@ -5,133 +5,56 @@ import {
   Box,
   StyledOcticon,
   TextInput,
-  Flash,
 } from "@primer/react";
-import {
-  IssueOpenedIcon,
-  HourglassIcon,
-  CheckIcon,
-} from "@primer/octicons-react";
-import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { useCallback, useEffect, useState, useRef } from "react";
-import { RpcMethods } from "lib/spl";
-import { useRefresh } from "./Table";
-import { useHandleDestroyAnimated } from "hooks";
-enum Actions {
-  Mint,
-  Sending,
-}
-const Row: React.FC<{
-  tokenName: string;
-  tokenOwner: string;
-  tokenKeypair: string;
-  tokenTicker?: string;
-}> = ({ tokenName, tokenOwner, tokenKeypair, tokenTicker }) => {
-  const { connection } = useConnection();
-  const { publicKey } = useWallet();
-  const [mintedAmount, setMintedAmount] = useState<null | number>(null);
-  const [walletAmount, setWalletAmount] = useState<null | number>(null);
-  const [action, setAction] = useState<null | Actions>(null);
-  const [mintAmount, setMintAmount] = useState(1);
-  const [transferAmount, setTransferAmount] = useState(1);
-  const [destinationAddress, setDestinationAddress] = useState("");
-  const [mintError, setMintError] = useState<null | string>(null);
-  const [sendError, setSendError] = useState<null | string>(null);
-  const { r } = useRefresh();
-  const flashRef = useRef<null | HTMLDivElement>(null);
+import { IssueOpenedIcon, HourglassIcon } from "@primer/octicons-react";
+import { useWallet } from "@solana/wallet-adapter-react";
+import { useEffect } from "react";
+import { useMintAndTransfer } from "hooks";
+import { Actions, RowProps } from "types";
+import { useRefresh } from "contexts";
 
-  const [sendSuccess, setSendSuccess] = useHandleDestroyAnimated(flashRef);
+enum IssueColor {
+  Green = "green",
+  Red = "red",
+  Primary = "primary",
+}
+
+const Row: React.FC<RowProps> = (props) => {
+  const { publicKey } = useWallet();
+  const {
+    getTokenBalance,
+    mintedAmount,
+    walletAmount,
+    setMintAmount,
+    action,
+    mintTokens,
+    setTransferAmount,
+    transferTokens,
+    setDestinationAddress,
+    destinationAddress,
+    mintError,
+    sendError,
+  } = useMintAndTransfer(props);
+
+  const { r } = useRefresh();
+
   function setWalletAddress() {
     if (!publicKey) return;
     setDestinationAddress(publicKey?.toBase58());
   }
-  const getTokenBalance = useCallback(async () => {
-    try {
-      const rpc = new RpcMethods(connection);
-      const amount = await rpc.getTokenBalance(tokenOwner, tokenName);
-      setMintedAmount(amount);
-      if (!publicKey) return;
-      const walletAmount = await rpc.getTokenBalance(
-        publicKey.toBase58(),
-        tokenName
-      );
-      setWalletAmount(walletAmount);
-    } catch (e) {
-      console.error(e);
-    }
-  }, [connection, publicKey, tokenName, tokenOwner]);
 
   useEffect(() => {
     getTokenBalance();
   }, [getTokenBalance, r]);
 
-  async function mintTokens() {
-    setMintError(null);
-    setAction(Actions.Mint);
-    if (mintAmount === 0) {
-      setAction(null);
-      return;
-    }
-    try {
-      const res = await fetch("api/mint/", {
-        method: "POST",
-        body: JSON.stringify({
-          owner: tokenOwner,
-          token: tokenName,
-          keypair: tokenKeypair,
-          amount: mintAmount,
-        }),
-      });
-      const data = await res.json();
-      if ("err" in data) {
-        setMintError(data.err);
-      } else {
-        setSendSuccess(true);
-      }
-    } catch (err) {
-      console.error(err);
-    }
-    setAction(null);
-    getTokenBalance();
-  }
-  async function transferTokens() {
-    setSendError(null);
-    setAction(Actions.Sending);
-    if (transferAmount === 0) {
-      setAction(null);
-      return;
-    }
-    try {
-      const res = await fetch("api/transfer/", {
-        method: "POST",
-        body: JSON.stringify({
-          owner: tokenOwner,
-          token: tokenName,
-          keypair: tokenKeypair,
-          amount: transferAmount,
-          recipient: destinationAddress,
-        }),
-      });
-      const data = await res.json();
-      if ("err" in data) {
-        setSendError(data.err);
-      } else {
-        setSendSuccess(true);
-      }
-    } catch (err) {
-      console.error(err);
-    }
-    setAction(null);
-    getTokenBalance();
-  }
-  const issueColor = () => {
-    if (mintedAmount === null) return "primary";
+  function issueColor(): IssueColor {
+    if (mintedAmount === null) return IssueColor.Primary;
     if (mintedAmount > 0) {
-      return "green";
+      return IssueColor.Green;
     } else {
-      return "red";
+      return IssueColor.Red;
     }
-  };
+  }
 
   return (
     <>
@@ -170,20 +93,20 @@ const Row: React.FC<{
             >
               <Text fontSize={17} fontWeight={600} margin={0} padding="0">
                 Token name{" "}
-                {tokenTicker && (
+                {props.tokenTicker && (
                   <Text
                     color={"primary"}
                     fontSize={14}
                     fontWeight="600"
                     marginLeft="1rem"
                   >
-                    [{tokenTicker}]
+                    [{props.tokenTicker}]
                   </Text>
                 )}
               </Text>
 
               <Text fontSize={13} fontWeight="light">
-                {tokenName}
+                {props.tokenName}
               </Text>
             </Box>
           </Header.Item>
@@ -322,24 +245,6 @@ const Row: React.FC<{
           </Header.Item>
         </Box>
       </Header>
-      {sendSuccess && (
-        <div
-          ref={flashRef}
-          id="send-success"
-          style={{
-            position: "absolute",
-            bottom: "2rem",
-            right: "2rem",
-            width: "20rem",
-            fontSize: "1.1rem",
-          }}
-        >
-          <Flash variant="success">
-            <StyledOcticon icon={CheckIcon} />
-            Success!
-          </Flash>
-        </div>
-      )}
     </>
   );
 };
