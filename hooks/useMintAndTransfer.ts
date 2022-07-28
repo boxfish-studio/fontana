@@ -2,12 +2,12 @@ import {
   createAssociatedTokenAccountInstruction,
   createTransferInstruction,
 } from "@solana/spl-token";
-import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { useWallet } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
 import { RpcMethods } from "lib/spl";
 import { useCallback, useState } from "react";
 import { Actions, RowProps } from "types";
-import { useSuccess } from "contexts";
+import { useSuccess, useConnection } from "contexts";
 
 export default function useMintAndTransfer({
   walletAuthority,
@@ -28,6 +28,7 @@ export default function useMintAndTransfer({
   const { setMessage } = useSuccess();
 
   const getTokenBalance = useCallback(async () => {
+    if (!connection) return;
     try {
       const rpc = new RpcMethods(connection);
       const amount = await rpc.getTokenBalance(tokenOwner, tokenName);
@@ -44,6 +45,7 @@ export default function useMintAndTransfer({
   }, [connection, publicKey, tokenName, tokenOwner]);
 
   async function mintTokens() {
+    if (!connection) return;
     setMintError(null);
     setAction(Actions.Mint);
     if (mintAmount === 0) {
@@ -87,6 +89,7 @@ export default function useMintAndTransfer({
     getTokenBalance();
   }
   async function transferTokens() {
+    if (!connection) return;
     setSendError(null);
     setAction(Actions.Sending);
     if (transferAmount === 0) {
