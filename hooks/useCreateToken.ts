@@ -6,16 +6,16 @@ import {
   MINT_SIZE,
   TOKEN_PROGRAM_ID,
 } from "@solana/spl-token";
-import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { useWallet } from "@solana/wallet-adapter-react";
 import { Keypair, SystemProgram, Transaction } from "@solana/web3.js";
 import { RpcMethods } from "lib/spl";
-import { useRefresh, useSuccess, useHasMongoUri } from "contexts";
+import { useRefresh, useSuccess, useHasMongoUri, useConnection } from "contexts";
 import { useState } from "react";
 import { createMint } from "lib/create-token";
 
 export default function useCreateToken() {
   const { r, refresh } = useRefresh();
-  const { connection } = useConnection();
+  const { connection, network } = useConnection();
   const { publicKey, sendTransaction } = useWallet();
   const { setMessage, setMint } = useSuccess();
   const [minting, setMinting] = useState(false);
@@ -31,7 +31,7 @@ export default function useCreateToken() {
         if (!tokenData) return;
         await fetch("api/mongo-new-token", {
           method: "POST",
-          body: JSON.stringify(tokenData),
+          body: JSON.stringify({...tokenData, network}),
         });
         setMinting(false);
         setMessage(
@@ -48,7 +48,7 @@ export default function useCreateToken() {
       }
     }
     try {
-      if (!publicKey) return;
+      if (!publicKey || !connection) return;
       setMinting(true);
       const mint = Keypair.generate();
 

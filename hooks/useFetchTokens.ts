@@ -30,14 +30,16 @@ export default function useFetchTokens() {
     if (!hasMongoUri || publicKey) return setMongoTokens([]);
     (async () => {
       const res = await fetch("api/mongo-get", {
-        method: "GET",
+        method: "POST",
+        body: JSON.stringify({network}),
       });
+      
       const { queryResults } = (await res.json()) as {
         queryResults: Token[];
       };
       setMongoTokens(queryResults);
     })();
-  }, [hasMongoUri, publicKey, r]);
+  }, [hasMongoUri, publicKey, r, network]);
 
   useEffect(() => {
     if (!publicKey || !connection) return setWalletTokens([]);

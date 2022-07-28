@@ -1,6 +1,7 @@
 import { connect } from "mongoose";
 import { Token } from "./model";
 import { NewToken } from "types";
+import type { Network } from "contexts";
 
 declare module globalThis {
   var mongoose: any;
@@ -8,7 +9,7 @@ declare module globalThis {
 
 interface Mongo {
   queryKeypair: (token: string) => Promise<string>;
-  queryTokens: () => Promise<Query[]>;
+  queryTokens: (network:Network) => Promise<Query[]>;
   createToken: (token: NewToken) => Promise<void>;
 }
 
@@ -48,9 +49,9 @@ export class Database implements Mongo {
     return keypair as string;
   }
 
-  async queryTokens() {
+  async queryTokens(network:Network ) {
     await this.dbconnect();
-    const queryResults: Query[] = (await Token.find()).map(
+    const queryResults: Query[] = (await Token.find({network})).map(
       ({ token, owner }) => {
         return {
           token,
