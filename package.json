@@ -11,6 +11,7 @@
     "format": "prettier --write \"./**/*.{tsx,ts,js}\""
   },
   "dependencies": {
+    "@primer/css": "^20.4.0",
     "@primer/react": "^35.4.0",
     "@solana/spl-token": "^0.2.0",
     "@solana/wallet-adapter-base": "^0.9.5",
@@ -22,6 +23,7 @@
     "next": "12.1.6",
     "react": "18.1.0",
     "react-dom": "18.1.0",
+    "sass": "^1.54.0",
     "styled-components": "^5.3.5"
   },
   "devDependencies": {
