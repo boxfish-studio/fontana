@@ -24,6 +24,7 @@ export default function handler(
   } = JSON.parse(req.body);
   (async () => {
     try {
+      console.log(req.body);
       const endpoint =
         network === "Mainnet"
           ? process.env.NEXT_PUBLIC_RPC_API_MAINNET || clusterApiUrl('mainnet-beta')

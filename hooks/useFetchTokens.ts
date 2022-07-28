@@ -27,12 +27,10 @@ export default function useFetchTokens() {
   }, [network]);
 
   useEffect(() => {
-    
-    if (!hasMongoUri || publicKey) return setMongoTokens([]);
+    if (!hasMongoUri || publicKey || network!=="Devnet") return setMongoTokens([]);
     (async () => {
       const res = await fetch("api/mongo-get", {
-        method: "POST",
-        body: JSON.stringify({network}),
+        method: "GET",
       });
       
       const { queryResults } = (await res.json()) as {

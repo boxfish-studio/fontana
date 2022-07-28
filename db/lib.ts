@@ -9,7 +9,7 @@ declare module globalThis {
 
 interface Mongo {
   queryKeypair: (token: string) => Promise<string>;
-  queryTokens: (network:Network) => Promise<Query[]>;
+  queryTokens: (network: Network) => Promise<Query[]>;
   createToken: (token: NewToken) => Promise<void>;
 }
 
@@ -49,9 +49,9 @@ export class Database implements Mongo {
     return keypair as string;
   }
 
-  async queryTokens(network:Network ) {
+  async queryTokens() {
     await this.dbconnect();
-    const queryResults: Query[] = (await Token.find({network})).map(
+    const queryResults: Query[] = (await Token.find()).map(
       ({ token, owner }) => {
         return {
           token,

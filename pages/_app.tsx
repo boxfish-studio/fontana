@@ -34,7 +34,7 @@ const customTheme = deepmerge(theme, {
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [connection, setConnection] = useState<Connection | null>(null);
-  const [network, setNetwork] = useState<Network>("Devnet");
+  const [network, setNetwork] = useState<Network|null>(null);
   const [url, setUrl] = useState<string | null>(null);
 
   const wallets = useMemo(

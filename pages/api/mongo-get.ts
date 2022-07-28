@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { Database, Query } from "db/lib";
-import type { Network } from "contexts";
 
 interface Res {
   queryResults?: Query[];
@@ -8,13 +7,11 @@ interface Res {
 }
 
 export default async function handler(
-  req: NextApiRequest,
+  _req: NextApiRequest,
   res: NextApiResponse<Res>
 ) {
   try {
-    const { network } = JSON.parse(req.body) as { network: Network };
-    if (!network) throw new Error("No token");
-    const queryResults = await new Database().queryTokens(network);
+    const queryResults = await new Database().queryTokens();
     res.status(200).end(JSON.stringify({ queryResults }));
   } catch (e) {
     console.error(e);
