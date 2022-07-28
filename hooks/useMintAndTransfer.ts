@@ -6,11 +6,11 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
 import { RpcMethods } from "lib/spl";
 import { useCallback, useState } from "react";
-import { Actions, RowProps } from "types";
+import { Actions, RowProps, Sources } from "types";
 import { useSuccess, useConnection } from "contexts";
 
 export default function useMintAndTransfer({
-  walletAuthority,
+  source,
   tokenOwner,
   tokenName,
   tokenKeypair,
@@ -30,6 +30,7 @@ export default function useMintAndTransfer({
   const getTokenBalance = useCallback(async () => {
     if (!connection) return;
     try {
+      if (!connection) return;
       const rpc = new RpcMethods(connection);
       const amount = await rpc.getTokenBalance(tokenOwner, tokenName);
       setMintedAmount(amount);
@@ -52,7 +53,7 @@ export default function useMintAndTransfer({
       setAction(null);
       return;
     }
-    if (walletAuthority) {
+    if (source === Sources.Wallet) {
       // mint and sign from wallet
       try {
         const rpc = new RpcMethods(connection);
@@ -73,6 +74,7 @@ export default function useMintAndTransfer({
             token: tokenName,
             keypair: tokenKeypair,
             amount: mintAmount,
+            mongo: source === Sources.Db,
           }),
         });
         const data = await res.json();
@@ -96,11 +98,12 @@ export default function useMintAndTransfer({
       setAction(null);
       return;
     }
-    if (walletAuthority && publicKey) {
+    if (source === Sources.Wallet && publicKey) {
       // mint and sign from wallet
       try {
+
         const rpc = new RpcMethods(connection);
-        const ata = await rpc.getAssociatedTokenAccount(
+        const ata = await RpcMethods.getAssociatedTokenAccount(
           tokenName,
           destinationAddress
         );
@@ -124,7 +127,7 @@ export default function useMintAndTransfer({
           }
         }
 
-        const sourceAccount = await rpc.getAssociatedTokenAccount(
+        const sourceAccount = await RpcMethods.getAssociatedTokenAccount(
           tokenName,
           tokenOwner
         );
@@ -152,6 +155,7 @@ export default function useMintAndTransfer({
             keypair: tokenKeypair,
             amount: transferAmount,
             recipient: destinationAddress,
+            mongo: source === Sources.Db,
           }),
         });
         const data = await res.json();

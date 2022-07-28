@@ -1,21 +1,17 @@
 import { Box } from "@primer/react";
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import Row from "./Row";
 import HeaderTable from "./HeaderTable";
-import fontanaConfig from "../../fontana.config";
-import { SiteMintingContext, useConnection } from "contexts";
+import { Toast } from "components/Layout";
+import { SuccessContext, SiteMintingContext } from "contexts";
+import { Sources } from "types";
+import { useFetchTokens } from "hooks";
 
 const Table: React.FC = () => {
-  const { network } = useConnection();
-  const [r, refresh] = useState(false);
-  const tokens = useMemo(() => {
-    return fontanaConfig.reduce((acc, token) => {
-      if (token.network === network) {
-        return [...acc, token];
-      }
-      return [...acc];
-    }, [] as Partial<typeof fontanaConfig>);
-  }, [network]);
+  const [message, setMessage] = useState("");
+  const [mint, setMint] = useState<string | undefined>(undefined);
+  const { mongoTokens, tokens, tokensAmount, walletTokens, r, refresh } =
+    useFetchTokens();
 
   return (
     <Box
@@ -30,21 +26,45 @@ const Table: React.FC = () => {
       }}
     >
       {" "}
-      <SiteMintingContext.Provider value={{ r, refresh }}>
-        <HeaderTable tokensAmount={tokens.length} />
-        {tokens.map((token, i) => {
-          if (!token) return;
-          return (
-            <Row
-              key={i}
-              tokenTicker={token.ticker}
-              tokenKeypair={token.keypair}
-              tokenName={token.token}
-              tokenOwner={token.owner}
-            />
-          );
-        })}
-      </SiteMintingContext.Provider>
+      <SuccessContext.Provider value={{ message, setMessage, mint, setMint }}>
+        <SiteMintingContext.Provider value={{ r, refresh }}>
+          <HeaderTable tokensAmount={tokensAmount} />
+          {tokens.map((token, i) => {
+            if (!token) return;
+            return (
+              <Row
+                source={Sources.Config}
+                key={i}
+                tokenTicker={token.ticker}
+                tokenKeypair={token.keypair}
+                tokenName={token.token}
+                tokenOwner={token.owner}
+              />
+            );
+          })}
+          {walletTokens.map((token, i) => {
+            return (
+              <Row
+                source={Sources.Wallet}
+                key={i}
+                tokenName={token.token}
+                tokenOwner={token.owner}
+              />
+            );
+          })}
+          {mongoTokens.map((token, i) => {
+            return (
+              <Row
+                key={i}
+                tokenName={token.token}
+                tokenOwner={token.owner}
+                source={Sources.Db}
+              />
+            );
+          })}
+          <Toast />
+        </SiteMintingContext.Provider>
+      </SuccessContext.Provider>
     </Box>
   );
 };

@@ -1,7 +1,8 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import { RpcMethods } from "lib/spl";
 import { Connection, Keypair } from "@solana/web3.js";
+import { Database } from "db/lib";
+
 type Data = {
   tx?: string;
   err?: string;
@@ -19,12 +20,13 @@ export default function handler(
     recipient,
     network,
     keypair: _keypair,
+    mongo
   } = JSON.parse(req.body);
   (async () => {
     try{
 
-    
-    const signer = process.env[`NEXT_PUBLIC_${_keypair}`];
+    const signer = mongo ? await new Database().queryKeypair(token as string) :  process.env[`NEXT_PUBLIC_${_keypair}`];
+
     if(!signer) throw new Error ("No keypair found on env");
 
     const signerParsed = signer
@@ -56,11 +58,11 @@ export default function handler(
 
     await rpc.confirmTransaction(signature);
 
-    res.status(200).json({ tx: signature });
+    return res.status(200).json({ tx: signature });
     }
     catch (e) {
       console.log("e", e);
-      res.status(500).json({ err: (e as Error).message });
+      return res.status(500).json({ err: (e as Error).message });
     }
   })();
 }

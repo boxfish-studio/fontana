@@ -1,6 +1,6 @@
 import "../styles/globals.scss";
 import type { AppProps } from "next/app";
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import {
   WalletProvider,
 } from "@solana/wallet-adapter-react";
@@ -33,9 +33,9 @@ const customTheme = deepmerge(theme, {
 });
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const [connection, setConnection] = React.useState<Connection | null>(null);
-  const [network, setNetwork] = React.useState<Network>("Devnet");
-  const [url, setUrl] = React.useState<string | null>(null);
+  const [connection, setConnection] = useState<Connection | null>(null);
+  const [network, setNetwork] = useState<Network>("Devnet");
+  const [url, setUrl] = useState<string | null>(null);
 
   const wallets = useMemo(
     () => [

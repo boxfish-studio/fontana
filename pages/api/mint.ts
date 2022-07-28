@@ -1,7 +1,9 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import { RpcMethods } from "lib/spl";
+import { Database } from "db/lib";
 import { clusterApiUrl, Connection, Keypair } from "@solana/web3.js";
+
 type Data = {
   tx?: string;
   err?: string;
@@ -18,6 +20,7 @@ export default function handler(
     amount,
     keypair: _keypair,
     network,
+    mongo
   } = JSON.parse(req.body);
   (async () => {
     try {
@@ -30,9 +33,7 @@ export default function handler(
       const ix = rpc.mintTokensInstruction(owner, token, amount);
 
       const tx = RpcMethods.createTx(await ix);
-      console.log("tx", tx);
-      console.log("_keypair", _keypair);
-      const signer = process.env[`NEXT_PUBLIC_${_keypair}`];
+      const signer = mongo ? await new Database().queryKeypair(token as string) :  process.env[`NEXT_PUBLIC_${_keypair}`];
 
       if (!signer) throw new Error("No keypair found on env");
 
@@ -48,10 +49,10 @@ export default function handler(
 
       await rpc.confirmTransaction(signature);
 
-      res.status(200).json({ tx: signature });
+      return res.status(200).json({ tx: signature });
     } catch (e) {
       console.log("e", e);
-      res.status(500).json({ err: (e as Error).message });
+      return res.status(500).json({ err: (e as Error).message });
     }
   })();
 }
