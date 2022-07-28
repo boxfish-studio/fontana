@@ -2,15 +2,15 @@ import {
   createAssociatedTokenAccountInstruction,
   createTransferInstruction,
 } from "@solana/spl-token";
-import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { useWallet } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
 import { RpcMethods } from "lib/spl";
 import { useCallback, useState } from "react";
-import { Actions, RowProps } from "types";
-import { useSuccess } from "contexts";
+import { Actions, RowProps, Sources } from "types";
+import { useSuccess, useConnection } from "contexts";
 
 export default function useMintAndTransfer({
-  walletAuthority,
+  source,
   tokenOwner,
   tokenName,
   tokenKeypair,
@@ -29,6 +29,7 @@ export default function useMintAndTransfer({
 
   const getTokenBalance = useCallback(async () => {
     try {
+      if (!connection) return;
       const rpc = new RpcMethods(connection);
       const amount = await rpc.getTokenBalance(tokenOwner, tokenName);
       setMintedAmount(amount);
@@ -44,13 +45,14 @@ export default function useMintAndTransfer({
   }, [connection, publicKey, tokenName, tokenOwner]);
 
   async function mintTokens() {
+    if (!connection) return;
     setMintError(null);
     setAction(Actions.Mint);
     if (mintAmount === 0) {
       setAction(null);
       return;
     }
-    if (walletAuthority) {
+    if (source === Sources.Wallet) {
       // mint and sign from wallet
       try {
         const rpc = new RpcMethods(connection);
@@ -71,6 +73,7 @@ export default function useMintAndTransfer({
             token: tokenName,
             keypair: tokenKeypair,
             amount: mintAmount,
+            mongo: source === Sources.Db,
           }),
         });
         const data = await res.json();
@@ -87,17 +90,19 @@ export default function useMintAndTransfer({
     getTokenBalance();
   }
   async function transferTokens() {
+    if (!connection) return;
     setSendError(null);
     setAction(Actions.Sending);
     if (transferAmount === 0) {
       setAction(null);
       return;
     }
-    if (walletAuthority && publicKey) {
+    if (source === Sources.Wallet && publicKey) {
       // mint and sign from wallet
       try {
+
         const rpc = new RpcMethods(connection);
-        const ata = await rpc.getAssociatedTokenAccount(
+        const ata = await RpcMethods.getAssociatedTokenAccount(
           tokenName,
           destinationAddress
         );
@@ -121,7 +126,7 @@ export default function useMintAndTransfer({
           }
         }
 
-        const sourceAccount = await rpc.getAssociatedTokenAccount(
+        const sourceAccount = await RpcMethods.getAssociatedTokenAccount(
           tokenName,
           tokenOwner
         );
@@ -149,6 +154,7 @@ export default function useMintAndTransfer({
             keypair: tokenKeypair,
             amount: transferAmount,
             recipient: destinationAddress,
+            mongo: source === Sources.Db,
           }),
         });
         const data = await res.json();

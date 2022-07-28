@@ -5,9 +5,15 @@ import { Table } from "components/Table";
 import { Box, StyledOcticon, Text } from "@primer/react";
 import { HeartFillIcon } from "@primer/octicons-react";
 import { Toast } from "components/Layout";
-import { version } from "../version.json";
+import { version } from "version.json";
+import { HasMongoUriContext } from "contexts";
 
-const Home: NextPage = () => {
+export async function getServerSideProps() {
+  const HAS_MONGO_URI = !!process.env.NEXT_PUBLIC_DATABASE_URL;
+  return { props: { HAS_MONGO_URI } };
+}
+
+const Home: NextPage<{ HAS_MONGO_URI: boolean }> = ({ HAS_MONGO_URI }) => {
   return (
     <>
       <Head>
@@ -35,7 +41,9 @@ const Home: NextPage = () => {
           padding={"0.5rem"}
           marginBottom={"5rem"}
         >
-          <Table />
+          <HasMongoUriContext.Provider value={{ hasMongoUri: HAS_MONGO_URI }}>
+            <Table />
+          </HasMongoUriContext.Provider>
         </Box>
         <Toast />
         <footer

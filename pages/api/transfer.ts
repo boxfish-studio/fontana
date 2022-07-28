@@ -1,7 +1,8 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import { RpcMethods } from "lib/spl";
 import { Connection, Keypair } from "@solana/web3.js";
+import { Database } from "db/lib";
+
 type Data = {
   tx?: string;
   err?: string;
@@ -17,13 +18,15 @@ export default function handler(
     token,
     amount,
     recipient,
+    network,
     keypair: _keypair,
+    mongo
   } = JSON.parse(req.body);
   (async () => {
     try{
 
-    
-    const signer = process.env[`NEXT_PUBLIC_${_keypair}`];
+    const signer = mongo ? await new Database().queryKeypair(token as string) :  process.env[`NEXT_PUBLIC_${_keypair}`];
+
     if(!signer) throw new Error ("No keypair found on env");
 
     const signerParsed = signer
@@ -34,7 +37,11 @@ export default function handler(
     const keypair = Keypair.fromSecretKey(new Uint8Array(signerParsed));
     console.log("keypair", keypair.publicKey.toBase58());
 
-    const connection = new Connection(process.env.NEXT_PUBLIC_SOLANA_RPC_HOST!);
+    const endpoint =
+    network === "Mainnet"
+      ? process.env.NEXT_PUBLIC_RPC_API_MAINNET
+      : process.env.NEXT_PUBLIC_RPC_API_DEVNET;
+  const connection = new Connection(endpoint!);
     const rpc = new RpcMethods(connection);
     const ix = rpc.transferInstruction(
       owner,
@@ -51,11 +58,11 @@ export default function handler(
 
     await rpc.confirmTransaction(signature);
 
-    res.status(200).json({ tx: signature });
+    return res.status(200).json({ tx: signature });
     }
     catch (e) {
       console.log("e", e);
-      res.status(500).json({ err: (e as Error).message });
+      return res.status(500).json({ err: (e as Error).message });
     }
   })();
 }

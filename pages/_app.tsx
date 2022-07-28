@@ -1,11 +1,9 @@
-import "../styles/globals.css";
+import "../styles/globals.scss";
 import type { AppProps } from "next/app";
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import {
-  ConnectionProvider,
   WalletProvider,
 } from "@solana/wallet-adapter-react";
-import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import {
   GlowWalletAdapter,
   PhantomWalletAdapter,
@@ -16,12 +14,11 @@ import {
   TorusWalletAdapter,
 } from "@solana/wallet-adapter-wallets";
 import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
-import { clusterApiUrl, ConnectionConfig } from "@solana/web3.js";
-
-import { Wallet } from "components/Layout";
+import {  Connection } from "@solana/web3.js";
 import { ThemeProvider, BaseStyles, theme } from "@primer/react";
 import deepmerge from "deepmerge";
-const rpc = process.env.NEXT_PUBLIC_SOLANA_RPC_HOST;
+import { ConnectionContext } from "contexts";
+import type { Network } from "contexts";
 
 const customTheme = deepmerge(theme, {
   fonts: {
@@ -36,27 +33,36 @@ const customTheme = deepmerge(theme, {
 });
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const network = WalletAdapterNetwork.Devnet;
-  const endpoint = useMemo(() => rpc || clusterApiUrl(network), [network]);
-  const config = { commitment: "confirmed" } as ConnectionConfig;
+  const [connection, setConnection] = useState<Connection | null>(null);
+  const [network, setNetwork] = useState<Network>("Devnet");
+  const [url, setUrl] = useState<string | null>(null);
+
   const wallets = useMemo(
     () => [
       new PhantomWalletAdapter(),
       new GlowWalletAdapter(),
       new SlopeWalletAdapter(),
-      new SolflareWalletAdapter({ network }),
+      new SolflareWalletAdapter(),
       new TorusWalletAdapter(),
-      new SolletWalletAdapter({ network }),
-      new SolletExtensionWalletAdapter({ network }),
+      new SolletWalletAdapter(),
+      new SolletExtensionWalletAdapter(),
     ],
-    [network]
+    []
   );
 
   return (
-    <ConnectionProvider endpoint={endpoint} config={config}>
+    <ConnectionContext.Provider
+      value={{
+        connection,
+        setConnection,
+        network,
+        setNetwork,
+        url,
+        setUrl,
+      }}
+    >
       <WalletProvider wallets={wallets}>
         <WalletModalProvider>
-          <Wallet />
           {/* @ts-ignore */}
           <ThemeProvider theme={customTheme} colorMode="auto">
             <BaseStyles>
@@ -65,7 +71,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           </ThemeProvider>
         </WalletModalProvider>
       </WalletProvider>
-    </ConnectionProvider>
+    </ConnectionContext.Provider>
   );
 }
 
