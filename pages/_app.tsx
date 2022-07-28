@@ -17,7 +17,6 @@ import {
 } from "@solana/wallet-adapter-wallets";
 import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
 import { clusterApiUrl, Connection } from "@solana/web3.js";
-import { Wallet } from "components/Layout";
 import { ThemeProvider, BaseStyles, theme } from "@primer/react";
 import deepmerge from "deepmerge";
 import { ConnectionContext } from "contexts";
@@ -67,7 +66,6 @@ function MyApp({ Component, pageProps }: AppProps) {
     >
       <WalletProvider wallets={wallets}>
         <WalletModalProvider>
-          <Wallet />
           {/* @ts-ignore */}
           <ThemeProvider theme={customTheme} colorMode="auto">
             <BaseStyles>

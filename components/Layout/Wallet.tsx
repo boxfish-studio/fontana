@@ -4,21 +4,14 @@ import { FC } from "react";
 
 const Wallet: FC = () => {
   return (
-    <Box
-      sx={{
-        position: "absolute",
-        top: 0,
-        right: 0,
-        display: "flex",
-        flexDirection: "row",
-        margin: "1rem",
-        marginTop: "0.5rem",
-        zIndex: 1,
+    <div
+      className="d-flex "
+      style={{
         transform: "scale(0.7)",
       }}
     >
       <WalletMultiButton />
-    </Box>
+    </div>
   );
 };
 

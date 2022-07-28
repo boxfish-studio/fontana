@@ -48,19 +48,7 @@ const NetworkSelector: FC = () => {
     }
 
     return (
-        <div style={{
-            paddingRight: '1rem',
-            zIndex: 100000,
-            position: 'relative',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            cursor: 'pointer',
-            userSelect: 'none',
-            WebkitUserSelect: 'none',
-            MozUserSelect: 'none',
-            backgroundColor:"red"
-        }}>
+        <div>
             <details
                 id='details'
                 className='dropdown details-reset details-overlay d-inline-block cursor-pointer'
