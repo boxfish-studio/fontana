@@ -16,10 +16,12 @@ import {
   TorusWalletAdapter,
 } from "@solana/wallet-adapter-wallets";
 import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
-import { clusterApiUrl } from "@solana/web3.js";
+import { clusterApiUrl, Connection } from "@solana/web3.js";
 import { Wallet } from "components/Layout";
 import { ThemeProvider, BaseStyles, theme } from "@primer/react";
 import deepmerge from "deepmerge";
+import { ConnectionContext } from "contexts";
+import type { Network } from "contexts";
 const rpc = process.env.NEXT_PUBLIC_SOLANA_RPC_HOST;
 
 const customTheme = deepmerge(theme, {
@@ -35,24 +37,34 @@ const customTheme = deepmerge(theme, {
 });
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const network = WalletAdapterNetwork.Devnet;
-  const endpoint = useMemo(() => rpc || clusterApiUrl(network), [network]);
+  const [connection, setConnection] = React.useState<Connection | null>(null);
+  const [network, setNetwork] = React.useState<Network>("Devnet");
+  const [url, setUrl] = React.useState<string | null>(null);
 
   const wallets = useMemo(
     () => [
       new PhantomWalletAdapter(),
       new GlowWalletAdapter(),
       new SlopeWalletAdapter(),
-      new SolflareWalletAdapter({ network }),
+      new SolflareWalletAdapter(),
       new TorusWalletAdapter(),
-      new SolletWalletAdapter({ network }),
-      new SolletExtensionWalletAdapter({ network }),
+      new SolletWalletAdapter(),
+      new SolletExtensionWalletAdapter(),
     ],
-    [network]
+    []
   );
 
   return (
-    <ConnectionProvider endpoint={endpoint}>
+    <ConnectionContext.Provider
+      value={{
+        connection,
+        setConnection,
+        network,
+        setNetwork,
+        url,
+        setUrl,
+      }}
+    >
       <WalletProvider wallets={wallets}>
         <WalletModalProvider>
           <Wallet />
@@ -64,7 +76,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           </ThemeProvider>
         </WalletModalProvider>
       </WalletProvider>
-    </ConnectionProvider>
+    </ConnectionContext.Provider>
   );
 }
 
