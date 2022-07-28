@@ -6,8 +6,6 @@ import { Toast } from "components/Layout";
 import { SuccessContext, SiteMintingContext } from "contexts";
 import { Sources } from "types";
 import { useFetchTokens } from "hooks";
-import fontanaConfig from "../../fontana.config";
-import { useConnection } from "contexts";
 
 const Table: React.FC = () => {
   const [message, setMessage] = useState("");
