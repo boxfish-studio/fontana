@@ -12,12 +12,20 @@ export default function handler(
   res: NextApiResponse<Data>
 ) {
   console.log("$req", req.body);
-  const { owner, token, amount, keypair: _keypair } = JSON.parse(req.body);
+  const {
+    owner,
+    token,
+    amount,
+    keypair: _keypair,
+    network,
+  } = JSON.parse(req.body);
   (async () => {
     try {
-      const connection = new Connection(
-        process.env.NEXT_PUBLIC_SOLANA_RPC_HOST!
-      );
+      const endpoint =
+        network === "Mainnet"
+          ? process.env.NEXT_PUBLIC_RPC_API_MAINNET
+          : process.env.NEXT_PUBLIC_RPC_API_DEVNET;
+      const connection = new Connection(endpoint!);
       const rpc = new RpcMethods(connection);
       const ix = rpc.mintTokensInstruction(owner, token, amount);
 
@@ -26,7 +34,7 @@ export default function handler(
       console.log("_keypair", _keypair);
       const signer = process.env[`NEXT_PUBLIC_${_keypair}`];
 
-      if(!signer) throw new Error ("No keypair found on env");
+      if (!signer) throw new Error("No keypair found on env");
 
       const signerParsed = signer
         .slice(1, -1)

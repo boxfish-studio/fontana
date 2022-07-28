@@ -17,6 +17,7 @@ export default function handler(
     token,
     amount,
     recipient,
+    network,
     keypair: _keypair,
   } = JSON.parse(req.body);
   (async () => {
@@ -34,7 +35,11 @@ export default function handler(
     const keypair = Keypair.fromSecretKey(new Uint8Array(signerParsed));
     console.log("keypair", keypair.publicKey.toBase58());
 
-    const connection = new Connection(process.env.NEXT_PUBLIC_SOLANA_RPC_HOST!);
+    const endpoint =
+    network === "Mainnet"
+      ? process.env.NEXT_PUBLIC_RPC_API_MAINNET
+      : process.env.NEXT_PUBLIC_RPC_API_DEVNET;
+  const connection = new Connection(endpoint!);
     const rpc = new RpcMethods(connection);
     const ix = rpc.transferInstruction(
       owner,

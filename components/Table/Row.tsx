@@ -28,7 +28,7 @@ const Row: React.FC<{
   tokenKeypair: string;
   tokenTicker?: string;
 }> = ({ tokenName, tokenOwner, tokenKeypair, tokenTicker }) => {
-  const { connection } = useConnection();
+  const { connection, network } = useConnection();
   const { publicKey } = useWallet();
   const [mintedAmount, setMintedAmount] = useState<null | number>(null);
   const [walletAmount, setWalletAmount] = useState<null | number>(null);
@@ -82,6 +82,7 @@ const Row: React.FC<{
           token: tokenName,
           keypair: tokenKeypair,
           amount: mintAmount,
+          network
         }),
       });
       const data = await res.json();
@@ -112,6 +113,7 @@ const Row: React.FC<{
           keypair: tokenKeypair,
           amount: transferAmount,
           recipient: destinationAddress,
+          network
         }),
       });
       const data = await res.json();
