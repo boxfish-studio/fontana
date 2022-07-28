@@ -25,18 +25,18 @@ const NetworkSelector: FC = () => {
     }
 
     useEffect(() => {
-        const _network = window.localStorage.getItem('network-gg') as Network | null
+        const _network = window.localStorage.getItem('network-fontana') as Network | null
         if (_network === 'Devnet' || _network === 'Mainnet' || _network === 'Testnet') {
             setNetwork(_network)
             setConnection(new Connection(getUrl(_network)))
             setUrl(getUrl(_network))
-            window.localStorage.setItem('network-gg', _network)
+            window.localStorage.setItem('network-fontana', _network)
         }
         if (!_network) {
-            setNetwork('Mainnet')
-            setConnection(new Connection(getUrl('Mainnet')))
-            setUrl(getUrl('Mainnet'))
-            window.localStorage.setItem('network-gg', 'Mainnet')
+            setNetwork('Devnet')
+            setConnection(new Connection(getUrl('Devnet')))
+            setUrl(getUrl('Devnet'))
+            window.localStorage.setItem('network-fontana', 'Devnet')
         }
     }, [])
     function changeNetwork(_network: Network) {
@@ -44,7 +44,7 @@ const NetworkSelector: FC = () => {
             setConnection(new Connection(getUrl(_network)))
             setUrl(getUrl(_network))
         hideUl()
-        window.localStorage.setItem('network-gg', _network)
+        window.localStorage.setItem('network-fontana', _network)
     }
 
     return (

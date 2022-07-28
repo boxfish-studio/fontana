@@ -3,6 +3,7 @@ import { useState, useMemo, createContext, useContext } from "react";
 import Row from "./Row";
 import HeaderTable from "./HeaderTable";
 import fontanaConfig from "../../fontana.config";
+import { useConnection } from "contexts";
 
 type Refresh = {
   r: boolean;
@@ -17,17 +18,16 @@ const SiteMintingContext = createContext<Refresh>({
 export const useRefresh = () => useContext(SiteMintingContext);
 
 const Table: React.FC = () => {
+  const { network } = useConnection();
   const [r, refresh] = useState(false);
   const tokens = useMemo(() => {
-    return fontanaConfig.map((token) => {
-      return {
-        keypair: token.keypair,
-        token: token.token,
-        owner: token.owner,
-        ticker: token.ticker,
-      };
-    });
-  }, []);
+    return fontanaConfig.reduce((acc, token) => {
+      if (token.network === network) {
+        return [...acc, token];
+      }
+      return [...acc];
+    }, [] as Partial<typeof fontanaConfig>);
+  }, [network]);
 
   return (
     <Box
@@ -45,6 +45,7 @@ const Table: React.FC = () => {
       <SiteMintingContext.Provider value={{ r, refresh }}>
         <HeaderTable tokensAmount={tokens.length} />
         {tokens.map((token, i) => {
+          if (!token) return;
           return (
             <Row
               key={i}

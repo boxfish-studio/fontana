@@ -2,10 +2,8 @@ import "../styles/globals.scss";
 import type { AppProps } from "next/app";
 import React, { useMemo } from "react";
 import {
-  ConnectionProvider,
   WalletProvider,
 } from "@solana/wallet-adapter-react";
-import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import {
   GlowWalletAdapter,
   PhantomWalletAdapter,
@@ -16,12 +14,11 @@ import {
   TorusWalletAdapter,
 } from "@solana/wallet-adapter-wallets";
 import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
-import { clusterApiUrl, Connection } from "@solana/web3.js";
+import {  Connection } from "@solana/web3.js";
 import { ThemeProvider, BaseStyles, theme } from "@primer/react";
 import deepmerge from "deepmerge";
 import { ConnectionContext } from "contexts";
 import type { Network } from "contexts";
-const rpc = process.env.NEXT_PUBLIC_SOLANA_RPC_HOST;
 
 const customTheme = deepmerge(theme, {
   fonts: {
