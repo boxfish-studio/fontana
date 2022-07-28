@@ -30,7 +30,6 @@ export default function useMintAndTransfer({
   const getTokenBalance = useCallback(async () => {
     if (!connection) return;
     try {
-      if (!connection) return;
       const rpc = new RpcMethods(connection);
       const amount = await rpc.getTokenBalance(tokenOwner, tokenName);
       setMintedAmount(amount);

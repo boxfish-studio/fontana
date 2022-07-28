@@ -15,7 +15,7 @@ import { createMint } from "lib/create-token";
 
 export default function useCreateToken() {
   const { r, refresh } = useRefresh();
-  const { connection, network } = useConnection();
+  const { connection, network, url } = useConnection();
   const { publicKey, sendTransaction } = useWallet();
   const { setMessage, setMint } = useSuccess();
   const [minting, setMinting] = useState(false);
@@ -24,28 +24,28 @@ export default function useCreateToken() {
     refresh(!r);
   }
   async function createToken() {
-    if (!publicKey && hasMongoUri) {
+    if (!publicKey && hasMongoUri && url) {
       try {
+        if(network==="Mainnet") throw new Error("Cannot create token in mainnet");
         setMinting(true);
-        const tokenData = await createMint();
+        const tokenData = await createMint(url);
         if (!tokenData) return;
+
         await fetch("api/mongo-new-token", {
           method: "POST",
-          body: JSON.stringify({...tokenData, network}),
+          body: JSON.stringify(tokenData),
         });
         setMinting(false);
         setMessage(
           `Success! New mint ${tokenData.token.slice(0, 12)}... created.`
         );
         setMint(tokenData.token);
-
         triggerRefresh();
-        return;
       } catch (e) {
         setMinting(false);
         console.error(e);
-        return;
       }
+      return;
     }
     try {
       if (!publicKey || !connection) return;

@@ -27,6 +27,7 @@ export default function useFetchTokens() {
   }, [network]);
 
   useEffect(() => {
+    
     if (!hasMongoUri || publicKey) return setMongoTokens([]);
     (async () => {
       const res = await fetch("api/mongo-get", {
@@ -42,6 +43,7 @@ export default function useFetchTokens() {
   }, [hasMongoUri, publicKey, r, network]);
 
   useEffect(() => {
+    
     if (!publicKey || !connection) return setWalletTokens([]);
     (async () => {
       const rpc = new RpcMethods(connection);

@@ -19,6 +19,5 @@ export interface NewToken {
   token: string;
   owner: string;
   keypair: string;
-  network: string;
 }
 

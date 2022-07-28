@@ -116,7 +116,6 @@ export class RpcMethods extends Rpc {
     }>
   > {
     const blockhash = await this.connection.getLatestBlockhash();
-    console.log("blockhash", blockhash);
     return blockhash;
   }
 
