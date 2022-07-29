@@ -1,4 +1,4 @@
-import { Header, Text, Button, Box, StyledOcticon } from "@primer/react";
+import { Header, Button, StyledOcticon } from "@primer/react";
 import { CheckIcon, SyncIcon } from "@primer/octicons-react";
 
 import { useWallet } from "@solana/wallet-adapter-react";
@@ -30,15 +30,16 @@ const HeaderTable: React.FC<{ tokensAmount: number }> = ({
         borderTopRightRadius: 5,
       }}
     >
-      <Box
-        color="text"
-        display="flex"
-        width="90rem"
-        height="4rem"
-        backgroundColor="transparent"
-        padding="13px 16px 12px"
-        alignItems="center"
-        style={{ gap: "16px" }}
+      <div
+        style={{
+          gap: "16px",
+          width: "90rem",
+          height: "4rem",
+          backgroundColor: "transparent",
+          padding: "13px 16px 12px",
+          alignItems: "center",
+        }}
+        className="d-flex color-fg-default"
       >
         <Header.Item
           style={{
@@ -46,13 +47,12 @@ const HeaderTable: React.FC<{ tokensAmount: number }> = ({
             width: "18rem",
             justifyContent: "flex-start",
             alignItems: "center",
-
           }}
         >
           <StyledOcticon icon={CheckIcon} size={16} color="primary" />
-          <p className="m-0 p-0 ml-4 color-fg-muted ">
+          <text className="ml-4 color-fg-muted ">
             {tokensAmount} SPL Tokens available
-          </p>
+          </text>
         </Header.Item>
         <Header.Item
           style={{
@@ -89,9 +89,7 @@ const HeaderTable: React.FC<{ tokensAmount: number }> = ({
               onClick={createToken}
               leadingIcon={minting ? HourglassIcon : null}
             >
-              <Text marginLeft="4px" fontWeight={600}>
-                Create token
-              </Text>
+              <text className=" text-bold">Create token</text>
             </Button>
           )}
           <Button
@@ -106,12 +104,10 @@ const HeaderTable: React.FC<{ tokensAmount: number }> = ({
             onClick={triggerRefresh}
           >
             <StyledOcticon icon={SyncIcon} size={14} color="text" />
-            <Text marginLeft="4px" fontWeight={600}>
-              Refresh
-            </Text>
+            <text className="ml-2">Refresh</text>
           </Button>
         </Header.Item>
-      </Box>
+      </div>
     </Header>
   );
 };

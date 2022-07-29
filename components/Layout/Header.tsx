@@ -1,36 +1,20 @@
-import { Box, Text } from "@primer/react";
 import { FontanaSVG } from "components/Layout";
 import { NetworkSelector, Wallet } from "components/Layout";
+
 const Header: React.FC = () => {
   return (
-    <Box
-      position="relative"
-      bg="navbarBackground"
-      width="100%"
-      top={0}
-      left={0}
-      height="4rem"
-      margin={0}
-      padding={0}
-      display="flex"
-      paddingLeft="6rem"
-      alignItems="center"
-      sx={{
-        gap: "1rem",
-        justifyContent: "space-between",
-      }}
-    >
+    <nav>
       <div className="d-flex flex-justify-center flex-items-center">
         <FontanaSVG width={27} />
-        <Text color="white" fontWeight={600} className="ml-2">
+        <h4 className="ml-3 text-bold color-white" style={{ color: "white" }}>
           Fontana - The Solana SPL multi-token generic faucet
-        </Text>
+        </h4>
       </div>
       <div className="d-flex flex-justify-center flex-items-center">
         <NetworkSelector />
         <Wallet />
       </div>
-    </Box>
+    </nav>
   );
 };
 

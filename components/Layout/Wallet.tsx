@@ -1,4 +1,3 @@
-import { Box } from "@primer/react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { FC } from "react";
 

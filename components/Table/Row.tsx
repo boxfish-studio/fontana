@@ -65,15 +65,16 @@ const Row: React.FC<RowProps> = (props) => {
           padding: 0,
         }}
       >
-        <Box
-          color="text"
-          display="flex"
-          width="90rem"
-          height="5rem"
-          backgroundColor="background"
-          padding="13px 16px 12px"
-          alignItems="center"
-          style={{ gap: "16px" }}
+        <div
+          style={{
+            gap: "16px",
+            width: "90rem",
+            height: "5rem",
+            backgroundColor: "white",
+            padding: "13px 16px 12px",
+            alignItems: "center",
+          }}
+          className="d-flex color-fg-default"
         >
           <Header.Item
             style={{
@@ -85,7 +86,7 @@ const Row: React.FC<RowProps> = (props) => {
               size={20}
               color={issueColor()}
             />
-            <div className="d-flex flex-column flex-justify-center ml-2">
+            <div className="d-flex flex-column flex-justify-center ml-3">
               <p className="f4 m-0 p-0 text-bold d-flex">
                 Token name{" "}
                 {props.tokenTicker && (
@@ -155,7 +156,7 @@ const Row: React.FC<RowProps> = (props) => {
               leadingIcon={action === Actions.Mint ? HourglassIcon : null}
               onClick={mintTokens}
             >
-              <p className="text-bold p-0 m-0">Mint</p>
+              <text className="text-bold">Mint</text>
             </Button>
           </Header.Item>
           <Header.Item
@@ -229,10 +230,10 @@ const Row: React.FC<RowProps> = (props) => {
               leadingIcon={action === Actions.Sending ? HourglassIcon : null}
               onClick={transferTokens}
             >
-              <p className="text-bold p-0 m-0">Send</p>
+              <text className="text-bold">Send</text>
             </Button>
           </Header.Item>
-        </Box>
+        </div>
       </Header>
     </>
   );

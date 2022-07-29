@@ -34,22 +34,7 @@ const Home: NextPage<{ HAS_MONGO_URI: boolean }> = ({ HAS_MONGO_URI }) => {
           </HasMongoUriContext.Provider>
         </div>
         <Toast />
-        <footer
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "0",
-            width: "100vw",
-            paddingTop: "4rem",
-            marginTop: "4rem",
-            marginBottom: "2rem",
-            position: "fixed",
-            bottom: "0",
-            left: 0,
-          }}
-        >
+        <footer>
           <p className="color-fg-muted">
             with{" "}
             <StyledOcticon icon={HeartFillIcon} size={16} color="#666666" />{" "}
