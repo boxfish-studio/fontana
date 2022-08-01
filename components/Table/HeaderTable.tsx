@@ -47,12 +47,13 @@ const HeaderTable: React.FC<{ tokensAmount: number }> = ({
             width: "18rem",
             justifyContent: "flex-start",
             alignItems: "center",
+
           }}
         >
           <StyledOcticon icon={CheckIcon} size={16} color="primary" />
-          <text className="ml-4 color-fg-muted ">
+          <p className="m-0 p-0 ml-4 color-fg-muted ">
             {tokensAmount} SPL Tokens available
-          </text>
+          </p>
         </Header.Item>
         <Header.Item
           style={{

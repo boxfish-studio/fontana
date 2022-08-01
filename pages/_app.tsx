@@ -1,6 +1,6 @@
 import "../styles/globals.scss";
 import type { AppProps } from "next/app";
-import React, { useMemo, useState } from "react";
+import React, { ReactNode, useMemo, useState } from "react";
 import {
   WalletProvider,
 } from "@solana/wallet-adapter-react";
@@ -15,7 +15,7 @@ import {
 } from "@solana/wallet-adapter-wallets";
 import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
 import {  Connection } from "@solana/web3.js";
-import { ThemeProvider, BaseStyles, theme } from "@primer/react";
+import { ThemeProvider, BaseStyles, theme, ThemeProviderProps } from "@primer/react";
 import deepmerge from "deepmerge";
 import { ConnectionContext } from "contexts";
 import type { Network } from "contexts";
@@ -31,6 +31,12 @@ const customTheme = deepmerge(theme, {
     navbarBackground: "#24292E",
   },
 });
+
+const CustomThemeProvider: React.FC<
+  ThemeProviderProps & { children: ReactNode }
+> = ({ children, ...props }) => {
+  return <ThemeProvider {...props}>{children}</ThemeProvider>;
+};
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [connection, setConnection] = useState<Connection | null>(null);
@@ -63,12 +69,11 @@ function MyApp({ Component, pageProps }: AppProps) {
     >
       <WalletProvider wallets={wallets}>
         <WalletModalProvider>
-          {/* @ts-ignore */}
-          <ThemeProvider theme={customTheme} colorMode="auto">
+          <CustomThemeProvider theme={customTheme} colorMode="day">
             <BaseStyles>
               <Component {...pageProps} />
             </BaseStyles>
-          </ThemeProvider>
+          </CustomThemeProvider>
         </WalletModalProvider>
       </WalletProvider>
     </ConnectionContext.Provider>
