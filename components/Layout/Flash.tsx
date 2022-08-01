@@ -23,18 +23,7 @@ const Toast: React.FC = () => {
 
   if (sendSuccess)
     return (
-      <div
-        ref={flashRef}
-        id="send-success"
-        style={{
-          position: "fixed",
-          bottom: "2rem",
-          right: "2rem",
-          width: "20rem",
-          fontSize: "1.1rem",
-          zIndex: 100,
-        }}
-      >
+      <div ref={flashRef} id="send-success">
         <Flash
           variant="success"
           sx={{ display: "flex", flexDirection: "column" }}

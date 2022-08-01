@@ -65,15 +65,16 @@ const Row: React.FC<RowProps> = (props) => {
           padding: 0,
         }}
       >
-        <Box
-          color="text"
-          display="flex"
-          width="90rem"
-          height="5rem"
-          backgroundColor="background"
-          padding="13px 16px 12px"
-          alignItems="center"
-          style={{ gap: "16px" }}
+        <div
+          style={{
+            gap: "16px",
+            width: "90rem",
+            height: "5rem",
+            backgroundColor: "white",
+            padding: "13px 16px 12px",
+            alignItems: "center",
+          }}
+          className="d-flex color-fg-default"
         >
           <Header.Item
             style={{
@@ -85,32 +86,17 @@ const Row: React.FC<RowProps> = (props) => {
               size={20}
               color={issueColor()}
             />
-            <Box
-              display={"flex"}
-              flexDirection={"column"}
-              justifyContent={"center"}
-              margin="0"
-              padding={0}
-              marginLeft="1rem"
-            >
-              <Text fontSize={17} fontWeight={600} margin={0} padding="0">
+            <div className="d-flex flex-column flex-justify-center ml-3">
+              <p className="f4 m-0 p-0 text-bold d-flex">
                 Token name{" "}
                 {props.tokenTicker && (
-                  <Text
-                    color={"primary"}
-                    fontSize={14}
-                    fontWeight="600"
-                    marginLeft="1rem"
-                  >
+                  <p className="m-0 ml-3 color-fg-muted text-bold f-5">
                     [{props.tokenTicker}]
-                  </Text>
+                  </p>
                 )}
-              </Text>
-
-              <Text fontSize={13} fontWeight="light">
-                {props.tokenName}
-              </Text>
-            </Box>
+              </p>
+              <p className="f5 text-light">{props.tokenName}</p>
+            </div>
           </Header.Item>
           <Header.Item
             style={{
@@ -122,7 +108,7 @@ const Row: React.FC<RowProps> = (props) => {
               marginLeft: "2rem",
             }}
           >
-            <Text textAlign={"center"}>{mintedAmount ?? "-"}</Text>
+            <p>{mintedAmount ?? "-"}</p>
           </Header.Item>
           <Header.Item
             style={{
@@ -140,25 +126,25 @@ const Row: React.FC<RowProps> = (props) => {
               position: "relative",
             }}
           >
-            <TextInput
-              width="8rem"
+            <input
               placeholder="Amount to mint"
               defaultValue={1}
               onChange={(e) => setMintAmount(parseInt(e.target.value))}
-              sx={{
+              className="p-1 rounded-2 pl-3"
+              style={{
                 border: "1px solid #ccc",
+                width: "8rem",
               }}
             />
-            <Text
-              display="flex"
-              sx={{
-                position: "absolute",
+            <p
+              className="d-flex position-absolute"
+              style={{
                 bottom: "-1rem",
+                color: "red",
               }}
-              color="red"
             >
               {mintError}
-            </Text>
+            </p>
             <Button
               style={{
                 display: "flex",
@@ -170,7 +156,7 @@ const Row: React.FC<RowProps> = (props) => {
               leadingIcon={action === Actions.Mint ? HourglassIcon : null}
               onClick={mintTokens}
             >
-              <Text fontWeight={600}>Mint</Text>
+              <text className="text-bold">Mint</text>
             </Button>
           </Header.Item>
           <Header.Item
@@ -180,36 +166,38 @@ const Row: React.FC<RowProps> = (props) => {
               gap: "0.5rem",
             }}
           >
-            <TextInput
-              width="32%"
+            <input
               placeholder="Amount to send"
               defaultValue={1}
               onChange={(e) => setTransferAmount(parseInt(e.target.value))}
-              sx={{
+              className="p-1 rounded-2 pl-3"
+              style={{
                 border: "1px solid #ccc",
+                width: "32%",
               }}
             />
-            <Text
-              display="flex"
-              sx={{
+            <p
+              className="d-flex position-absolute"
+              style={{
                 position: "absolute",
                 bottom: "-1rem",
+                color: "red",
               }}
-              color="red"
             >
               {sendError}
-            </Text>
-            <Box
-              display={"flex"}
-              flexDirection={"column"}
-              width="100%"
-              position={"relative"}
+            </p>
+            <div
+              className="d-flex flex-column position-relative"
+              style={{
+                width: "100%",
+              }}
             >
-              <TextInput
+              <input
                 placeholder="Address to send"
                 value={destinationAddress}
                 onChange={(e) => setDestinationAddress(e.target.value)}
-                sx={{
+                className="p-1 rounded-2 pl-3"
+                style={{
                   border: "1px solid #ccc",
                 }}
               />
@@ -230,7 +218,7 @@ const Row: React.FC<RowProps> = (props) => {
                   Use wallet address
                 </Button>
               )}
-            </Box>
+            </div>
             <Button
               style={{
                 display: "flex",
@@ -242,10 +230,10 @@ const Row: React.FC<RowProps> = (props) => {
               leadingIcon={action === Actions.Sending ? HourglassIcon : null}
               onClick={transferTokens}
             >
-              <Text fontWeight={600}>Send</Text>
+              <text className="text-bold">Send</text>
             </Button>
           </Header.Item>
-        </Box>
+        </div>
       </Header>
     </>
   );

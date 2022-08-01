@@ -1,5 +1,4 @@
-import { Box } from "@primer/react";
-import { useState } from "react";
+import { useState, FC } from "react";
 import Row from "./Row";
 import HeaderTable from "./HeaderTable";
 import { Toast } from "components/Layout";
@@ -7,24 +6,14 @@ import { SuccessContext, SiteMintingContext } from "contexts";
 import { Sources } from "types";
 import { useFetchTokens } from "hooks";
 
-const Table: React.FC = () => {
+const Table: FC = () => {
   const [message, setMessage] = useState("");
   const [mint, setMint] = useState<string | undefined>(undefined);
   const { mongoTokens, tokens, tokensAmount, walletTokens, r, refresh } =
     useFetchTokens();
 
   return (
-    <Box
-      display="flex"
-      margin={0}
-      marginTop={3}
-      style={{
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        gap: "0",
-      }}
-    >
+    <div className="d-flex flex-column flex-justify-center flex-items-center mt-4">
       {" "}
       <SuccessContext.Provider value={{ message, setMessage, mint, setMint }}>
         <SiteMintingContext.Provider value={{ r, refresh }}>
@@ -65,7 +54,7 @@ const Table: React.FC = () => {
           <Toast />
         </SiteMintingContext.Provider>
       </SuccessContext.Provider>
-    </Box>
+    </div>
   );
 };
 

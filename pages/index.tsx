@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { Header } from "components/Layout";
 import { Table } from "components/Table";
-import { Box, StyledOcticon, Text } from "@primer/react";
+import { StyledOcticon } from "@primer/react";
 import { HeartFillIcon } from "@primer/octicons-react";
 import { Toast } from "components/Layout";
 import { version } from "version.json";
@@ -21,59 +21,32 @@ const Home: NextPage<{ HAS_MONGO_URI: boolean }> = ({ HAS_MONGO_URI }) => {
         <meta name="description" content="Fontana Faucet" />
         <link rel="icon" href="/Vector.ico" />
       </Head>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
+      <div
+        className="d-flex flex-justify-center flex-items-center flex-column h-auto"
+        style={{
           gap: "4rem",
-          height: "auto",
         }}
       >
         <Header />
-        <Box
-          display={"flex"}
-          flexDirection={"column"}
-          justifyContent={"center"}
-          alignItems={"center"}
-          overflowY={"auto"}
-          padding={"0.5rem"}
-          marginBottom={"5rem"}
-        >
+        <div className="d-flex flex-column flex-justify-center flex-items-center p-2 mb-10">
           <HasMongoUriContext.Provider value={{ hasMongoUri: HAS_MONGO_URI }}>
             <Table />
           </HasMongoUriContext.Provider>
-        </Box>
+        </div>
         <Toast />
-        <footer
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "0",
-            width: "100vw",
-            paddingTop: "4rem",
-            marginTop: "4rem",
-            marginBottom: "2rem",
-            position: "fixed",
-            bottom: "0",
-            left: 0,
-          }}
-        >
-          <Text color="primary">
+        <footer>
+          <p className="color-fg-muted">
             with{" "}
             <StyledOcticon icon={HeartFillIcon} size={16} color="#666666" />{" "}
             From{" "}
-            <a href="https://boxfish.studio/">
+            <a href="https://divfish.studio/">
               <u>Boxfish Studio</u>
             </a>
             , SL.
-          </Text>
-          {version && <Text color="primary">Version: {version}</Text>}
+          </p>
+          {version && <p className="color-fg-muted">Version: {version}</p>}
         </footer>
-      </Box>
+      </div>
     </>
   );
 };
