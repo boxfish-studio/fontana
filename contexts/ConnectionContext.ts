@@ -4,7 +4,7 @@ import { Connection } from "@solana/web3.js";
 export type Network = keyof typeof WalletAdapterNetwork;
 type TConnection = {
   connection: Connection | null;
-  network: Network;
+  network: Network | null;
   url: string | null;
   setConnection: (connection: Connection) => void;
   setNetwork: (network: Network) => void;
@@ -13,7 +13,7 @@ type TConnection = {
 
 export const ConnectionContext = createContext<TConnection>({
   connection: null,
-  network: "Devnet",
+  network: null,
   url: null,
   setConnection: () => {},
   setNetwork: () => {},

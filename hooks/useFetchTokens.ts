@@ -27,19 +27,21 @@ export default function useFetchTokens() {
   }, [network]);
 
   useEffect(() => {
-    if (!hasMongoUri || publicKey) return setMongoTokens([]);
+    if (!hasMongoUri || publicKey || network!=="Devnet") return setMongoTokens([]);
     (async () => {
       const res = await fetch("api/mongo-get", {
         method: "GET",
       });
+      
       const { queryResults } = (await res.json()) as {
         queryResults: Token[];
       };
       setMongoTokens(queryResults);
     })();
-  }, [hasMongoUri, publicKey, r]);
+  }, [hasMongoUri, publicKey, r, network]);
 
   useEffect(() => {
+    
     if (!publicKey || !connection) return setWalletTokens([]);
     (async () => {
       const rpc = new RpcMethods(connection);

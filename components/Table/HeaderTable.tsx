@@ -2,7 +2,7 @@ import { Header, Text, Button, Box, StyledOcticon } from "@primer/react";
 import { CheckIcon, SyncIcon } from "@primer/octicons-react";
 
 import { useWallet } from "@solana/wallet-adapter-react";
-import { useHasMongoUri } from "contexts";
+import { useHasMongoUri, useConnection } from "contexts";
 import { HourglassIcon } from "@primer/octicons-react";
 import { useCreateToken } from "hooks";
 
@@ -11,7 +11,14 @@ const HeaderTable: React.FC<{ tokensAmount: number }> = ({
 }) => {
   const { publicKey } = useWallet();
   const { hasMongoUri } = useHasMongoUri();
+  const { network } = useConnection();
   const { createToken, minting, triggerRefresh } = useCreateToken();
+
+  const canCreateToken = () => {
+    if (publicKey) return true;
+    if (!publicKey && hasMongoUri && network === "Devnet") return true;
+    return false;
+  };
 
   return (
     <Header
@@ -35,13 +42,17 @@ const HeaderTable: React.FC<{ tokensAmount: number }> = ({
       >
         <Header.Item
           style={{
+            display: "flex",
             width: "18rem",
+            justifyContent: "flex-start",
+            alignItems: "center",
+
           }}
         >
           <StyledOcticon icon={CheckIcon} size={16} color="primary" />
-          <Text as="p" marginLeft="0.5rem" color="primary">
+          <p className="m-0 p-0 ml-4 color-fg-muted ">
             {tokensAmount} SPL Tokens available
-          </Text>
+          </p>
         </Header.Item>
         <Header.Item
           style={{
@@ -65,7 +76,7 @@ const HeaderTable: React.FC<{ tokensAmount: number }> = ({
             position: "relative",
           }}
         >
-          {(hasMongoUri || publicKey) && (
+          {canCreateToken() && (
             <Button
               variant="primary"
               sx={{

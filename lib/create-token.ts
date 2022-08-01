@@ -14,14 +14,12 @@ import {
   TOKEN_PROGRAM_ID,
 } from "@solana/spl-token";
 import { NewToken } from "types";
-export async function createMint(): Promise<NewToken | undefined> {
+export async function createMint(url:string): Promise<NewToken | undefined> {
   try {
     const mint = Keypair.generate();
     const owner = Keypair.generate();
     const publicKey = owner.publicKey;
-    const rpcEndpoint = process.env.NEXT_PUBLIC_SOLANA_RPC_HOST;
-    const endpoint = rpcEndpoint || clusterApiUrl("devnet");
-    const connection = new Connection(endpoint);
+    const connection = new Connection(url);
     const rpc = new RpcMethods(connection);
 
     try {

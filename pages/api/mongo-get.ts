@@ -1,11 +1,11 @@
 import { NextApiRequest, NextApiResponse } from "next";
-
 import { Database, Query } from "db/lib";
 
 interface Res {
   queryResults?: Query[];
   err?: string;
 }
+
 export default async function handler(
   _req: NextApiRequest,
   res: NextApiResponse<Res>

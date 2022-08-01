@@ -20,3 +20,4 @@ export interface NewToken {
   owner: string;
   keypair: string;
 }
+
