@@ -77,7 +77,7 @@ The app needs the following environment variables:
  NEXT_PUBLIC_DATABASE_URL = Url of your mongodb cluster (for data persistance)
 ```
 
-Then additionally, if you want to configure the app to manage certain tokens, you need to configure them in the [config file](fontana.config.ts) and add the corresponding environment variables.
+Then additionally, if you want to configure the app to manage certain tokens by default, you need to configure them in the [config file](fontana.config.ts) and add the corresponding environment variables.
 
 ```
 const config: Config[] = [
