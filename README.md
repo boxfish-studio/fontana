@@ -7,7 +7,7 @@
   Fontana
 </h2>
 
-<p align="center">A simple dashboard to manage Solana SPL tokens, by <a href="https://boxfish.studio">Boxfish Studio</a></p>
+<p align="center">, by <a href="https://boxfish.studio">Boxfish Studio</a></p>
 
 <p align="center">
     <a href="#About">About</a> ◈
@@ -15,12 +15,31 @@
     <a href="#installation">Installation</a> ◈
     <a href="#community-contributions">Community contributions</a> ◈
     <a href="#acknowledgments">Acknowledgments</a> ◈
-    <a href="#authors">Authors</a>
+</p>
+
+
+<h1 align="center">Fontana</h1>
+
+<p align="center">A simple dashboard to manage Solana SPL tokens</p>
+
+<p align="center">
+  <a aria-label="build status" href="https://github.com/boxfish-studio/fontana/actions/workflows/deploy_prod.yaml">
+    <img alt="" src="https://github.com/boxfish-studio/fontana/actions/workflows/deploy_prod.yaml/badge.svg">
+  </a>
+  <a aria-label="contributors graph" href="https://github.com/boxfish-studio/fontana/graphs/contributors">
+    <img alt="" src="https://img.shields.io/github/contributors/boxfish-studio/fontana.svg">
+  </a>
+  <a aria-label="last commit" href="https://github.com/boxfish-studio/fontana/commits/main">
+    <img alt="" src="https://img.shields.io/github/last-commit/boxfish-studio/fontana.svg">
+  </a>
+  <a aria-label="license" href="https://github.com/boxfish-studio/fontana/blob/main/LICENSE">
+    <img src="https://img.shields.io/github/license/boxfish-studio/fontana.svg" alt="">
+  </a>
 </p>
 
 ---
 
-## About
+## Features
 
 Candy machine dashboard is a tool where you can create and manage candy machine in solana
 
@@ -68,6 +87,10 @@ Pull requests are more than welcome!
 ## Acknowledgments
 The code of course would not be possible without the amazing work of the Metaplex team and the contributors to their [codebase](https://github.com/metaplex-foundation/metaplex/).
 
+## License
 
-[Boxfish Studio]: http://boxfish.studio
+[Apache 2.0](./LICENSE) &copy; [Boxfish Studio]
+
+
+[Boxfish Studio] https://boxfish.studio
 
