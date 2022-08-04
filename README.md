@@ -69,7 +69,16 @@ The app will open at [http://localhost:3000](http://localhost:3000).
 
 ## Configuration
 
+The app needs the following environment variables:
+ 
+```
+ NEXT_PUBLIC_RPC_API_DEVNET = Url of your preferred devnet RPC
+ NEXT_PUBLIC_RPC_API_MAINNET = Url of your preferred mainnet RPC
+ NEXT_PUBLIC_DATABASE_URL = Url of your mongodb cluster (for data persistance)
+```
 
+
+You can configure the app to show certain tokens. Got to the 
 
 ## License
 
