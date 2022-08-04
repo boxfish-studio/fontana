@@ -83,8 +83,8 @@ Then additionally, if you want to configure the app to manage certain tokens by 
 const config: Config[] = [
   {
     keypair: "WALLET_1",
-    owner: "Owner public account",
-    token: "Mint account",
+    owner: "Token owner public account",
+    token: "Token mint account",
     network: "Devnet" or "Mainnet",
   }
 ];
