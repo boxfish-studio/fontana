@@ -5,11 +5,11 @@
 
 <h1 align="center">Fontana</h1>
 
-<p align="center">A simple dashboard to manage Solana SPL tokens</p>
-
 <p align="center">
 <a href="https://fontana.boxfish.studio/">fontana.boxfish.studio</a>
 </p>
+
+<p align="center">A simple dashboard to manage Solana SPL tokens</p>
 
 
 <p align="center">
