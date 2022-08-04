@@ -93,7 +93,7 @@ const config: Config[] = [
 Which will require for a new environment variable `NEXT_PUBLIC_WALLET_1` corresponding to the `WALLET_1` keypair. 
 
 ```
- NEXT_PUBLIC_WALLET_1 = Private key for token owner account
+ NEXT_PUBLIC_WALLET_1 = [Private key for token owner account]
 ```
 
 You will need to add as many new environment variables as wallet ids are used in your configuration file.
