@@ -3,21 +3,6 @@
   <a href="http://boxfish.studio"><img src="doc/img/gh-splash.png" title="Fontana. By Boxfish Studio"></a>
 </h1>
 
-<h2 align="center">
-  Fontana
-</h2>
-
-<p align="center">, by <a href="https://boxfish.studio">Boxfish Studio</a></p>
-
-<p align="center">
-    <a href="#About">About</a> ◈
-    <a href="#using-the-program">Using the program</a> ◈
-    <a href="#installation">Installation</a> ◈
-    <a href="#community-contributions">Community contributions</a> ◈
-    <a href="#acknowledgments">Acknowledgments</a> ◈
-</p>
-
-
 <h1 align="center">Fontana</h1>
 
 <p align="center">A simple dashboard to manage Solana SPL tokens</p>
