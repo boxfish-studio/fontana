@@ -31,33 +31,27 @@
 
 ## Features
 
-Candy machine dashboard is a tool where you can create and manage candy machine in solana
+- Create, mint, and transfer SPL tokens
+- Mainnet and devnet support
+- Configurable RPCs
+- Compatible with Phantom, Solflare, Torus, Sollet, Glow and Slope wallets
+- Wallet and server operation modes
+- Wallet mode (wallet connected): all operations performed with wallet
+- Backend mode
+
 
 ## Using the program
 
-### Create a Candy Machine
+### Wallet mode
 
-- Fill the form
-- Upload 1 asset file and 1 json file for each NFT
-- The 0.json file must always exist
-- Click "Create Candy Machine" button and sign all transactions
-- Save the cache file
+This mode is only operational when a wallet is connected.
 
-### Manage Candy Machine
+### Server mode
 
-- Have some candy machine created
-- To update -> Click "Inspect" button
--- Fill in the form with the new changes
--- Upload the cache file saved when this candy machine was created 
--- Click "Create Candy Machine" button and sign all transactions
--- Save the new cache file
-- To delete -> Click "Delete" button
--- Click "Yes" button and sign all transactions
-- To verify -> Click "Verify" button
--- Upload the cache file saved when this candy machine was created 
--- Click "Verify Candy Machine" button and sign all transactions
--- Save the new cache file
-## Installation
+This mode is only operational when there is no wallet connected.
+
+
+## Run
 
 Clone the repo, and run the development server:
 
@@ -65,13 +59,7 @@ Clone the repo, and run the development server:
 yarn dev 
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result and connect your wallet.
-
-## Community contributions
-Pull requests are more than welcome!
-
-## Acknowledgments
-The code of course would not be possible without the amazing work of the Metaplex team and the contributors to their [codebase](https://github.com/metaplex-foundation/metaplex/).
+The app will open at [http://localhost:3000](http://localhost:3000).
 
 ## License
 
