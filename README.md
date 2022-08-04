@@ -78,5 +78,5 @@ The code of course would not be possible without the amazing work of the Metaple
 [Apache 2.0](./LICENSE) &copy; [Boxfish Studio]
 
 
-[Boxfish Studio] https://boxfish.studio
+[Boxfish Studio]: https://boxfish.studio
 
