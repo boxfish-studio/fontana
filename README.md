@@ -77,8 +77,26 @@ The app needs the following environment variables:
  NEXT_PUBLIC_DATABASE_URL = Url of your mongodb cluster (for data persistance)
 ```
 
+Then additionally, if you want to configure the app to manage certain tokens, you need to configure them in the [config file](fontana.config.ts) and add the corresponding environment variables.
 
-You can configure the app to show certain tokens. Got to the 
+```
+const config: Config[] = [
+  {
+    keypair: "WALLET_1",
+    owner: "Owner public account",
+    token: "Mint account",
+    network: "Devnet" or "Mainnet",
+  }
+];
+```
+
+Which will require for a new environment variable `NEXT_PUBLIC_WALLET_1` corresponding to the `WALLET_1` keypair. 
+
+```
+ NEXT_PUBLIC_WALLET_1 = Private key for token owner account
+```
+
+You will need to add as many new environment variables as wallet ids are used in your configuration file.
 
 ## License
 
