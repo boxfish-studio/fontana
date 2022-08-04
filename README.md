@@ -7,7 +7,7 @@
 
 <p align="center">A simple dashboard to manage Solana SPL tokens</p>
 
-<a href="https://fontana.boxfish.studio/" href="center">fontana.boxfish.studio</a>
+<a href="https://fontana.boxfish.studio/" align="center">fontana.boxfish.studio</a>
 
 
 <p align="center">
