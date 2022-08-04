@@ -1,11 +1,14 @@
 <h1 align="center">
   <br>
-  <a href="http://boxfish.studio"><img src="doc/img/gh-splash.png" title="Fontana. By Boxfish Studio"></a>
+  <a href="https://boxfish.studio"><img src="doc/img/gh-splash.png" title="Fontana. By Boxfish Studio"></a>
 </h1>
 
 <h1 align="center">Fontana</h1>
 
 <p align="center">A simple dashboard to manage Solana SPL tokens</p>
+
+<a href="https://fontana.boxfish.studio/" href="center">fontana.boxfish.studio</a>
+
 
 <p align="center">
   <a aria-label="build status" href="https://github.com/boxfish-studio/fontana/actions/workflows/deploy_prod.yaml">
@@ -29,10 +32,6 @@
 Candy machine dashboard is a tool where you can create and manage candy machine in solana
 
 ## Using the program
-
-Can use the program in https://cm.boxfish.studio
-
-Connect your wallet
 
 ### Create a Candy Machine
 
