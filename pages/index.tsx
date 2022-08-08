@@ -38,9 +38,9 @@ const Home: NextPage<{ HAS_MONGO_URI: boolean }> = ({ HAS_MONGO_URI }) => {
           <p className="color-fg-muted">
             with{" "}
             <StyledOcticon icon={HeartFillIcon} size={16} color="#666666" />{" "}
-            From{" "}
+            from{" "}
             <a href="https://boxfish.studio/">
-              <u>Boxfish Studio, SL. </u>
+              <u>Boxfish Studio</u>
             </a>            
           </p>
           {version && <p className="color-fg-muted">Version: {version}</p>}
