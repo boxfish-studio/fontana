@@ -7,7 +7,7 @@ const Header: React.FC = () => {
       <div className="d-flex flex-justify-center flex-items-center">
         <FontanaSVG width={27} />
         <h4 className="ml-3 text-bold color-white" style={{ color: "white" }}>
-          Fontana - The Solana SPL multi-token generic faucet
+          Fontana - A simple dashboard to manage Solana SPL tokens
         </h4>
       </div>
       <div className="d-flex flex-justify-center flex-items-center">
