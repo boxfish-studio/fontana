@@ -35,15 +35,15 @@ const Home: NextPage<{ HAS_MONGO_URI: boolean }> = ({ HAS_MONGO_URI }) => {
         </div>
         <Toast />
         <footer>
+        {version && <p className="color-fg-muted">Fontana {version}. </p>}
           <p className="color-fg-muted">
-            with{" "}
+            With{" "}
             <StyledOcticon icon={HeartFillIcon} size={16} color="#666666" />{" "}
             from{" "}
             <a href="https://boxfish.studio/">
               <u>Boxfish Studio</u>
             </a>            
-          </p>
-          {version && <p className="color-fg-muted">Version: {version}</p>}
+          </p>          
         </footer>
       </div>
     </>
