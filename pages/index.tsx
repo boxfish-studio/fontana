@@ -63,7 +63,6 @@ const Home: NextPage<{ HAS_MONGO_URI: boolean }> = ({ HAS_MONGO_URI }) => {
                 </a>
             </div>
         </footer>
-       
       </div>
     </>
   );
