@@ -53,7 +53,7 @@ Newly created tokens by users will be stored in a dedicated database.
 The displayed SPL tokens will be those configured within the application config file, plus the SPL tokens found in the database.
 This mode is operational when there is no wallet connected.
 
-> Please note, when using our [Production deploy](https://fontana.boxfish.studio) in Mainnet, the creation of new tokens is not enabled. 
+> Please note, when using **Server mode** our [Production deploy](https://fontana.boxfish.studio) in Mainnet, the creation of new tokens is not enabled. 
 
 ## Run 
 
