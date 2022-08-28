@@ -35,15 +35,33 @@ const Home: NextPage<{ HAS_MONGO_URI: boolean }> = ({ HAS_MONGO_URI }) => {
         </div>
         <Toast />
         <footer>
-        {version && <p className="color-fg-muted">Fontana {version}</p>}
-          <p className="color-fg-muted">
-            With{" "}
-            <StyledOcticon icon={HeartFillIcon} size={16} color="#666666" />{" "}
-            from{" "}
-            <a href="https://boxfish.studio/">
-              <u>Boxfish Studio</u>
-            </a>            
-          </p>          
+            <div>
+                <a href='https://github.com/boxfish-studio/fontana/'>
+                    <a
+                        target='_blank'
+                        rel='noopener noreferrer'
+                        className='color-fg-muted'
+                        style={{ cursor: 'pointer' }}
+                    >
+                      <u>
+                        Fontana {version}
+                      </u>
+                    </a>
+                </a>
+                <span className='color-fg-muted'> - by </span>
+                <a href='https://boxfish.studio/'>
+                    <a
+                        target='_blank'
+                        rel='noopener noreferrer'
+                        className='color-fg-muted'
+                        style={{ cursor: 'pointer' }}
+                    >
+                      <u>
+                        Boxfish Studio
+                      </u>
+                    </a>
+                </a>
+            </div>
         </footer>
       </div>
     </>
@@ -51,3 +69,4 @@ const Home: NextPage<{ HAS_MONGO_URI: boolean }> = ({ HAS_MONGO_URI }) => {
 };
 
 export default Home;
+

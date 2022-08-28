@@ -14,7 +14,7 @@
 
 <p align="center">
   <a aria-label="build status" href="https://github.com/boxfish-studio/fontana/actions/workflows/ci-production.yaml">
-    <img alt="" src="https://github.com/boxfish-studio/fontana/actions/workflows/deploy_prod.yaml/badge.svg">
+    <img alt="" src="https://github.com/boxfish-studio/fontana/actions/workflows/ci-production.yaml/badge.svg">
   </a>
   <a aria-label="contributors graph" href="https://github.com/boxfish-studio/fontana/graphs/contributors">
     <img alt="" src="https://img.shields.io/github/contributors/boxfish-studio/fontana.svg">
