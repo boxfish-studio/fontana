@@ -35,7 +35,7 @@ const Home: NextPage<{ HAS_MONGO_URI: boolean }> = ({ HAS_MONGO_URI }) => {
         </div>
         <Toast />
         <footer>
-        {version && <p className="color-fg-muted">Fontana {version}. </p>}
+        {version && <p className="color-fg-muted">Fontana {version}</p>}
           <p className="color-fg-muted">
             With{" "}
             <StyledOcticon icon={HeartFillIcon} size={16} color="#666666" />{" "}
