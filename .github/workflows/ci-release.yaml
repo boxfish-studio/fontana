@@ -9,7 +9,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      # if the action is a push, diff with the previous main commit
+      # fetch tags
+      - name: Checkout tags
+        run: |
+          if git rev-parse --is-shallow-repository | grep -q 'true'; then
+            git fetch --prune --unshallow --tags -f
+          else
+            git fetch --prune --tags -f
+          fi
+      # diff with the previous tag
       - name: Build changelog
         id: build_changelog
         run: |
