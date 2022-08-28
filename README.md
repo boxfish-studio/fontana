@@ -40,21 +40,20 @@
 
 ## Using the program
 
-### Wallet-based mode
-
-This mode is only operational when a wallet is connected.
+### Wallet mode
 
 When using this mode, the creation, minting and transfer of tokens will be performed by the connected wallet account.
-The displayed available tokens will be the ones belonging to the wallet account plus the ones available in server mode.
+The displayed SPL tokens will be the ones created by the wallet account, plus the ones available in server mode.
+This mode is operational if a wallet is connected.
 
-### Server-based mode
-
-This mode is only operational when no wallet is connected.
+### Server mode
 
 When using this mode, the creation, minting and transfer of tokens is performed by a account configured in the server.
-Newly created tokens will be stored in a dedicated database. The displayed tokens will be those configured within the application config file, plus the later added tokens found in the database.
+Newly created tokens by users will be stored in a dedicated database. 
+The displayed SPL tokens will be those configured within the application config file, plus the SPL tokens found in the database.
+This mode is operational when there is no wallet connected.
 
-When using mainnet with this mode, the creation of new tokens is not enabled by default, since it would require for an account with real funds configured in the server.
+> Please note, when using our [Production deploy](https://fontana.boxfish.studio) in Mainnet, the creation of new tokens is not enabled. 
 
 ## Run 
 
