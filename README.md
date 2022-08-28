@@ -13,7 +13,7 @@
 
 
 <p align="center">
-  <a aria-label="build status" href="https://github.com/boxfish-studio/fontana/actions/workflows/deploy_prod.yaml">
+  <a aria-label="build status" href="https://github.com/boxfish-studio/fontana/actions/workflows/ci-production.yaml">
     <img alt="" src="https://github.com/boxfish-studio/fontana/actions/workflows/deploy_prod.yaml/badge.svg">
   </a>
   <a aria-label="contributors graph" href="https://github.com/boxfish-studio/fontana/graphs/contributors">
@@ -40,21 +40,20 @@
 
 ## Using the program
 
-### Wallet-based mode
+### Wallet mode
 
-This mode is only operational when a wallet is connected.
+Creation, minting and transfer of tokens will be performed by the connected wallet account.  
+The displayed SPL tokens will be the ones created by the wallet account, plus the ones available in server mode.  
+This mode is operational if a wallet is connected.  
 
-When using this mode, the creation, minting and transfer of tokens will be performed by the connected wallet account.
-The displayed available tokens will be the ones belonging to the wallet account plus the ones available in server mode.
+### Server mode
 
-### Server-based mode
+Creation, minting and transfer of tokens is performed by a account configured in the server.  
+New created tokens will be stored in a dedicated db for persistance.  
+The displayed SPL tokens will be those in the application config file, plus the SPL tokens found in the db.  
+This mode is operational when there is no wallet connected.
 
-This mode is only operational when no wallet is connected.
-
-When using this mode, the creation, minting and transfer of tokens is performed by a account configured in the server.
-Newly created tokens will be stored in a dedicated database. The displayed tokens will be those configured within the application config file, plus the later added tokens found in the database.
-
-When using mainnet with this mode, the creation of new tokens is not enabled by default, since it would require for an account with real funds configured in the server.
+> Please note, when using **Server mode** in our [Production deploy](https://fontana.boxfish.studio) in Mainnet, the creation of new tokens is not enabled. 
 
 ## Run 
 
