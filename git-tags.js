@@ -1,6 +1,7 @@
-var gittags = require("git-tags");
-var fs = require("fs");
-gittags.get(function (err, tags) {
+const gitSemverTags = require("git-semver-tags");
+const fs = require("fs");
+
+gitSemverTags(function (err, tags) {
   if (err) return;
   const obj = {
     version: tags[0],
