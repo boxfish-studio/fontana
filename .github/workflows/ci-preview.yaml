@@ -15,7 +15,7 @@ jobs:
           node-version: 16
 
       - name: Install dependencies
-        run: yarn install git-semver-tags
+        run: yarn add git-semver-tags
         
       - name: Get tag version
         id: getdata
