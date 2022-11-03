@@ -9,6 +9,14 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install dependencies
+        run: yarn
+        
       - name: Get tag version
         id: getdata
         run: node git-tags.js
