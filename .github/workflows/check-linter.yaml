@@ -1,0 +1,9 @@
+name: Check linter in PRs
+on: [pull_request]
+jobs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run yarn
+        run: yarn
+      - name: Linter
+        run: yarn lint
