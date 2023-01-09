@@ -6,7 +6,8 @@ jobs:
   linter:
     runs-on: ubuntu-latest
     steps:
-      - name: Run yarn
+      - uses: actions/checkout@v2
+      - name: Install modules
         run: yarn
-      - name: Linter
+      - name: Run Prettier ESLint check
         run: yarn lint
