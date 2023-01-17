@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
@@ -25,7 +24,7 @@ export default function handler(
     keypair: _keypair,
     mongo,
   } = JSON.parse(req.body);
-  (async () => {
+  void (async () => {
     try {
       const signer = mongo
         ? await new Database().queryKeypair(token as string)

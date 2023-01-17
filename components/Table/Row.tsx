@@ -1,11 +1,4 @@
-import {
-  Header,
-  Text,
-  Button,
-  Box,
-  StyledOcticon,
-  TextInput,
-} from '@primer/react';
+import { Header, Button, StyledOcticon } from '@primer/react';
 import { IssueOpenedIcon, HourglassIcon } from '@primer/octicons-react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useMintAndTransfer } from 'hooks';
@@ -40,8 +33,7 @@ const Row: React.FC<RowProps> = (props) => {
   const { r } = useRefresh();
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    getTokenBalance();
+    void getTokenBalance();
   }, [r, connection]);
 
   function setWalletAddress() {
