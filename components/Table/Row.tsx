@@ -40,7 +40,7 @@ const Row: React.FC<RowProps> = (props) => {
   const { r } = useRefresh();
 
   useEffect(() => {
-    getTokenBalance();
+    void getTokenBalance();
   }, [r, connection]);
 
   function setWalletAddress() {
