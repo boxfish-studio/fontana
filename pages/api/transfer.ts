@@ -24,7 +24,7 @@ export default function handler(
     keypair: _keypair,
     mongo,
   } = JSON.parse(req.body);
-  (async () => {
+  void (async () => {
     try {
       const signer = mongo
         ? await new Database().queryKeypair(token as string)

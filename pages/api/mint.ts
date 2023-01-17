@@ -23,7 +23,7 @@ export default function handler(
     network,
     mongo,
   } = JSON.parse(req.body);
-  (async () => {
+  void (async () => {
     try {
       const endpoint =
         network === 'Mainnet'
