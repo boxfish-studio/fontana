@@ -4,17 +4,17 @@ import {
   Keypair,
   SystemProgram,
   Transaction,
-} from "@solana/web3.js";
-import { RpcMethods } from "lib/spl";
+} from '@solana/web3.js';
+import { RpcMethods } from 'lib/spl';
 import {
   createAssociatedTokenAccountInstruction,
   createInitializeMintInstruction,
   getMinimumBalanceForRentExemptMint,
   MINT_SIZE,
   TOKEN_PROGRAM_ID,
-} from "@solana/spl-token";
-import { NewToken } from "types";
-export async function createMint(url:string): Promise<NewToken | undefined> {
+} from '@solana/spl-token';
+import { NewToken } from 'types';
+export async function createMint(url: string): Promise<NewToken | undefined> {
   try {
     const mint = Keypair.generate();
     const owner = Keypair.generate();
@@ -23,20 +23,20 @@ export async function createMint(url:string): Promise<NewToken | undefined> {
     const rpc = new RpcMethods(connection);
 
     try {
-      let txhash = await connection.requestAirdrop(owner.publicKey, 1e8);
+      const txhash = await connection.requestAirdrop(owner.publicKey, 1e8);
       await rpc.confirmTransaction(txhash);
     } catch (e) {
       if (
         (e as Error).message.includes(
-          "airdrop request limit reached for the day"
+          'airdrop request limit reached for the day'
         )
       ) {
         console.error(
-          "airdrop request limit reached for the day, switching to devnet official rpc"
+          'airdrop request limit reached for the day, switching to devnet official rpc'
         );
-        const endpoint = clusterApiUrl("devnet");
+        const endpoint = clusterApiUrl('devnet');
         const connection = new Connection(endpoint);
-        let txhash = await connection.requestAirdrop(owner.publicKey, 1e8);
+        const txhash = await connection.requestAirdrop(owner.publicKey, 1e8);
         await rpc.confirmTransaction(txhash);
       }
     }
@@ -44,7 +44,7 @@ export async function createMint(url:string): Promise<NewToken | undefined> {
       mint.publicKey.toBase58(),
       publicKey.toBase58()
     );
-    let tx = new Transaction()
+    const tx = new Transaction()
       .add(
         SystemProgram.createAccount({
           fromPubkey: publicKey,
