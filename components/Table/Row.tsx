@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import { Header, Button, StyledOcticon } from '@primer/react';
 import { IssueOpenedIcon, HourglassIcon } from '@primer/octicons-react';
 import { useWallet } from '@solana/wallet-adapter-react';
