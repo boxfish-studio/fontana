@@ -1,26 +1,30 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/unbound-method */
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import {
   createAssociatedTokenAccountInstruction,
   createTransferInstruction,
-} from "@solana/spl-token";
-import { useWallet } from "@solana/wallet-adapter-react";
-import { PublicKey } from "@solana/web3.js";
-import { RpcMethods } from "lib/spl";
-import { useCallback, useState } from "react";
-import { Actions, RowProps, Sources } from "types";
-import { useSuccess, useConnection } from "contexts";
+} from '@solana/spl-token';
+import { useWallet } from '@solana/wallet-adapter-react';
+import { PublicKey } from '@solana/web3.js';
+import { RpcMethods } from 'lib/spl';
+import { useCallback, useState } from 'react';
+import { Actions, RowProps, Sources } from 'types';
+import { useSuccess, useConnection } from 'contexts';
 
 export default function useMintAndTransfer({
   source,
   tokenOwner,
   tokenName,
   tokenKeypair,
-}: Exclude<RowProps, "tokenTicker">) {
+}: Exclude<RowProps, 'tokenTicker'>) {
   const { connection, network } = useConnection();
   const { publicKey, sendTransaction } = useWallet();
   const [transferAmount, setTransferAmount] = useState(1);
   const [mintedAmount, setMintedAmount] = useState<null | number>(null);
   const [walletAmount, setWalletAmount] = useState<null | number>(null);
-  const [destinationAddress, setDestinationAddress] = useState("");
+  const [destinationAddress, setDestinationAddress] = useState('');
   const [mintError, setMintError] = useState<null | string>(null);
   const [sendError, setSendError] = useState<null | string>(null);
   const [action, setAction] = useState<null | Actions>(null);
@@ -60,28 +64,28 @@ export default function useMintAndTransfer({
         const tx = RpcMethods.createTx(await ix);
         const signature = await sendTransaction(tx, connection);
         await rpc.confirmTransaction(signature);
-        setMessage("Success!");
+        setMessage('Success!');
       } catch (e) {
         console.error(e);
       }
     } else {
       try {
-        const res = await fetch("api/mint/", {
-          method: "POST",
+        const res = await fetch('api/mint/', {
+          method: 'POST',
           body: JSON.stringify({
             owner: tokenOwner,
             token: tokenName,
             keypair: tokenKeypair,
             amount: mintAmount,
             mongo: source === Sources.Db,
-            network
+            network,
           }),
         });
         const data = await res.json();
-        if ("err" in data) {
+        if ('err' in data) {
           setMintError(data.err);
         } else {
-          setMessage("Success!");
+          setMessage('Success!');
         }
       } catch (err) {
         console.error(err);
@@ -101,7 +105,6 @@ export default function useMintAndTransfer({
     if (source === Sources.Wallet && publicKey) {
       // mint and sign from wallet
       try {
-
         const rpc = new RpcMethods(connection);
         const ata = await RpcMethods.getAssociatedTokenAccount(
           tokenName,
@@ -141,14 +144,14 @@ export default function useMintAndTransfer({
         const tx = RpcMethods.createTx(ix);
         const signature = await sendTransaction(tx, connection);
         await rpc.confirmTransaction(signature);
-        setMessage("Success!");
+        setMessage('Success!');
       } catch (e) {
         console.error(e);
       }
     } else {
       try {
-        const res = await fetch("api/transfer/", {
-          method: "POST",
+        const res = await fetch('api/transfer/', {
+          method: 'POST',
           body: JSON.stringify({
             owner: tokenOwner,
             token: tokenName,
@@ -159,10 +162,10 @@ export default function useMintAndTransfer({
           }),
         });
         const data = await res.json();
-        if ("err" in data) {
+        if ('err' in data) {
           setSendError(data.err);
         } else {
-          setMessage("Success!");
+          setMessage('Success!');
         }
       } catch (err) {
         console.error(err);

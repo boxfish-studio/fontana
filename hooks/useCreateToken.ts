@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/unbound-method */
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 
 import {
   createAssociatedTokenAccountInstruction,
@@ -5,13 +7,18 @@ import {
   getMinimumBalanceForRentExemptMint,
   MINT_SIZE,
   TOKEN_PROGRAM_ID,
-} from "@solana/spl-token";
-import { useWallet } from "@solana/wallet-adapter-react";
-import { Keypair, SystemProgram, Transaction } from "@solana/web3.js";
-import { RpcMethods } from "lib/spl";
-import { useRefresh, useSuccess, useHasMongoUri, useConnection } from "contexts";
-import { useState } from "react";
-import { createMint } from "lib/create-token";
+} from '@solana/spl-token';
+import { useWallet } from '@solana/wallet-adapter-react';
+import { Keypair, SystemProgram, Transaction } from '@solana/web3.js';
+import { RpcMethods } from 'lib/spl';
+import {
+  useRefresh,
+  useSuccess,
+  useHasMongoUri,
+  useConnection,
+} from 'contexts';
+import { useState } from 'react';
+import { createMint } from 'lib/create-token';
 
 export default function useCreateToken() {
   const { r, refresh } = useRefresh();
@@ -26,13 +33,14 @@ export default function useCreateToken() {
   async function createToken() {
     if (!publicKey && hasMongoUri && url) {
       try {
-        if(network==="Mainnet") throw new Error("Cannot create token in mainnet");
+        if (network === 'Mainnet')
+          throw new Error('Cannot create token in mainnet');
         setMinting(true);
         const tokenData = await createMint(url);
         if (!tokenData) return;
 
-        await fetch("api/mongo-new-token", {
-          method: "POST",
+        await fetch('api/mongo-new-token', {
+          method: 'POST',
           body: JSON.stringify(tokenData),
         });
         setMinting(false);
@@ -59,7 +67,7 @@ export default function useCreateToken() {
         publicKey.toBase58()
       );
 
-      let tx = new Transaction()
+      const tx = new Transaction()
         .add(
           SystemProgram.createAccount({
             fromPubkey: publicKey,
@@ -106,6 +114,6 @@ export default function useCreateToken() {
   return {
     createToken,
     minting,
-    triggerRefresh
-  }
+    triggerRefresh,
+  };
 }

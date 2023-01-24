@@ -1,4 +1,5 @@
-import { createContext, useContext } from "react";
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+import { createContext, useContext } from 'react';
 
 type Refresh = {
   r: boolean;

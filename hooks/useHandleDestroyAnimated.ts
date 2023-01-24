@@ -1,9 +1,9 @@
-import { MutableRefObject, useEffect, useState } from "react";
+import { MutableRefObject, useEffect, useState } from 'react';
 
 const styles = Object.freeze({
-  opacity: "0",
-  transform: "translateY(-50%)",
-  transition: "all 0.5s",
+  opacity: '0',
+  transform: 'translateY(-50%)',
+  transition: 'all 0.5s',
 });
 
 export default function useHandleDestroyAnimated<T extends HTMLElement>(
@@ -16,7 +16,6 @@ export default function useHandleDestroyAnimated<T extends HTMLElement>(
     if (sendSuccess) {
       handleDeletion(ref);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ref, sendSuccess]);
 
   function handleDeletion<T extends HTMLElement>(
@@ -30,7 +29,7 @@ export default function useHandleDestroyAnimated<T extends HTMLElement>(
       style.opacity = styles.opacity;
       setTimeout(() => {
         setSendSuccess(false);
-        setMessage("");
+        setMessage('');
       }, 600);
     }, 4000);
   }
