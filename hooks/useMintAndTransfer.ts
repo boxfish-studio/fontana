@@ -10,7 +10,7 @@ import { useWallet } from '@solana/wallet-adapter-react';
 import { PublicKey } from '@solana/web3.js';
 import { RpcMethods } from 'lib/spl';
 import { useCallback, useState } from 'react';
-import { Actions, RowProps, Sources } from 'types';
+import { Actions, type RowProps, Sources } from 'types';
 import { useSuccess, useConnection } from 'contexts';
 
 export default function useMintAndTransfer({

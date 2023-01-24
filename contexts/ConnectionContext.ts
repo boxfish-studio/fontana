@@ -3,6 +3,7 @@ import { createContext, useContext } from 'react';
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
 import { Connection } from '@solana/web3.js';
 export type Network = keyof typeof WalletAdapterNetwork;
+
 type TConnection = {
   connection: Connection | null;
   network: Network | null;

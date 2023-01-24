@@ -1,3 +1,5 @@
+import type { NewToken } from 'types';
+
 import {
   clusterApiUrl,
   Connection,
@@ -13,7 +15,7 @@ import {
   MINT_SIZE,
   TOKEN_PROGRAM_ID,
 } from '@solana/spl-token';
-import { NewToken } from 'types';
+
 export async function createMint(url: string): Promise<NewToken | undefined> {
   try {
     const mint = Keypair.generate();

@@ -3,7 +3,7 @@ import { Header, Button, StyledOcticon } from '@primer/react';
 import { IssueOpenedIcon, HourglassIcon } from '@primer/octicons-react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useMintAndTransfer } from 'hooks';
-import { Actions, RowProps } from 'types';
+import { Actions, type RowProps } from 'types';
 import { useConnection, useRefresh } from 'contexts';
 import { useEffect } from 'react';
 
