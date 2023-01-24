@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import { Header, Button, StyledOcticon } from '@primer/react';
 import { CheckIcon, SyncIcon } from '@primer/octicons-react';
 
