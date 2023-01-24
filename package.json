@@ -6,7 +6,7 @@
     "dev": "node git-tags.js && next dev",
     "build": "node git-tags.js && next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "npx eslint . --ext .ts,.tsx",
     "format": "prettier --write \"./**/*.{tsx,ts,js}\"",
     "prepare": "husky install"
   },
