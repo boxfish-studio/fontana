@@ -19,7 +19,7 @@ import {
   ThemeProvider,
   BaseStyles,
   theme,
-  ThemeProviderProps,
+  type ThemeProviderProps,
 } from '@primer/react';
 import deepmerge from 'deepmerge';
 import { ConnectionContext } from 'contexts';
