@@ -1,4 +1,4 @@
-import { Schema, model, models } from "mongoose";
+import { Schema, model, models } from 'mongoose';
 
 const tokenSchema = new Schema({
   token: String,
@@ -6,4 +6,4 @@ const tokenSchema = new Schema({
   keypair: String,
 });
 
-export const Token = models.Token ||  model("Token", tokenSchema);
+export const Token = models.Token || model('Token', tokenSchema);

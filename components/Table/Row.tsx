@@ -1,12 +1,5 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import {
-  Header,
-  Text,
-  Button,
-  Box,
-  StyledOcticon,
-  TextInput,
-} from '@primer/react';
+import { Header, Button, StyledOcticon } from '@primer/react';
 import { IssueOpenedIcon, HourglassIcon } from '@primer/octicons-react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useMintAndTransfer } from 'hooks';

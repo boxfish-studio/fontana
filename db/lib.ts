@@ -1,9 +1,13 @@
-import { connect } from "mongoose";
-import { Token } from "./model";
-import { NewToken } from "types";
-import type { Network } from "contexts";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-namespace */
+/* eslint-disable no-var */
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+import { connect } from 'mongoose';
+import { Token } from './model';
+import { NewToken } from 'types';
+import type { Network } from 'contexts';
 
-declare module globalThis {
+declare namespace globalThis {
   var mongoose: any;
 }
 
@@ -22,7 +26,7 @@ export class Database implements Mongo {
   private async dbconnect() {
     try {
       const MONGO_URI = process.env.NEXT_PUBLIC_DATABASE_URL;
-      if (!MONGO_URI) throw new Error("Database url not found");
+      if (!MONGO_URI) throw new Error('Database url not found');
       let cached = globalThis.mongoose;
       if (!cached) {
         cached = globalThis.mongoose = { conn: null, promise: null };
@@ -32,9 +36,7 @@ export class Database implements Mongo {
           bufferCommands: false,
         };
 
-        cached.promise = connect(MONGO_URI, opts).then((mongoose) => {
-          return mongoose;
-        });
+        cached.promise = connect(MONGO_URI, opts).then((mongoose) => mongoose);
       }
       cached.conn = await cached.promise;
       return cached.conn;
@@ -52,12 +54,10 @@ export class Database implements Mongo {
   async queryTokens() {
     await this.dbconnect();
     const queryResults: Query[] = (await Token.find()).map(
-      ({ token, owner }) => {
-        return {
-          token,
-          owner,
-        };
-      }
+      ({ token, owner }) => ({
+        token,
+        owner,
+      })
     );
     return queryResults;
   }

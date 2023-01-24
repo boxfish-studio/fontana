@@ -1,4 +1,6 @@
-import { createContext, useContext } from "react";
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+/* eslint-disable no-self-assign */
+import { createContext, useContext } from 'react';
 
 type Success = {
   message: string;
@@ -8,7 +10,7 @@ type Success = {
 };
 
 export const SuccessContext = createContext<Success>({
-  message: "",
+  message: '',
   setMessage: (message: string) => {
     message = message;
   },
