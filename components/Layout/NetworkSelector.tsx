@@ -1,7 +1,7 @@
-import { FC, useEffect, useRef } from 'react';
+import { type FC, useEffect, useRef } from 'react';
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
 import { clusterApiUrl, Connection } from '@solana/web3.js';
-import { Network, useConnection } from 'contexts';
+import { type Network, useConnection } from 'contexts';
 
 const RPC_API_DEVNET =
   process.env.NEXT_PUBLIC_RPC_API_DEVNET || clusterApiUrl('devnet');

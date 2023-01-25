@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-import { NextApiRequest, NextApiResponse } from 'next';
-import { Database, Query } from 'db/lib';
+import type { NextApiRequest, NextApiResponse } from 'next';
+
+import { Database, type Query } from 'db/lib';
 
 interface Res {
   queryResults?: Query[];
