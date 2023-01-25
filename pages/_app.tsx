@@ -1,9 +1,9 @@
-import "../styles/globals.scss";
-import type { AppProps } from "next/app";
-import React, { ReactNode, useMemo, useState } from "react";
-import {
-  WalletProvider,
-} from "@solana/wallet-adapter-react";
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+import type { AppProps } from 'next/app';
+import type { Network } from 'contexts';
+
+import { type ReactNode, useMemo, useState, type FC } from 'react';
+import { WalletProvider } from '@solana/wallet-adapter-react';
 import {
   GlowWalletAdapter,
   PhantomWalletAdapter,
@@ -12,35 +12,39 @@ import {
   SolletExtensionWalletAdapter,
   SolletWalletAdapter,
   TorusWalletAdapter,
-} from "@solana/wallet-adapter-wallets";
-import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
-import {  Connection } from "@solana/web3.js";
-import { ThemeProvider, BaseStyles, theme, ThemeProviderProps } from "@primer/react";
-import deepmerge from "deepmerge";
-import { ConnectionContext } from "contexts";
-import type { Network } from "contexts";
+} from '@solana/wallet-adapter-wallets';
+import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
+import { Connection } from '@solana/web3.js';
+import {
+  ThemeProvider,
+  BaseStyles,
+  theme,
+  type ThemeProviderProps,
+} from '@primer/react';
+import deepmerge from 'deepmerge';
+import { ConnectionContext } from 'contexts';
+import '../styles/globals.scss';
 
 const customTheme = deepmerge(theme, {
   fonts: {
-    mono: "MonoLisa, monospace",
+    mono: 'MonoLisa, monospace',
   },
   colors: {
-    text: "#000",
-    background: "#fff",
-    primary: "gray",
-    navbarBackground: "#24292E",
+    text: '#000',
+    background: '#fff',
+    primary: 'gray',
+    navbarBackground: '#24292E',
   },
 });
 
-const CustomThemeProvider: React.FC<
-  ThemeProviderProps & { children: ReactNode }
-> = ({ children, ...props }) => {
-  return <ThemeProvider {...props}>{children}</ThemeProvider>;
-};
+const CustomThemeProvider: FC<ThemeProviderProps & { children: ReactNode }> = ({
+  children,
+  ...props
+}) => <ThemeProvider {...props}>{children}</ThemeProvider>;
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [connection, setConnection] = useState<Connection | null>(null);
-  const [network, setNetwork] = useState<Network|null>(null);
+  const [network, setNetwork] = useState<Network | null>(null);
   const [url, setUrl] = useState<string | null>(null);
 
   const wallets = useMemo(

@@ -1,10 +1,11 @@
-import { Header, Button, StyledOcticon } from "@primer/react";
-import { CheckIcon, SyncIcon } from "@primer/octicons-react";
+/* eslint-disable @typescript-eslint/no-misused-promises */
+import { Header, Button, StyledOcticon } from '@primer/react';
+import { CheckIcon, SyncIcon } from '@primer/octicons-react';
 
-import { useWallet } from "@solana/wallet-adapter-react";
-import { useHasMongoUri, useConnection } from "contexts";
-import { HourglassIcon } from "@primer/octicons-react";
-import { useCreateToken } from "hooks";
+import { useWallet } from '@solana/wallet-adapter-react';
+import { useHasMongoUri, useConnection } from 'contexts';
+import { HourglassIcon } from '@primer/octicons-react';
+import { useCreateToken } from 'hooks';
 
 const HeaderTable: React.FC<{ tokensAmount: number }> = ({
   tokensAmount = 0,
@@ -16,7 +17,7 @@ const HeaderTable: React.FC<{ tokensAmount: number }> = ({
 
   const canCreateToken = () => {
     if (publicKey) return true;
-    if (!publicKey && hasMongoUri && network === "Devnet") return true;
+    if (!publicKey && hasMongoUri && network === 'Devnet') return true;
     return false;
   };
 
@@ -24,30 +25,29 @@ const HeaderTable: React.FC<{ tokensAmount: number }> = ({
     <Header
       style={{
         padding: 0,
-        borderBottom: "1px solid #eaeaea",
-        backgroundColor: "background",
+        borderBottom: '1px solid #eaeaea',
+        backgroundColor: 'background',
         borderTopLeftRadius: 5,
         borderTopRightRadius: 5,
       }}
     >
       <div
         style={{
-          gap: "16px",
-          width: "90rem",
-          height: "4rem",
-          backgroundColor: "transparent",
-          padding: "13px 16px 12px",
-          alignItems: "center",
+          gap: '16px',
+          width: '90rem',
+          height: '4rem',
+          backgroundColor: 'transparent',
+          padding: '13px 16px 12px',
+          alignItems: 'center',
         }}
         className="d-flex color-fg-default"
       >
         <Header.Item
           style={{
-            display: "flex",
-            width: "18rem",
-            justifyContent: "flex-start",
-            alignItems: "center",
-
+            display: 'flex',
+            width: '18rem',
+            justifyContent: 'flex-start',
+            alignItems: 'center',
           }}
         >
           <StyledOcticon icon={CheckIcon} size={16} color="primary" />
@@ -57,16 +57,16 @@ const HeaderTable: React.FC<{ tokensAmount: number }> = ({
         </Header.Item>
         <Header.Item
           style={{
-            paddingLeft: "8rem",
-            fontSize: "1.05rem",
+            paddingLeft: '8rem',
+            fontSize: '1.05rem',
           }}
         >
           Available
         </Header.Item>
         <Header.Item
           style={{
-            paddingLeft: "6rem",
-            fontSize: "1.05rem",
+            paddingLeft: '6rem',
+            fontSize: '1.05rem',
           }}
         >
           In wallet
@@ -74,18 +74,18 @@ const HeaderTable: React.FC<{ tokensAmount: number }> = ({
         <Header.Item
           full
           style={{
-            position: "relative",
+            position: 'relative',
           }}
         >
           {canCreateToken() && (
             <Button
               variant="primary"
               sx={{
-                position: "absolute",
-                right: "8rem",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
+                position: 'absolute',
+                right: '8rem',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
               }}
               onClick={createToken}
               leadingIcon={minting ? HourglassIcon : null}
@@ -95,12 +95,12 @@ const HeaderTable: React.FC<{ tokensAmount: number }> = ({
           )}
           <Button
             sx={{
-              position: "absolute",
-              right: "0",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: "20px",
+              position: 'absolute',
+              right: '0',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '20px',
             }}
             onClick={triggerRefresh}
           >

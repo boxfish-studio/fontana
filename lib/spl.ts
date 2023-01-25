@@ -1,11 +1,14 @@
+/* eslint-disable no-return-await */
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import {
   Connection,
   Keypair,
-  ParsedAccountData,
+  type ParsedAccountData,
   PublicKey,
   Transaction,
   TransactionInstruction,
-} from "@solana/web3.js";
+} from '@solana/web3.js';
 import {
   getAssociatedTokenAddress,
   getOrCreateAssociatedTokenAccount,
@@ -13,7 +16,7 @@ import {
   createTransferInstruction,
   TOKEN_PROGRAM_ID,
   AccountLayout,
-} from "@solana/spl-token";
+} from '@solana/spl-token';
 
 abstract class Rpc {
   connection: Connection;
@@ -63,7 +66,10 @@ export class RpcMethods extends Rpc {
     token: string,
     amount: number
   ): Promise<TransactionInstruction> {
-    const tokenAccount = await RpcMethods.getAssociatedTokenAccount(token, owner);
+    const tokenAccount = await RpcMethods.getAssociatedTokenAccount(
+      token,
+      owner
+    );
 
     const tx = createMintToInstruction(
       new PublicKey(token),
@@ -81,7 +87,10 @@ export class RpcMethods extends Rpc {
     recipient: string,
     signer: Keypair
   ): Promise<TransactionInstruction> {
-    const sourceAccount = await RpcMethods.getAssociatedTokenAccount(token, owner);
+    const sourceAccount = await RpcMethods.getAssociatedTokenAccount(
+      token,
+      owner
+    );
     const destinationAccount = await this.getOrCreateAssociatedTokenAccount(
       token,
       signer,
@@ -97,7 +106,7 @@ export class RpcMethods extends Rpc {
   }
 
   static createTx(...instructions: TransactionInstruction[]): Transaction {
-    let transaction = new Transaction();
+    const transaction = new Transaction();
     transaction.add(...instructions);
     return transaction;
   }
@@ -129,9 +138,9 @@ export class RpcMethods extends Rpc {
   }
 
   async queryTokenByAuthority(pubkey: string): Promise<
-    Array<{
+    {
       tokenMint: string;
-    }>
+    }[]
   > {
     const tokenAccounts = await this.connection.getTokenAccountsByOwner(
       new PublicKey(pubkey),
@@ -154,7 +163,7 @@ export class RpcMethods extends Rpc {
         ...(await acc),
         { tokenMint: accountInfo.mint.toBase58() },
       ]);
-    }, Promise.resolve([{ tokenMint: "" }]));
+    }, Promise.resolve([{ tokenMint: '' }]));
     // return all but the first one which is the initial value in the reduced array.
     return accounts.slice(1);
   }

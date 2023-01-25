@@ -1,6 +1,9 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import { Database } from "db/lib";
-import { NewToken } from "types";
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+import type { NextApiRequest, NextApiResponse } from 'next';
+import type { NewToken } from 'types';
+
+import { Database } from 'db/lib';
 
 interface Res {
   token?: string;
@@ -13,7 +16,7 @@ export default async function handler(
 ) {
   try {
     const body = JSON.parse(req.body) as NewToken | undefined;
-    if (!body) throw new Error("No token");
+    if (!body) throw new Error('No token');
     await new Database().createToken(body);
     res.status(200).end();
   } catch (e) {
