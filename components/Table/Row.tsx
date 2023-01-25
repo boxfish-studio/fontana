@@ -80,14 +80,14 @@ const Row: React.FC<RowProps> = (props) => {
               color={issueColor()}
             />
             <div className="d-flex flex-column flex-justify-center ml-3">
-              <p className="f4 m-0 p-0 text-bold d-flex">
+              <div className="f4 m-0 p-0 text-bold d-flex">
                 Token name{' '}
                 {props.tokenTicker && (
                   <p className="m-0 ml-3 color-fg-muted text-bold f-5">
                     [{props.tokenTicker}]
                   </p>
                 )}
-              </p>
+              </div>
               <p className="f5 text-light">{props.tokenName}</p>
             </div>
           </Header.Item>
@@ -149,7 +149,7 @@ const Row: React.FC<RowProps> = (props) => {
               leadingIcon={action === Actions.Mint ? HourglassIcon : null}
               onClick={mintTokens}
             >
-              <text className="text-bold">Mint</text>
+              <div className="text-bold">Mint</div>
             </Button>
           </Header.Item>
           <Header.Item
@@ -223,7 +223,7 @@ const Row: React.FC<RowProps> = (props) => {
               leadingIcon={action === Actions.Sending ? HourglassIcon : null}
               onClick={transferTokens}
             >
-              <text className="text-bold">Send</text>
+              <div className="text-bold">Send</div>
             </Button>
           </Header.Item>
         </div>

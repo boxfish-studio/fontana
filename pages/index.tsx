@@ -3,8 +3,6 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import { Header } from 'components/Layout';
 import { Table } from 'components/Table';
-import { StyledOcticon } from '@primer/react';
-import { HeartFillIcon } from '@primer/octicons-react';
 import { Toast } from 'components/Layout';
 import { version } from 'version.json';
 import { HasMongoUriContext } from 'contexts';
@@ -36,26 +34,24 @@ const Home: NextPage<{ HAS_MONGO_URI: boolean }> = ({ HAS_MONGO_URI }) => (
       <Toast />
       <footer>
         <div>
-          <a href="https://github.com/boxfish-studio/fontana/">
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              className="color-fg-muted"
-              style={{ cursor: 'pointer' }}
-            >
-              <u>Fontana {version}</u>
-            </a>
+          <a
+            href="https://github.com/boxfish-studio/fontana/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="color-fg-muted"
+            style={{ cursor: 'pointer' }}
+          >
+            <u>Fontana {version}</u>
           </a>
           <span className="color-fg-muted"> - by </span>
-          <a href="https://boxfish.studio/">
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              className="color-fg-muted"
-              style={{ cursor: 'pointer' }}
-            >
-              <u>Boxfish Studio</u>
-            </a>
+          <a
+            href="https://boxfish.studio/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="color-fg-muted"
+            style={{ cursor: 'pointer' }}
+          >
+            <u>Boxfish Studio</u>
           </a>
         </div>
       </footer>
