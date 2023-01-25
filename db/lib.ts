@@ -2,10 +2,11 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 /* eslint-disable no-var */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+import type { Network } from 'contexts';
+import type { NewToken } from 'types';
+
 import { connect } from 'mongoose';
 import { Token } from './model';
-import { NewToken } from 'types';
-import type { Network } from 'contexts';
 
 declare namespace globalThis {
   var mongoose: any;

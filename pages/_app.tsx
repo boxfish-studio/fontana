@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-import '../styles/globals.scss';
 import type { AppProps } from 'next/app';
-import React, { ReactNode, useMemo, useState } from 'react';
+import type { Network } from 'contexts';
+
+import { type ReactNode, useMemo, useState, type FC } from 'react';
 import { WalletProvider } from '@solana/wallet-adapter-react';
 import {
   GlowWalletAdapter,
@@ -18,11 +19,11 @@ import {
   ThemeProvider,
   BaseStyles,
   theme,
-  ThemeProviderProps,
+  type ThemeProviderProps,
 } from '@primer/react';
 import deepmerge from 'deepmerge';
 import { ConnectionContext } from 'contexts';
-import type { Network } from 'contexts';
+import '../styles/globals.scss';
 
 const customTheme = deepmerge(theme, {
   fonts: {
@@ -36,11 +37,10 @@ const customTheme = deepmerge(theme, {
   },
 });
 
-const CustomThemeProvider: React.FC<
-  ThemeProviderProps & { children: ReactNode }
-> = ({ children, ...props }) => (
-  <ThemeProvider {...props}>{children}</ThemeProvider>
-);
+const CustomThemeProvider: FC<ThemeProviderProps & { children: ReactNode }> = ({
+  children,
+  ...props
+}) => <ThemeProvider {...props}>{children}</ThemeProvider>;
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [connection, setConnection] = useState<Connection | null>(null);

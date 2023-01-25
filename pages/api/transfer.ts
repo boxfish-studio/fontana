@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import type { NextApiRequest, NextApiResponse } from 'next';
+
 import { RpcMethods } from 'lib/spl';
 import { Connection, Keypair } from '@solana/web3.js';
 import { Database } from 'db/lib';

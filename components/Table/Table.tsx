@@ -1,4 +1,4 @@
-import { useState, FC } from 'react';
+import { useState, type FC } from 'react';
 import Row from './Row';
 import HeaderTable from './HeaderTable';
 import { Toast } from 'components/Layout';

@@ -1,4 +1,4 @@
-import { MutableRefObject, useEffect, useState } from 'react';
+import { type MutableRefObject, useEffect, useState } from 'react';
 
 const styles = Object.freeze({
   opacity: '0',

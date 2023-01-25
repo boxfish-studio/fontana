@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-import { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiRequest, NextApiResponse } from 'next';
+import type { NewToken } from 'types';
+
 import { Database } from 'db/lib';
-import { NewToken } from 'types';
 
 interface Res {
   token?: string;

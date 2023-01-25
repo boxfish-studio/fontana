@@ -4,7 +4,7 @@
 import {
   Connection,
   Keypair,
-  ParsedAccountData,
+  type ParsedAccountData,
   PublicKey,
   Transaction,
   TransactionInstruction,

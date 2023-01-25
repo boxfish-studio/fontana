@@ -1,16 +1,15 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import type { NextPage } from 'next';
+
 import Head from 'next/head';
 import { Header } from 'components/Layout';
 import { Table } from 'components/Table';
-import { StyledOcticon } from '@primer/react';
-import { HeartFillIcon } from '@primer/octicons-react';
 import { Toast } from 'components/Layout';
 import { version } from 'version.json';
 import { HasMongoUriContext } from 'contexts';
 
 export function getServerSideProps() {
-  const HAS_MONGO_URI = !!process.env.NEXT_PUBLIC_DATABASE_URL;
+  const HAS_MONGO_URI = Boolean(process.env.NEXT_PUBLIC_DATABASE_URL);
   return { props: { HAS_MONGO_URI } };
 }
 
