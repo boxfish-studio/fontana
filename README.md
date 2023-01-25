@@ -48,8 +48,8 @@ This mode is operational if a wallet is connected.
 
 ### Server mode
 
-Creation, minting and transfer of tokens is performed by a account configured in the server.  
-New created tokens will be stored in a dedicated db for persistance.  
+Creation, minting and transfer of tokens are performed by an account configured in the server.  
+New created tokens will be stored in a dedicated db for persistence.  
 The displayed SPL tokens will be those in the application config file, plus the SPL tokens found in the db.  
 This mode is operational when there is no wallet connected.
 
