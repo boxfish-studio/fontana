@@ -1,7 +1,6 @@
 import type { FC } from 'react';
-
 import { useWallet } from '@solana/wallet-adapter-react';
-import { WalletMultiButton } from 'components/WalletWrapper';
+import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 
 const Wallet: FC = () => {
   const { publicKey } = useWallet();

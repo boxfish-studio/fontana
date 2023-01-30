@@ -5,7 +5,7 @@ import Head from 'next/head';
 import { Header } from 'components/Layout';
 import { Table } from 'components/Table';
 import { Toast } from 'components/Layout';
-import { version } from 'version.json';
+import versionJson from 'version.json';
 import { HasMongoUriContext } from 'contexts';
 
 export function getServerSideProps() {
@@ -42,7 +42,7 @@ const Home: NextPage<{ HAS_MONGO_URI: boolean }> = ({ HAS_MONGO_URI }) => (
             className="color-fg-muted"
             style={{ cursor: 'pointer' }}
           >
-            <u>Fontana {version}</u>
+            <u>Fontana {versionJson.version}</u>
           </a>
           <span className="color-fg-muted"> - by </span>
           <a

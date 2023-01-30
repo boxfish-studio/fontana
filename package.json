@@ -23,7 +23,6 @@
     "@solana/wallet-adapter-react-ui": "^0.9.27",
     "@solana/wallet-adapter-wallets": "^0.19.11",
     "@solana/web3.js": "^1.73.0",
-    "@typescript-eslint/eslint-plugin": "^5.49.0",
     "deepmerge": "^4.2.2",
     "husky": "^8.0.3",
     "lint-staged": "^13.1.0",
@@ -41,6 +40,7 @@
     "eslint": "8.32.0",
     "eslint-config-next": "13.1.5",
     "octicons-react": "link:@types/@primer/octicons-react",
+    "@typescript-eslint/eslint-plugin": "^5.49.0",
     "prettier": "^2.8.3",
     "typescript": "4.9.4"
   },
