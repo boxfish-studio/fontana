@@ -2,7 +2,14 @@
 import type { AppProps } from 'next/app';
 import type { Network } from 'contexts';
 
-import { type ReactNode, useMemo, useState, type FC, useEffect } from 'react';
+import {
+  type ReactNode,
+  useMemo,
+  useState,
+  type FC,
+  useEffect,
+  PropsWithChildren,
+} from 'react';
 import { WalletProvider } from '@solana/wallet-adapter-react';
 import {
   GlowWalletAdapter,
@@ -42,7 +49,7 @@ const CustomThemeProvider: FC<ThemeProviderProps & { children: ReactNode }> = ({
   ...props
 }) => <ThemeProvider {...props}>{children}</ThemeProvider>;
 
-function ClientWrapper({ children }: { children: React.ReactNode }) {
+function ClientWrapper({ children }: PropsWithChildren) {
   const [hasMounted, setHasMounted] = useState(false);
 
   useEffect(() => {
