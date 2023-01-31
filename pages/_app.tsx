@@ -2,7 +2,14 @@
 import type { AppProps } from 'next/app';
 import type { Network } from 'contexts';
 
-import { type ReactNode, useMemo, useState, type FC } from 'react';
+import {
+  type ReactNode,
+  useMemo,
+  useState,
+  type FC,
+  useEffect,
+  PropsWithChildren,
+} from 'react';
 import { WalletProvider } from '@solana/wallet-adapter-react';
 import {
   GlowWalletAdapter,
@@ -42,6 +49,18 @@ const CustomThemeProvider: FC<ThemeProviderProps & { children: ReactNode }> = ({
   ...props
 }) => <ThemeProvider {...props}>{children}</ThemeProvider>;
 
+function ClientWrapper({ children }: PropsWithChildren) {
+  const [hasMounted, setHasMounted] = useState(false);
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
+  if (!hasMounted) return null;
+
+  return <>{children}</>;
+}
+
 function MyApp({ Component, pageProps }: AppProps) {
   const [connection, setConnection] = useState<Connection | null>(null);
   const [network, setNetwork] = useState<Network | null>(null);
@@ -61,26 +80,28 @@ function MyApp({ Component, pageProps }: AppProps) {
   );
 
   return (
-    <ConnectionContext.Provider
-      value={{
-        connection,
-        setConnection,
-        network,
-        setNetwork,
-        url,
-        setUrl,
-      }}
-    >
-      <WalletProvider wallets={wallets}>
-        <WalletModalProvider>
-          <CustomThemeProvider theme={customTheme} colorMode="day">
-            <BaseStyles>
-              <Component {...pageProps} />
-            </BaseStyles>
-          </CustomThemeProvider>
-        </WalletModalProvider>
-      </WalletProvider>
-    </ConnectionContext.Provider>
+    <ClientWrapper>
+      <ConnectionContext.Provider
+        value={{
+          connection,
+          setConnection,
+          network,
+          setNetwork,
+          url,
+          setUrl,
+        }}
+      >
+        <WalletProvider wallets={wallets}>
+          <WalletModalProvider>
+            <CustomThemeProvider theme={customTheme} colorMode="day">
+              <BaseStyles>
+                <Component {...pageProps} />
+              </BaseStyles>
+            </CustomThemeProvider>
+          </WalletModalProvider>
+        </WalletProvider>
+      </ConnectionContext.Provider>
+    </ClientWrapper>
   );
 }
 

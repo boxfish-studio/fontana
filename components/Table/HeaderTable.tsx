@@ -90,7 +90,7 @@ const HeaderTable: React.FC<{ tokensAmount: number }> = ({
               onClick={createToken}
               leadingIcon={minting ? HourglassIcon : null}
             >
-              <text className=" text-bold">Create token</text>
+              <span className=" text-bold">Create token</span>
             </Button>
           )}
           <Button
@@ -105,7 +105,7 @@ const HeaderTable: React.FC<{ tokensAmount: number }> = ({
             onClick={triggerRefresh}
           >
             <StyledOcticon icon={SyncIcon} size={14} color="text" />
-            <text className="ml-2">Refresh</text>
+            <span className="ml-2">Refresh</span>
           </Button>
         </Header.Item>
       </div>
